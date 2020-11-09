@@ -1,0 +1,72 @@
+---
+title: "Language Typology & Geography | Data Description"
+author: "Language Typology Project Group"
+date: "11/7/2020"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    code_folding: "hide"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#load libraries
+library(tidyverse)
+library(maps)
+```
+
+# PART 1 | Describing Language Data
+
+
+## Language | Consonant-Vowel Ratio (Maho)
+
+```{r, echo=FALSE}
+#import cleaned dataframe
+load(file="../clean-data/lang_cvratio.RData")
+```
+
+
+**TODO: Explanation of what CV ratio is and why it's important**
+
+Here is a visualization of languages with extreme high and low Consonant - Vowel ratios. 
+
+
+```{r, results="hide"}
+
+cvratio.low = df_cvratio %>% filter(cv_ratio == '1 - Low')
+cvratio.high = df_cvratio %>% filter(cv_ratio == '5 - High')
+
+#generate the map
+world = map_data("world")
+worldmap.combined.cvratio = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = cvratio.low,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'blue',
+             alpha = 0.8,
+             size = 0.75)+
+  geom_point(data = cvratio.high,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             alpha = 0.8,
+             size = 0.9)+
+  labs(title = "Map of Language with High(red) and Low(blue) Consonant-Value Ratios")
+  theme_bw()
+  
+```
+
+```{r}
+#display the map
+worldmap.combined.cvratio 
+```
+
+# PART 2 | Describing Country Data
+
+
+# PART 3 | Describing Environmental Data
