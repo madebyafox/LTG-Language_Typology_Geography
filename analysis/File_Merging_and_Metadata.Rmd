@@ -1,0 +1,490 @@
+---
+title: "Language Typology & Geography | Data Preparation"
+author: "Language Typology Project Group"
+date: "11/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#load libraries
+library(tidyverse)
+library(maps)
+```
+
+# Tidying Dataframes and Metadata
+To successfully run this file, be sure to: 
+
+1. Clone the github repository from: https://github.com/madebyafox/Language_Typology_Geography 
+> git clone git@github.com:madebyafox/Language_Typology_Geography.git
+
+2. Set your working directory to the top level directory of the repository
+> setwd("~/[location on your machine]/LTG-Language_Typology_Geography")
+
+## Language | Glotallized Consonants (WALS)
+
+```{r import glotallized consonants, include=FALSE}
+suppressMessages(df_ejectives <- read_csv("../raw-data/ejectives.csv"))
+```
+
+### About this dataset
+
+This dataset was retrived from the WALS database of glottalized consonants (including ejectives) of 567 languages (https://wals.info/feature/7A). 
+Each row in the dataset represents a language. 
+
+*INSERT HERE*
+A glotallized consonant is .... .... ejectives.... implosives... resonants.... 
+
+
+The data in this dataset pertaining to our analysis is the following:
+
+* `$wals.code`: 3-digit code unique to a language (e.g., English = eng) 
+
+* `$description` and `$value`: Description of whether a language has glottalized consonants, and if so, what kind they have
+  + "No glottalized consonants" (value = 1): 409 rows
+  + "Ejectives only" (value = 2): 58 rows
+  + "Implosives only" (value = 3): 55 rows
+  + "Glottalized resonants only" (value = 4): 4 rows
+  + "Ejectives and implosives" (value = 5): 14 rows
+  + "Ejectives and glottalized resonants" (value = 6): 20 rows
+  + "Implosives and glottalized resonants" (value = 7): 4 rows
+  + "Ejectives, implosives, and glottalized resonants" (value = 8): 3 rows
+
+* `$latitude` and `$longitude`: Geographical information of a language
+
+### Cleaning 
+
+Coming from the WALS data source, this dataset is already complete , but not tidy. Here we reformat and rename some of the columns for ease of use. 
+```{r}
+
+#split 'description' column into columns for each feature, with a boolean value indicating whether the language includes that feature
+
+# recode_features <-function (x){
+#   switch(x$values,
+#    {
+#     print(x)
+#     df_ejectives$glot_ejectives = 0
+#     df_ejectives$glot_implosives = 0
+#     df_ejectives$glot_resonants = 0
+#   },
+#    {
+#     df_ejectives$glot_ejectives = 1
+#     df_ejectives$glot_implosives = 0
+#     df_ejectives$glot_resonants = 0
+#   },
+#    {
+#     df_ejectives$glot_ejectives = 0
+#     df_ejectives$glot_implosives = 1
+#     df_ejectives$glot_resonants = 0
+#   },
+#   {
+#     df_ejectives$glot_ejectives = 0
+#     df_ejectives$glot_implosives = 0
+#     df_ejectives$glot_resonants = 1
+#   },
+#    {
+#     df_ejectives$glot_ejectives = 1
+#     df_ejectives$glot_implosives = 1
+#     df_ejectives$glot_resonants = 0
+#   },
+#   {
+#   df_ejectives$glot_ejectives = 1
+#   df_ejectives$glot_implosives = 0
+#   df_ejectives$glot_resonants = 1
+# },
+#    {
+#   df_ejectives$glot_ejectives = 0
+#   df_ejectives$glot_implosives = 1
+#   df_ejectives$glot_resonants = 1 },
+#    {
+#   df_ejectives$glot_ejectives = 1
+#   df_ejectives$glot_implosives = 1
+#   df_ejectives$glot_resonants = 1
+#   }
+#   )
+# }
+
+# df_ejectives <- df_ejectives %>% mutate( #create empty columns
+#   glot_ejectives = NA,
+#   glot_implosives = NA,
+#   glot_resonants = NA
+# ) 
+
+
+```
+
+```{r clean glottalized consonants}
+
+#CLEAN tibble
+df_ejectives <- df_ejectives %>% mutate(
+  glot_features = as.factor(paste(value,"-",description)), 
+  genus = as.factor(genus),
+  family = as.factor(family)
+) %>% select(
+  - value,
+  - description,
+  - area
+) 
+
+#SAVE cleaned data
+save(df_ejectives, file = "../clean-data/lang_ejectives.RData")
+```
+
+## Language | Consonant-Vowel Ratio (WALS)
+
+```{r import cvratio, include=FALSE}
+suppressMessages(df_cvratio <- read_csv("../raw-data/cvratio.csv"))
+```
+
+### About this dataset
+
+This dataset was retrived from the WALS database of the consonant-vowel ratio of 564 languages (https://wals.info/feature/3A#).     
+
+Information in this dataset relevant to our analysis is the following:
+
+* `$wals.code`: 3-digit code unique to a language (e.g., English = eng) 
+* `$description`: Description of the ratio between consonants and vowels, from 
+  +"Low" (small # of consonants compared with vowels) to 
+  +"High" (large # of consonants compared with vowels)  
+* `$value`: Numerical coding of `$description`; 1 corresponds to "Low" and 5 corresponds to "High" 
+* `$latitude` and `$longitude`: Geographical information of a language 
+
+### Cleaning
+Here we reformat the 'description' column as a factor, and rename the column for ease of use. 
+```{r clean cvratio}
+
+#CLEAN TIBBLE
+df_cvratio <- df_cvratio %>% mutate(
+  cv_ratio = as.factor(paste(value,"-",description)),
+  genus = as.factor(genus),
+  family = as.factor(family)
+) %>% select(
+  - value,
+  - description,
+  - area
+)
+
+#SAVE cleaned data
+save(df_cvratio, file = "../clean-data/lang_cvratio.RData")
+```
+
+## Language | Tone (WALS)
+
+```{r import tone, include=FALSE}
+suppressMessages(df_tones <- read_csv("../raw-data/tone.csv"))
+```
+
+### About this dataset
+
+This dataset was retrived from the WALS database of the Tone of 527 languages (https://wals.info/feature/13A#).
+
+* `$wals.code`: 3-digit code unique to a language (e.g., English = eng) 
+* `$description`: The languages with tones are divided into those with a simple tone system — essentially those with only a two-way basic contrast, usually between high and low levels — and those with a more complex set of contrasts.
+* `$value`: Numerical coding of `$description`; 1 corresponds to "No tone", 2 corresponds to "Simple tone system" and 3 corresponds to "Complex tone system" 
+* `$latitude` and `$longitude`: Geographical information of a language 
+
+
+```{r clean tone}
+
+#CLEAN Tibble
+df_tones <- df_tones %>% mutate(
+  tones = as.factor(paste(values,"-",description)), #REDUCE description to a single factor column
+  macroarea = as.factor(macroarea),
+  family = as.factor(family)       
+) %>% select(
+  - values,
+  - description
+)
+
+#SAVE cleaned data
+save(df_tones, file = "../clean-data/lang_tone.RData")
+```
+
+
+
+## Language | Language Types (AUTOTYP)
+
+```{r import types, include=FALSE}
+suppressMessages(df_langs <- read_csv("../raw-data/autotyp.csv"))
+```
+
+### About this dataset
+
+AUTOTYP is a typological database that draws from various existing databases, including WALS. Most of the features in this database are semantic, as opposed to the ones in WALS, which mostly relate to the sound system and grammatical structure of the langauges. AUTOTYP website: http://www.autotyp.uzh.ch/. Documentation: http://www.autotyp.uzh.ch/download/release_2013/autotyp-release_2013.pdf.
+
+The variables in this dataset have the following significance:
+
+* `$LID`: is the language ID code. This is a numeric value. 
+* `$ISO639.3`: This is a 3-letter code that refers to the language. These are different from the `$wals_code`.
+* `$language`: full language name
+* `$alt.language.name`: alternative language name
+* `$language.search`: all possible names for the language
+* `$lsbranch`: lowest sub-branch (of language family)
+* `$ssbranch`: sub-subbranch (of language family)
+* `$sbranch`: sub-branch (of language family)
+* `$mbranch`: major branch (of language family)
+* `$stock`: highest-level language family
+* `$alt.stock.name`: all possible names for the language family/group
+* `$stock.search`: all possible names for highest-level language family
+* `$longitude`: in degrees
+* `$latitude`: in degrees
+* `$area`: smaller sub-divisions: N Africa, Greater Abyssinia, African Savannah, S Africa, Europe, Greater Mesopotamia, Indic, Inner Asia, Southeast Asia, N Coast Asia, N Coast New Guinea, Interior New Guinea, S New Guinea, Oceania, N Australia, S Australia, Alaska-Oregon, California, Basin and Plains, E North America, Mesoamerica, NE South America, Andean, SE South America
+* `$continent`: continent
+
+***!TODO! ISO639.3 Some of the rows have a value in this column that contains multiple codes***
+
+```{r clean types}
+
+#CLEAN Tibble
+df_langs <- df_langs %>% mutate(
+  area = as.factor(area),
+  continent = as.factor(continent)       
+) %>% select(
+  - X1
+)
+
+#SAVE cleaned data
+save(df_langs, file = "../clean-data/lang_langs.RData")
+```
+
+## Language | Elevation (WALS)
+
+```{r import elevation, include=FALSE}
+suppressMessages(df_elevation <- read_csv("../raw-data/elevation.csv"))
+```
+
+### About this dataset 
+
+This dataset is comprised of the WALS datasets with additional columns for elevation in feet and meters. The elevation data was taken from https://www.gpsvisualizer.com/elevation, which used the Digital Elevation Model Database.
+
+
+
+* `$wals.code`: 3-digit code unique to a language (e.g., English = eng) 
+* `$Name`: Language name
+* `$latitude` and `$longitude`: Geographical information of a language 
+* `$elev.ft`: Elevation in feet
+* `$elev.m`: Elevation in meters
+
+
+```{r clean elevation}
+#SAVE cleaned data
+save(df_elevation, file = "../clean-data/lang_elevation.RData")
+```
+
+## Language | Number of Speakers 
+
+```{r import gdp, include=FALSE}
+suppressMessages(df_speakers <- read_csv("../raw-data/speakers.csv"))
+```
+
+This Dataset is derived from the Ethnologue database (not publicly available) via the supplemental materials from the paper:
+https://royalsocietypublishing.org/doi/10.1098/rsos.181274#d3e487				
+https://royalsocietypublishing.org/doi/suppl/10.1098/rsos.181274				
+
+
+* ISO 639-3 code	Mayer T, Cysouw M. 2014 Creating a Massively Parallel Bible Corpus. 		
+* Language name	Mayer T, Cysouw M. 2014 Creating a Massively Parallel Bible Corpus. 		
+* Language family	Mayer T, Cysouw M. 2014 Creating a Massively Parallel Bible Corpus. 		
+* Language area	Nichols J et al. The AUTOTYP genealogy and geography database: 2013 release		
+* Entropy rates	Koplenig A et al. 2017 The statistical trade-off between word order and word structure		
+* Unigram entropy	Bentz C et al. 2017 The Entropy of Words		
+* Proportion of L2 speakers	Simons GF, Fennig CD. 2017 Ethnologue Global Dataset		
+* Morphological complexity	Bentz  et al. 2016 A comparison between morphological complexity measures		
+* Number of included WALS features/chapters 	Bentz  et al. 2016 A comparison between morphological complexity measures		
+* Speaker population size	Amano T et al. 2014 Global distribution and drivers of language extinction risk.		# of total L1 speakers
+* Range size in km2	Amano T et al. 2014 Global distribution and drivers of language extinction risk.		
+* Vehicularity	Simons GF, Fennig CD. 2017 Ethnologue Global Dataset		EGIDS values of 4-10 categorized as non-vehicular
+
+```{r clean speakers}
+
+#CLEAN tibble
+df_speakers <- df_speakers %>% mutate(
+  Vehicularity = as.factor(vehicularity),
+  Family = as.factor(Family),
+  Area = as.factor(Area)
+) %>% select(
+  - vehicularity
+) 
+
+#SAVE cleaned data
+save(df_speakers, file = "../clean-data/lang_speakers.RData")
+```
+
+
+
+## Countries | GDP (UN)
+
+```{r import gdp, include=FALSE}
+suppressMessages(df_gdp <- read_csv("../raw-data/gdp.csv"))
+```
+
+### About this dataframe
+Per Capita GDP at current prices in US Dollars (all countries)
+The GDP data came from National Accounts (https://unstats.un.org/unsd/snaama/Downloads). Methodological information:  https://unstats.un.org/unsd/methodology/m49/.
+
+* `$CountryID`: three-digit alphabetical codes assigned by the International Organization for Standardization (ISO). Full list of country codes: https://www.iso.org/obp/ui/#search.
+* `$Country`: Country name.
+* `$2017`: GDP in the year 2017 (the most recent year this database provided data for) by country in USD.
+
+```{r clean gdp}
+
+#SAVE cleaned data
+save(df_gdp, file = "../clean-data/countries_gdp.RData")
+```
+
+
+## Countries | Linguistic Diversity by Country
+
+```{r import gdp, include=FALSE}
+suppressMessages(df_diversity <- read_csv("../raw-data/lingdiversity.csv"))
+```
+
+### About this dataframe
+
+This dataframe comes from Ethnologue (http://www.ethnologue.com/sites/default/files/Ethnologue-21-Global%20Dataset%20Doc.pdf).
+
+* `$lang.count`: number of languages per country
+* `$lang.percent`: percent of the world's languages spoken in that country
+* `$established.langs`: languages more or less "native" to that country
+* `$immigrant.langs`: immigrant languages
+* `$total.speakers`: population of country
+* `$mean.speakers`: mean number of speakers of each language in that country
+* `$median.speakers`:  median number of speakers of each language in that country
+* `$diversity.index`: range 0-1 how diverse the languages spoken in each country (0 being the lowest, 1 being the highest) (See more info: https://www.nationalgeographic.org/maps/language-diversity-index/)
+
+```{r, include=FALSE}
+
+#TIDY Tibble
+df_diversity$div.coverage = as.numeric(gsub("[\\%,]", "", df_diversity$div.coverage)) #change the div.coverage to a proportion and get rid of percent sign 
+df_diversity <- df_diversity %>% mutate (
+  div.coverage = div.coverage/100)
+df_diversity$diversity.index <- as.numeric(as.character(df_diversity$diversity.index))
+
+#SAVE cleaned data
+save(df_diversity, file = "../clean-data/countries_diversity.RData")
+```
+
+
+ 
+```{r}
+suppressMessages(autotyp_geo_info <- read_csv("G:/Shared drives/PSYCH 201a project/Data/autotyp_geo_info.csv")) 
+glimpse(autotyp_geo_info)
+
+``` 
+
+## TODO | Humidity
+
+## TODO | Temperature
+
+
+# Combining Dataframes
+
+## First combine WALS data ejectives and CV ratio 
+
+```{r}
+ejectives_cleaned$eject_d <- ejectives_cleaned$description
+ejectives_cleaned$eject_v <- ejectives_cleaned$value
+CVratio_cleaned$CV_d <- CVratio_cleaned$description
+CVratio_cleaned$CV_v <- CVratio_cleaned$value
+wals1 <- merge(ejectives_cleaned, CVratio_cleaned, by = "wals_code", all = TRUE)
+str(wals1)
+
+```
+Next combine `wals1` with the tone data.
+
+```{r}
+tone$tone_d <- tone$description
+tone$tone_v <- tone$values
+wals2 <- merge(wals1, tone, by.x = "wals_code", by.y = "wals_code", all = TRUE)
+str(wals2)
+```
+`wals_3` now contains the data for the three WALS features. Tidy up the WALS database:
+
+```{r}
+wals_3 <- wals2 %>%
+  select(c(wals_code, name.x, latitude.x, longitude.x, genus.x, family.x, eject_d, eject_v, CV_d, CV_v, tone_d, tone_v))
+wals_3 <- as_data_frame(wals_3)
+colnames(wals_3) <- c("wals_code", "name", "latitude", "longitude", "genus", "family", "eject_d", "eject_v", "CV_d", "CV_v", "tone_d", "tone_v")
+write.csv(wals_3, "wals_merged.csv")
+str(wals_3)
+```
+These are the relevant feature variables:
+
+* `$eject_d`: This is the description of the ejective value in words. E.g. "no glottalized consonants".
+
+* `$eject_v`: This is the numeric value associated with the ejective feature in each language from WALS. 
+
+* `$CV_d`: This is the description of the consonant-vowel ratio in words. E.g. "High" or "average".
+
+* `$CV_v`: This is the numeric value of the consonant-vowel ratio feature assigned by WALS.
+
+* `$tone_d`: This is the description in words of the tone system in each language. E.g. "simple tone system".
+
+* `$tone_v`: This is the value for the tone system type assigned by WALS.
+
+
+## Combining WALS with AUTOTYP
+
+Currently, matching these by language types means we lose a few. 
+
+```{r}
+suppressMessages(isocodes <- read_csv("isocodes.csv"))
+isocodes <- isocodes %>%
+  select(c(id, iso_codes, name))
+wals_3 <- merge(wals_3, isocodes, by.x = "wals_code", by.y = "id", all = FALSE)
+#wals_3[!is.na(wals_3$name.x), ]
+# wals_3 <- wals_3 %>% 
+#   select(-c("name.y"))
+
+```
+
+```{r}
+wals_auto <- merge(wals_3, autotyp, by.x = 'iso_codes', by.y = 'ISO639.3', all = FALSE)
+wals_auto <- wals_auto %>% 
+  select(-c(latitude.y, longitude.y, language.search, language, alt.language.name, LID, name.y, alt.stock.name, stock.search))
+colnames(wals_auto) <- c("iso_codes", "wals_code", "name", "latitude", "longitude", "genus", "family", "eject_d", "eject_v", "CV_d", "CV_v", "tone_d", "tone_v", "lsbranch", "ssbranch", "sbranch", "mbranch", "stock", "area", "continent")
+str(wals_auto)
+write.csv(wals_auto, "wals_autotyp_merged.csv")
+```
+These are the current variables:
+
+* `$iso_codes`: ISO code.
+
+* `$wals_code`: WALS code.
+
+* `$name`: language name.
+
+* `$longitude`: in degrees
+
+* `$latitude`: in degrees
+
+* `$genus`: sub-type of language family. 
+
+* `$family`: language family.
+
+* `$eject_d`: This is the description of the ejective value in words. E.g. "no glottalized consonants".
+
+* `$eject_v`: This is the numeric value associated with the ejective feature in each language from WALS. 
+
+* `$CV_d`: This is the description of the consonant-vowel ratio in words. E.g. "High" or "average".
+
+* `$CV_v`: This is the numeric value of the consonant-vowel ratio feature assigned by WALS.
+
+* `$tone_d`: This is the description in words of the tone system in each language. E.g. "simple tone system".
+
+* `$tone_v`: This is the value for the tone system type assigned by WALS.
+
+* `$lsbranch`: lowest sub-branch (of language family)
+
+* `$ssbranch`: sub-subbranch (of language family)
+
+* `$sbranch`: sub-branch (of language family)
+
+* `$mbranch`: major branch (of language family)
+
+* `$stock`: highest-level language family
+
+* `$area`: smaller sub-divisions: N Africa, Greater Abyssinia, African Savannah, S Africa, Europe, Greater Mesopotamia, Indic, Inner Asia, Southeast Asia, N Coast Asia, N Coast New Guinea, Interior New Guinea, S New Guinea, Oceania, N Australia, S Australia, Alaska-Oregon, California, Basin and Plains, E North America, Mesoamerica, NE South America, Andean, SE South America
+
+* `$continent`: continent
