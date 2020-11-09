@@ -1,0 +1,97 @@
+---
+title: "PSYC 201A Project: Data Cleaning (C-V ratio)"
+author: "Maho Takahashi"
+date: "2020-10-30"
+output: html_document
+---
+
+## About this dataset
+
+This dataset was retrived from the WALS database of the consonant-vowel ratio of 564 languages (https://wals.info/feature/3A#). In cleaning and visualizing the data, I used the following packages:    
+
+```{r}
+library(tidyverse)
+library(maps)
+```
+
+Information in this dataset relevant to our analysis is the following:
+
+* `$wals.code`: 3-digit code unique to a language (e.g., English = eng) 
+
+* `$description`: Description of the ratio between consonants and vowels, from "Low" (small # of consonants compared with vowels) to "High" (large # of consonants compared with vowels)  
+
+* `$value`: Numerical coding of `$description`; 1 corresponds to "Low" and 5 corresponds to "High" 
+
+* `$latitude` and `$longitude`: Geographical information of a language 
+
+## Visualizing data
+
+Here is a visualization of langauges with a "Low" C-V ratio.
+
+```{r}
+cvratio.data = read.csv('cvratio.csv')
+cvratio.low = cvratio.data %>% filter(description == 'Low')
+```
+
+The following code draws a world map using `geom_path`, and visualizes where languages with a low C-V ratio are located.
+
+```{r}
+world = map_data("world")
+worldmap.with.low.cv = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = cvratio.low,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'blue',
+             size = 0.9)+
+  theme_bw()
+worldmap.with.low.cv
+```
+
+Next, I'll illustrate the locations of the languages with a high C-V ratio.
+
+```{r}
+cvratio.high = cvratio.data %>% filter(description == 'High')
+```
+
+Here is the plot:
+
+```{r}
+world = map_data("world")
+worldmap.with.high.cv = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = cvratio.high,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             size = 0.9)+
+  theme_bw()
+worldmap.with.high.cv
+```
+
+And here is the above two plots combined.
+
+```{r}
+worldmap.combined.cvratio = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = cvratio.low,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'blue',
+             alpha = 0.8,
+             size = 0.75)+
+  geom_point(data = cvratio.high,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             alpha = 0.8,
+             size = 0.9)+
+  theme_bw()
+worldmap.combined.cvratio 
+```

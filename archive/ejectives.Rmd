@@ -1,0 +1,107 @@
+---
+title: "PSYC 201A Project: Data Cleaning (Ejectives)"
+author: "Maho Takahashi"
+date: "2020-10-30"
+output: html_document
+---
+
+## About this dataset
+
+This dataset was retrived from the WALS database of glottalized consonants, including ejectives, of 567 languages (https://wals.info/feature/7A). In cleaning and visualizing the data, I used the following packages:    
+
+```{r}
+library(tidyverse)
+library(maps)
+```
+
+Information in this dataset pertaining to our analysis is the following:
+
+* `$wals.code`: 3-digit code unique to a language (e.g., English = eng) 
+
+* `$description` and `$value`: Description of whether and what kind of glottalized consonants a language has, and its numerical coding
+  + "No glottalized consonants" (value = 1): 409 rows
+  + "Ejectives only" (value = 2): 58 rows
+  + "Implosives only" (value = 3): 55 rows
+  + "Glottalized resonants only" (value = 4): 4 rows
+  + "Ejectives and implosives" (value = 5): 14 rows
+  + "Ejectives and glottalized resonants" (value = 6): 20 rows
+  + "Implosives and glottalized resonants" (value = 7): 4 rows
+  + "Ejectives, implosives, and glottalized resonants" (value = 7): 3 rows
+
+* `$latitude` and `$longitude`: Geographical information of a language
+
+## Cleaning data
+No cleaning was required for this dataset.
+
+## Visualizing data
+
+I'll first focus on languages without any glottalized consonants.
+
+```{r}
+ejectives.data = read.csv('ejectives.csv')
+no.ejectives = ejectives.data %>% filter(description == 'No glottalized consonants')
+```
+
+The following code draws a world map using `geom_path`, and visualizes where languages without any glottalized consonants are located.
+
+```{r}
+world = map_data("world")
+worldmap.with.no.glottalized.c = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = no.ejectives,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'blue',
+             size = 0.9)+
+  theme_bw()
+worldmap.with.no.glottalized.c
+```
+
+Next, I'll illustrate the locations of the languages with glottalized consonants.
+
+```{r}
+ejectives = ejectives.data %>% filter(!(description == 'No glottalized consonants'))
+```
+
+Here is the plot:
+
+```{r}
+worldmap.with.glottalized.c = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = ejectives,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             size = 0.9)+
+  theme_bw()
+worldmap.with.glottalized.c
+```
+
+And here is the above two plots combined.
+
+```{r}
+worldmap.combined.ejectives = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = no.ejectives,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'blue',
+             alpha = 0.8,
+             size = 0.75)+
+  geom_point(data = ejectives,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             alpha = 0.8,
+             size = 0.75)+
+  theme_bw()
+worldmap.combined.ejectives 
+```
+
+
