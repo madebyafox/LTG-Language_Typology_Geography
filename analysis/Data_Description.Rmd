@@ -17,15 +17,17 @@ library(tidyverse)
 library(maps)
 ```
 
+```{r data load , echo=FALSE}
+#import cleaned dataframe
+load(file="../clean-data/by_language.RData")
+```
+
 # PART 1 | Describing Language Data
 
 
 ## Language | Consonant-Vowel Ratio (Maho)
 
-```{r, echo=FALSE}
-#import cleaned dataframe
-load(file="../clean-data/lang_cvratio.RData")
-```
+
 
 
 **TODO: Explanation of what CV ratio is and why it's important**
@@ -35,8 +37,8 @@ Here is a visualization of languages with extreme high and low Consonant - Vowel
 
 ```{r, results="hide"}
 
-cvratio.low = df_cvratio %>% filter(cv_ratio == '1 - Low')
-cvratio.high = df_cvratio %>% filter(cv_ratio == '5 - High')
+cvratio.low = by_language %>% filter(cv_ratio == '1 - Low')
+cvratio.high = by_language %>% filter(cv_ratio == '5 - High')
 
 #generate the map
 world = map_data("world")
