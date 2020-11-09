@@ -1,0 +1,528 @@
+wals_code,Name,latitude,longitude,family,macroarea,countrycodes,values,description
+abk,Abkhaz,43.08333333,41,Northwest Caucasian,Eurasia,GE,1,No tones
+acm,Achumawi,41.5,-121,Hokan,North America,US,2,Simple tone system
+aco,Acoma,34.91666667,-107.5833333,Keresan,North America,US,3,Complex tone system
+adk,Andoke,-0.666666667,-72,Andoke,South America,CO,2,Simple tone system
+aea,Aleut (Eastern),54.75,-164,Eskimo-Aleut,North America,US,1,No tones
+aeg,Arabic (Egyptian),30,31,Afro-Asiatic,Africa,EG,1,No tones
+agh,Aghem,6.666666667,10,Niger-Congo,Africa,CM,2,Simple tone system
+aht,Ahtna,62,-145,Na-Dene,North America,US,1,No tones
+aik,Aikaná,-12.66666667,-60.66666667,Aikaná,South America,BR,2,Simple tone system
+ain,Ainu,43,143,Ainu,Eurasia,JP,2,Simple tone system
+akn,Akan,6.5,-1.25,Niger-Congo,Africa,GH,2,Simple tone system
+akw,Akawaio,6,-59.5,Cariban,South America,GY,1,No tones
+ala,Alamblak,-4.666666667,143.3333333,Sepik,Papunesia,PG,1,No tones
+alb,Albanian,41,20,Indo-European,Eurasia,AL RS,1,No tones
+ald,Alladian,5.166666667,-4.333333333,Niger-Congo,Africa,CI,2,Simple tone system
+alw,Alawa,-15.16666667,134.25,Mangarrayi-Maran,Australia,AU,1,No tones
+ame,Amele,-5.25,145.5833333,Trans-New Guinea,Papunesia,PG,1,No tones
+amh,Amharic,10,38,Afro-Asiatic,Africa,ET,1,No tones
+amo,Amo,10.33333333,8.666666667,Niger-Congo,Africa,NG,2,Simple tone system
+amp,Arrernte (Mparntwe),-24,136,Pama-Nyungan,Australia,AU,1,No tones
+amu,Amuesha,-10.5,-75.41666667,Arawakan,South America,PE,1,No tones
+amz,Amuzgo,16.83333333,-98,Oto-Manguean,North America,MX,3,Complex tone system
+ana,Araona,-12.33333333,-67.75,Tacanan,South America,BO,1,No tones
+anc,Angas,9.5,9.5,Afro-Asiatic,Africa,NG,3,Complex tone system
+ani,//Ani,-18.91666667,21.91666667,Khoe-Kwadi,Africa,BW,2,Simple tone system
+ant,Angaatiha,-7.216666667,146.25,Trans-New Guinea,Papunesia,PG,2,Simple tone system
+ao,Ao,26.58333333,94.66666667,Sino-Tibetan,Eurasia,IN,3,Complex tone system
+api,Apinayé,-5.5,-48,Macro-Ge,South America,BR,1,No tones
+apu,Apurinã,-9,-67,Arawakan,South America,BR,1,No tones
+arb,Arabela,-2,-75.16666667,Zaparoan,South America,PE,1,No tones
+arc,Archi,42,46.83333333,Nakh-Daghestanian,Eurasia,RU,1,No tones
+arm,Armenian (Eastern),40,45,Indo-European,Eurasia,AM,1,No tones
+arp,Arapesh (Mountain),-3.466666667,143.1666667,Torricelli,Papunesia,PG,1,No tones
+asm,Asmat,-5.5,138.5,Trans-New Guinea,Papunesia,ID,1,No tones
+ata,Atayal,24.5,121.3333333,Austronesian,Papunesia,TW,1,No tones
+ava,Avar,42.5,46.5,Nakh-Daghestanian,Eurasia,AZ RU,1,No tones
+awn,Awngi,10.83333333,36.66666667,Afro-Asiatic,Africa,ET,2,Simple tone system
+awp,Awa Pit,1.5,-78.25,Barbacoan,South America,EC CO,1,No tones
+aym,Aymara (Central),-17,-69,Aymaran,South America,PE CL BO,1,No tones
+aze,Azerbaijani,40.5,48.5,Altaic,Eurasia,AZ IR,1,No tones
+bag,Bagirmi,11.66666667,16,Central Sudanic,Africa,TD,3,Complex tone system
+bai,Bai,26,100,Sino-Tibetan,Eurasia,CN,3,Complex tone system
+baj,Bajau (Sama),-4.333333333,123,Austronesian,Papunesia,ID,1,No tones
+bam,Bambara,12.5,-7.5,Mande,Africa,ML,2,Simple tone system
+baw,Bawm,22.5,92.25,Sino-Tibetan,Eurasia,MM IN BD,2,Simple tone system
+bbf,Bobo Madaré (Northern),12.41666667,-4.333333333,Mande,Africa,BF,3,Complex tone system
+bco,Bella Coola,52.5,-126.6666667,Salishan,North America,CA,1,No tones
+bee,Beembe,-3.916666667,14.08333333,Niger-Congo,Africa,CG,2,Simple tone system
+bej,Beja,18,36,Afro-Asiatic,Africa,ER SD,2,Simple tone system
+ben,Bengali,24,90,Indo-European,Eurasia,BD IN,1,No tones
+ber,Berta,10.33333333,34.66666667,Berta,Africa,SD ET,2,Simple tone system
+bet,Bété,6.25,-6.25,Niger-Congo,Africa,CI,3,Complex tone system
+bir,Birom,9.666666667,8.833333333,Niger-Congo,Africa,NG,3,Complex tone system
+bis,Bisa,11.5,-0.5,Mande,Africa,GH BF,1,No tones
+bki,Bakairí,-14,-55,Cariban,South America,BR,1,No tones
+bkr,Batak (Karo),3.25,98.25,Austronesian,Papunesia,ID,1,No tones
+bma,Berber (Middle Atlas),33,-5,Afro-Asiatic,Africa,MA,1,No tones
+bng,Qaget,-4.583333333,152,Baining-Taulil,Papunesia,PG,1,No tones
+bno,Waimaha,0.333333333,-70.25,Tucanoan,South America,CO,2,Simple tone system
+bod,Bodo,26.83333333,92,Sino-Tibetan,Eurasia,IN,2,Simple tone system
+brb,Bariba,10,2.5,Niger-Congo,Africa,BJ NG,3,Complex tone system
+brd,Bardi,-16.58333333,122.9166667,Nyulnyulan,Australia,AU,1,No tones
+bre,Breton,48,-3,Indo-European,Eurasia,FR,1,No tones
+brh,Brahui,28.5,67,Dravidian,Eurasia,PK,1,No tones
+brm,Burmese,21,96,Sino-Tibetan,Eurasia,MM,3,Complex tone system
+brr,Bororo,-16,-57,Bororoan,South America,BR,1,No tones
+brw,Bru (Western),16.75,104.75,Austro-Asiatic,Eurasia,LA,1,No tones
+bsk,Bashkir,53,58,Altaic,Eurasia,RU,1,No tones
+bsq,Basque,43,-3,Basque,Eurasia,ES FR,1,No tones
+bto,Batak (Toba),2.5,99,Austronesian,Papunesia,ID,1,No tones
+bua,Burarra,-12.25,134.5833333,Mangrida,Australia,AU,1,No tones
+bul,Bulgarian,42.5,25,Indo-European,Eurasia,BG,1,No tones
+bur,Burushaski,36.5,74.5,Burushaski,Eurasia,PK,1,No tones
+byu,Bandjalang (Yugumbir),-27.91666667,153,Pama-Nyungan,Australia,AU,1,No tones
+cac,Cacua,1.083333333,-70,Cacua-Nukak,South America,CO,2,Simple tone system
+cad,Caddo,33.33333333,-93.5,Caddoan,North America,US,2,Simple tone system
+cah,Cahuilla,33.5,-116.25,Uto-Aztecan,North America,US,1,No tones
+cam,Camsá,1.166666667,-77,Camsá,South America,CO,1,No tones
+car,Carib,5.5,-56,Cariban,South America,SR,1,No tones
+cax,Campa (Axininca),-12,-74,Arawakan,South America,PE,1,No tones
+cck,Chickasaw,34,-88,Muskogean,North America,US,1,No tones
+ccp,Cocopa,32.33333333,-115,Hokan,North America,MX US,1,No tones
+cha,Chamorro,13.45,144.75,Austronesian,Papunesia,GU,1,No tones
+che,Cherokee,35.5,-83.5,Iroquoian,North America,US,2,Simple tone system
+chk,Chukchi,67,-173,Chukotko-Kamchatkan,Eurasia,RU,1,No tones
+chl,Chehalis (Upper),46.58333333,-123,Salishan,North America,US,1,No tones
+chp,Chipewyan,59,-106,Na-Dene,North America,CA,2,Simple tone system
+chq,Chinantec (Quiotepec),17.58333333,-96.66666667,Oto-Manguean,North America,MX,3,Complex tone system
+chu,Nivacle,-23.5,-60.5,Matacoan,South America,PY,1,No tones
+chv,Chuvash,55.5,47.5,Altaic,Eurasia,RU,1,No tones
+chw,Cham (Western),12,105.5,Austronesian,Eurasia,KH,2,Simple tone system
+cil,CiLuba,-6,22,Niger-Congo,Africa,CD,2,Simple tone system
+ckr,Canela-Krahô,-6,-46,Macro-Ge,South America,BR,1,No tones
+cle,Chinantec (Lealao),17.33333333,-95.91666667,Oto-Manguean,North America,MX,3,Complex tone system
+cmn,Comanche,33.5,-101.5,Uto-Aztecan,North America,US,1,No tones
+cnt,Cantonese,23,113,Sino-Tibetan,Eurasia,CN,3,Complex tone system
+coo,Coos (Hanis),43.5,-124.1666667,Oregon Coast,North America,US,1,No tones
+cre,Cree (Plains),54,-110,Algic,North America,CA,1,No tones
+cso,Chatino (Sierra Occidental),16.25,-97.33333333,Oto-Manguean,North America,MX,3,Complex tone system
+cti,Chin (Tiddim),23.33333333,93.66666667,Sino-Tibetan,Eurasia,MM,3,Complex tone system
+ctl,Catalan,41.75,2,Indo-European,Eurasia,ES,1,No tones
+cub,Cubeo,1.333333333,-70.5,Tucanoan,South America,CO,2,Simple tone system
+cyv,Cayuvava,-13.5,-65.5,Cayuvava,South America,BO,1,No tones
+dad,Dadibi,-6.55,144.5833333,Teberan-Pawaian,Papunesia,PG,2,Simple tone system
+dah,Dahalo,-2.333333333,40.5,Afro-Asiatic,Africa,KE,2,Simple tone system
+dan,Dan,7.5,-8,Mande,Africa,LR GN CI,3,Complex tone system
+dar,Darai,24,84,Indo-European,Eurasia,NP,1,No tones
+ddf,Daju (Dar Fur),12.25,25.25,Eastern Sudanic,Africa,SD,1,No tones
+der,Dla (Proper),-3.583333333,141,Senagi,Papunesia,PG ID,1,No tones
+det,Deti,-20.5,24.5,Khoe-Kwadi,Africa,BW,2,Simple tone system
+dgb,Dagbani,9.583333333,-0.5,Niger-Congo,Africa,GH,2,Simple tone system
+dgr,Dagur,48,124,Altaic,Eurasia,CN,1,No tones
+die,Diegueño (Mesa Grande),32.66666667,-116.1666667,Hokan,North America,MX US,1,No tones
+din,Dinka,8.5,28,Eastern Sudanic,Africa,SS,3,Complex tone system
+dio,Diola-Fogny,13,-16.25,Niger-Congo,Africa,GM SN,1,No tones
+diy,Diyari,-28,139,Pama-Nyungan,Australia,AU,1,No tones
+diz,Dizi,6.166666667,36.5,Afro-Asiatic,Africa,ET,3,Complex tone system
+djp,Djapu,-12.66666667,136,Pama-Nyungan,Australia,AU,1,No tones
+dni,Dani (Lower Grand Valley),-4.333333333,138.8333333,Trans-New Guinea,Papunesia,ID,1,No tones
+dnw,Dangaléat (Western),12.16666667,18.33333333,Afro-Asiatic,Africa,TD,2,Simple tone system
+doy,Doyayo,8.666666667,13.08333333,Niger-Congo,Africa,CM,3,Complex tone system
+dre,Drehu,-21,167.25,Austronesian,Papunesia,NC,1,No tones
+dts,Toro So,14.41666667,-3.25,Dogon,Africa,ML BF,2,Simple tone system
+dum,Dumo,-2.683333333,141.3,Skou,Papunesia,PG,3,Complex tone system
+dyi,Dyirbal,-17.83333333,145.5833333,Pama-Nyungan,Australia,AU,1,No tones
+efi,Efik,4.916666667,8.5,Niger-Congo,Africa,NG,2,Simple tone system
+eja,Ejagham,5.416666667,8.666666667,Niger-Congo,Africa,NG CM,3,Complex tone system
+eka,Ekari,-3.833333333,135.5,Trans-New Guinea,Papunesia,ID,2,Simple tone system
+eng,English,52,0,Indo-European,Eurasia,GB IE,1,No tones
+epe,Epena Pedee,3,-77,Choco,South America,CO,1,No tones
+eve,Evenki,56,125,Altaic,Eurasia,RU,1,No tones
+evn,Even,68,130,Altaic,Eurasia,RU,1,No tones
+ewe,Ewe,6.333333333,0.416666667,Niger-Congo,Africa,TG GH,2,Simple tone system
+ewo,Ewondo,4,12,Niger-Congo,Africa,CM,3,Complex tone system
+eya,Eyak,60.5,-145,Na-Dene,North America,US,1,No tones
+fas,Fasu,-6.583333333,143.3333333,Trans-New Guinea,Papunesia,PG,2,Simple tone system
+fef,Fe'fe',5.25,10.16666667,Niger-Congo,Africa,CM,3,Complex tone system
+fij,Fijian,-17.83333333,178,Austronesian,Papunesia,FJ,1,No tones
+fin,Finnish,62,25,Uralic,Eurasia,FI,1,No tones
+fre,French,48,2,Indo-European,Eurasia,FR CH,1,No tones
+ful,Fulniô,-8,-37.5,Yatê,South America,BR,2,Simple tone system
+fur,Fur,13.5,25,Fur,Africa,SD,2,Simple tone system
+fuz,Fuzhou,26,119.5,Sino-Tibetan,Eurasia,MY TH CN,3,Complex tone system
+fye,Fyem,9.583333333,9.333333333,Niger-Congo,Africa,NG,2,Simple tone system
+ga,Gã,5.666666667,-0.166666667,Niger-Congo,Africa,GH,3,Complex tone system
+gan,Great Andamanese,12,92.66666667,Great Andamanese,Eurasia,IN,1,No tones
+gar,Garo,25.66666667,90.5,Sino-Tibetan,Eurasia,IN,1,No tones
+gbb,Gbeya Bossangoa,6.666666667,17.5,Niger-Congo,Africa,CF,2,Simple tone system
+gds,Gadsup,-6.25,146,Trans-New Guinea,Papunesia,PG,3,Complex tone system
+geo,Georgian,42,44,Kartvelian,Eurasia,GE,1,No tones
+ger,German,52,10,Indo-European,Eurasia,AT DE CH,1,No tones
+gla,Gelao,22.91666667,105.5,Tai-Kadai,Eurasia,VN,3,Complex tone system
+goo,Gooniyandi,-18.33333333,126.3333333,Bunuban,Australia,AU,1,No tones
+grb,Grebo,5,-8,Niger-Congo,Africa,LR,3,Complex tone system
+grk,Greek (Modern),39,22,Indo-European,Eurasia,GR,1,No tones
+grr,Garrwa,-17.08333333,137.1666667,Garrwan,Australia,AU,1,No tones
+grw,Greenlandic (West),64,-51,Eskimo-Aleut,Eurasia,GL,1,No tones
+gua,Guaraní,-26,-56,Tupian,South America,PY,1,No tones
+gwa,Gwari,9.5,7,Niger-Congo,Africa,NG,3,Complex tone system
+had,Hadza,-3.75,35.16666667,Hadza,Africa,TZ,2,Simple tone system
+hai,Haida,53,-132,Haida,North America,US CA,1,No tones
+hak,Hakka,25,116,Sino-Tibetan,Eurasia,CN,3,Complex tone system
+ham,Hamtai,-7.5,146.25,Trans-New Guinea,Papunesia,PG,2,Simple tone system
+hau,Hausa,12,7,Afro-Asiatic,Africa,NG NE,2,Simple tone system
+haw,Hawaiian,19.58333333,-155.5,Austronesian,Papunesia,US,1,No tones
+hba,Hebrew (Modern Ashkenazic),31.75,35.16666667,Afro-Asiatic,Eurasia,IL,1,No tones
+hin,Hindi,25,77,Indo-European,Eurasia,IN,1,No tones
+hix,Hixkaryana,-1,-59,Cariban,South America,BR,1,No tones
+hmo,Hmong Njua,28,105,Hmong-Mien,Eurasia,CN,3,Complex tone system
+hmr,Hamer,5,36.5,Afro-Asiatic,Africa,ET,2,Simple tone system
+hop,Hopi,36,-110,Uto-Aztecan,North America,US,2,Simple tone system
+htc,Huastec,22.08333333,-99.33333333,Mayan,North America,MX,1,No tones
+hum,Huitoto (Murui),-1,-73.5,Huitotoan,South America,CO PE BR,1,No tones
+hun,Hungarian,47,20,Uralic,Eurasia,HU,1,No tones
+hup,Hupa,41.08333333,-123.6666667,Na-Dene,North America,US,1,No tones
+hve,Huave (San Mateo del Mar),16.21666667,-95,Huavean,North America,MX,2,Simple tone system
+hzb,Hunzib,42.16666667,46.25,Nakh-Daghestanian,Eurasia,RU,1,No tones
+iaa,Iaai,-20.41666667,166.5833333,Austronesian,Papunesia,NC,1,No tones
+iba,Iban,2,112,Austronesian,Papunesia,MY,1,No tones
+igb,Igbo,6,7.333333333,Niger-Congo,Africa,NG,2,Simple tone system
+igs,Ingessana,11.5,34,Eastern Sudanic,Africa,SD,2,Simple tone system
+ijo,Ijo (Kolokuma),4.916666667,5.666666667,Ijoid,Africa,NG,2,Simple tone system
+ik,Ik,3.75,34.16666667,Eastern Sudanic,Africa,UG,2,Simple tone system
+ika,Ika,10.66666667,-73.75,Chibchan,South America,CO,1,No tones
+imo,Imonda,-3.333333333,141.1666667,Border,Papunesia,PG,1,No tones
+ind,Indonesian,0,106,Austronesian,Papunesia,ID,1,No tones
+ing,Ingush,43.16666667,45.08333333,Nakh-Daghestanian,Eurasia,RU,1,No tones
+ird,Irish (Donegal),55,-8,Indo-European,Eurasia,IE,1,No tones
+irq,Iraqw,-4,35.5,Afro-Asiatic,Africa,TZ,2,Simple tone system
+irr,Irarutu,-3,133.5,Austronesian,Papunesia,ID,1,No tones
+irx,Iranxe,-13,-58,Iranxe,South America,BR,1,No tones
+iso,Isoko,5.5,6.25,Niger-Congo,Africa,NG,2,Simple tone system
+ivs,Ivatan (Southern),20.33333333,121.8333333,Austronesian,Papunesia,PH,1,No tones
+jak,Jakaltek,15.66666667,-91.66666667,Mayan,North America,GT,1,No tones
+jaq,Jaqaru,-13,-76,Aymaran,South America,PE,1,No tones
+jav,Javanese,-7,111,Austronesian,Papunesia,ID,1,No tones
+jeb,Jebero,-5.416666667,-76.5,Cahuapanan,South America,PE,1,No tones
+jeh,Jeh,15.16666667,107.8333333,Austro-Asiatic,Eurasia,VN LA,1,No tones
+jng,Jingpho,25.41666667,97,Sino-Tibetan,Eurasia,MM,3,Complex tone system
+jom,Jomang,10.58333333,30.5,Kordofanian,Africa,SD,2,Simple tone system
+jpn,Japanese,37,140,Japanese,Eurasia,JP,2,Simple tone system
+jpr,Japreria,10.5,-73,Cariban,South America,VR,1,No tones
+juh,Ju|'hoan,-19,21,Kxa,Africa,NA AO BW,3,Complex tone system
+kab,Kabardian,43.5,43.5,Northwest Caucasian,Eurasia,RU,1,No tones
+kad,Kadugli,11,29.66666667,Kadu,Africa,SD,3,Complex tone system
+kal,Kalami,35.5,72.5,Indo-European,Eurasia,PK,2,Simple tone system
+kas,Kashmiri,34,76,Indo-European,Eurasia,PK IN,1,No tones
+kay,Kayardild,-17.05,139.5,Tangkic,Australia,AU,1,No tones
+kch,Koyra Chiini,17,-3,Songhay,Africa,ML,1,No tones
+ked,Kedang,-8.25,123.75,Austronesian,Papunesia,ID,1,No tones
+kef,Kefa,7.25,36.25,Afro-Asiatic,Africa,ET,2,Simple tone system
+ker,Kera,9.833333333,15.08333333,Afro-Asiatic,Africa,TD,3,Complex tone system
+ket,Ket,64,87,Yeniseian,Eurasia,RU,1,No tones
+kew,Kewa,-6.5,143.8333333,Trans-New Guinea,Papunesia,PG,2,Simple tone system
+kfe,Koromfe,14.25,-0.916666667,Niger-Congo,Africa,ML BF,1,No tones
+kgi,Konyagi,12.5,-13.25,Niger-Congo,Africa,GN ML,2,Simple tone system
+kgu,Kalkatungu,-21,139.5,Pama-Nyungan,Australia,AU,1,No tones
+kgz,Kirghiz,42,75,Altaic,Eurasia,KG,1,No tones
+kha,Khalkha,47,105,Altaic,Eurasia,MN,1,No tones
+khm,Khmer,12.5,105,Austro-Asiatic,Eurasia,KH,1,No tones
+kho,Khoekhoe,-25.5,18,Khoe-Kwadi,Africa,NA,3,Complex tone system
+khr,Kharia,22.5,84.33333333,Austro-Asiatic,Eurasia,IN,1,No tones
+khs,Khasi,25.5,92,Austro-Asiatic,Eurasia,IN,1,No tones
+kio,Kiowa,37,-99,Kiowa-Tanoan,North America,US,2,Simple tone system
+kiw, Kiwai (Southern),-8,143.5,Kiwaian,Papunesia,PG,2,Simple tone system
+kkn,Konkani,15.25,74,Indo-European,Eurasia,IN,1,No tones
+kkv,Lusi,-5.583333333,149.6666667,Austronesian,Papunesia,PG,1,No tones
+kla,Klao,4.75,-8.75,Niger-Congo,Africa,LR,3,Complex tone system
+klm,Klamath,42.5,-121.5,Penutian,North America,US,1,No tones
+klv,Kilivila,-8.5,151.0833333,Austronesian,Papunesia,PG,1,No tones
+kly,Kala Lagaw Ya,-10.11666667,142.1166667,Pama-Nyungan,Papunesia,AU,1,No tones
+kmp,Kunimaipa,-8,146.8333333,Trans-New Guinea,Papunesia,PG,1,No tones
+kmu,Khmu',21,102,Austro-Asiatic,Eurasia,LA,2,Simple tone system
+knd,Kannada,14,76,Dravidian,Eurasia,IN,1,No tones
+kng,Kaingang,-26,-52,Macro-Ge,South America,BR,1,No tones
+knk,Kanakuru,10,12,Afro-Asiatic,Africa,NG,2,Simple tone system
+knm,Kunama,14.5,37,Kunama,Africa,ER ET,2,Simple tone system
+knr,Kanuri,12,13,Saharan,Africa,NE TD SD NG,2,Simple tone system
+koa,Koasati,34.83333333,-85.16666667,Muskogean,North America,US,3,Complex tone system
+kob,Kobon,-5.166666667,144.3333333,Trans-New Guinea,Papunesia,PG,1,No tones
+koh,Kohumono,6,8.116666667,Niger-Congo,Africa,NG,3,Complex tone system
+koi,Koiari,-9.5,147.3333333,Trans-New Guinea,Papunesia,PG,2,Simple tone system
+kom,Komo,8.75,33.75,Koman,Africa,SS ET,3,Complex tone system
+kor,Korean,37.5,128,Korean,Eurasia,KR KP,1,No tones
+kot,Kota,11.5,77.16666667,Dravidian,Eurasia,IN,1,No tones
+koy,Koya,17.5,81.33333333,Dravidian,Eurasia,IN,1,No tones
+kpa,Kpan,7.583333333,10.16666667,Niger-Congo,Africa,NG,3,Complex tone system
+kpe,Kpelle,7,-10,Mande,Africa,LR,3,Complex tone system
+krb,Kiribati,1.333333333,173,Austronesian,Papunesia,KI,1,No tones
+krd,Kurdish (Central),36,44,Indo-European,Eurasia,IQ IR,1,No tones
+krk,Karok,41.66666667,-123,Karok,North America,US,2,Simple tone system
+kro,Krongo,10.5,30,Kadu,Africa,SD,2,Simple tone system
+kry,Koryak,61,167,Chukotko-Kamchatkan,Eurasia,RU,1,No tones
+ksg,Karen (Sgaw),18,97,Sino-Tibetan,Eurasia,MM,3,Complex tone system
+kss,Kisi (Southern),8.5,-10.25,Niger-Congo,Africa,LR GN,2,Simple tone system
+ktk,Kotoko,11.33333333,15.33333333,Afro-Asiatic,Africa,CF,2,Simple tone system
+kty,Khanty,65,65,Uralic,Eurasia,RU,1,No tones
+kul,Kullo,6.75,37.08333333,Afro-Asiatic,Africa,ET,2,Simple tone system
+kun,Kuna,8,-77.33333333,Chibchan,South America,PA CO,1,No tones
+kut,Kutenai,49.5,-116,Kutenai,North America,US CA,1,No tones
+kwa,Kwaio,-8.95,161,Austronesian,Papunesia,SB,1,No tones
+kwk,Kwakw'ala,51,-127,Wakashan,North America,CA,1,No tones
+kws,Kawaiisu,36,-117.5,Uto-Aztecan,North America,US,1,No tones
+kya,Kuku-Yalanji,-16,145,Pama-Nyungan,Australia,AU,1,No tones
+kyl,Kayah Li (Eastern),19,97.5,Sino-Tibetan,Eurasia,MM TH,3,Complex tone system
+kzh,Kam (Zhanglu),26,108.5,Tai-Kadai,Eurasia,CN,3,Complex tone system
+kzy,Komi-Zyrian,65,55,Uralic,Eurasia,RU,1,No tones
+lad,Ladakhi,34,78,Sino-Tibetan,Eurasia,IN,1,No tones
+lah,Lahu,20,98.16666667,Sino-Tibetan,Eurasia,CN TH MM,3,Complex tone system
+lak,Lak,42.16666667,47.16666667,Nakh-Daghestanian,Eurasia,RU,1,No tones
+lam,Lamé,9,14.5,Afro-Asiatic,Africa,TD CM,3,Complex tone system
+lan,Lango,2.166666667,33,Eastern Sudanic,Africa,UG,2,Simple tone system
+lat,Latvian,57,24,Indo-European,Eurasia,LV,2,Simple tone system
+lav,Lavukaleve,-9.083333333,159.2,Solomons East Papuan,Papunesia,SB,1,No tones
+len,Lenakel,-19.45,169.25,Austronesian,Papunesia,VU,1,No tones
+lez,Lezgian,41.66666667,47.83333333,Nakh-Daghestanian,Eurasia,AZ RU,1,No tones
+lkk,Lakkia,24.08333333,110.1666667,Tai-Kadai,Eurasia,CN,3,Complex tone system
+lkt,Lakhota,43.83333333,-101.8333333,Siouan,North America,US,1,No tones
+llm,Lelemi,7.333333333,0.5,Niger-Congo,Africa,GH,2,Simple tone system
+lu,Lü,22,100.6666667,Tai-Kadai,Eurasia,CN LA MM,3,Complex tone system
+lua,Lua,9.75,17.75,Niger-Congo,Africa,TD,3,Complex tone system
+lug,Lugbara,3.083333333,30.91666667,Central Sudanic,Africa,CD UG,3,Complex tone system
+lui,Luiseño,33.33333333,-117.1666667,Uto-Aztecan,North America,US,1,No tones
+luo,Luo,-0.5,34.75,Eastern Sudanic,Africa,TZ KE,2,Simple tone system
+lus,Lushootseed,48,-122,Salishan,North America,US,1,No tones
+luv,Luvale,-12,22,Niger-Congo,Africa,AO,2,Simple tone system
+maa,Maasai,-3,36,Eastern Sudanic,Africa,KE TZ,2,Simple tone system
+mab,Maba,13.75,20.83333333,Maban,Africa,TD,2,Simple tone system
+mak,Makah,48.33333333,-124.6666667,Wakashan,North America,US,1,No tones
+mal,Malagasy,-20,47,Austronesian,Africa,MG,1,No tones
+mao,Maori,-40,176,Austronesian,Papunesia,NZ,1,No tones
+map,Mapudungun,-38,-72,Araucanian,South America,CL,1,No tones
+mar,Maricopa,33.16666667,-113.1666667,Hokan,North America,US,1,No tones
+mau,Maung,-11.91666667,133.5,Iwaidjan,Australia,AU,1,No tones
+max,Maxakalí,-18,-40,Macro-Ge,South America,BR,1,No tones
+may,Maybrat,-1.333333333,132.5,West Papuan,Papunesia,ID,1,No tones
+maz,Mazahua,19.41666667,-99.91666667,Oto-Manguean,North America,MX,2,Simple tone system
+mba,Mba,1,25,Niger-Congo,Africa,CD,3,Complex tone system
+mbb,Mbabaram,-17.16666667,145,Pama-Nyungan,Australia,AU,1,No tones
+mbm,Mbum,7.75,13.16666667,Niger-Congo,Africa,CF CM TD,2,Simple tone system
+mei,Meithei,24.75,94,Sino-Tibetan,Eurasia,IN,2,Simple tone system
+mgg,Mangghuer,36,102,Altaic,Eurasia,CN,1,No tones
+mie,Mien,25,111,Hmong-Mien,Eurasia,CN,3,Complex tone system
+mku,Maranungku,-13.66666667,130,Western Daly,Australia,AU,1,No tones
+mla,Mambila,6.75,11.5,Niger-Congo,Africa,CM NG,3,Complex tone system
+mlk,Malakmalak,-13.41666667,130.4166667,Northern Daly,Australia,AU,1,No tones
+mnd,Mandarin,34,110,Sino-Tibetan,Eurasia,CN,3,Complex tone system
+mne,Maidu (Northeast),40,-120.6666667,Penutian,North America,US,1,No tones
+mog,Moghol,35,62,Altaic,Eurasia,AF,1,No tones
+mor,Mor,-2.95,135.75,Austronesian,Papunesia,ID,2,Simple tone system
+mov,Movima,-13.83333333,-65.66666667,Movima,South America,BO,1,No tones
+mpa,Murrinh-Patha,-14.66666667,129.6666667,Southern Daly,Australia,AU,1,No tones
+mrd,Marind,-7.833333333,140.1666667,Marind,Papunesia,ID,1,No tones
+mrg,Margi,11,13,Afro-Asiatic,Africa,NG,2,Simple tone system
+mrl,Murle,6.5,33.5,Eastern Sudanic,Africa,SS,2,Simple tone system
+mrn,Maranao,7.833333333,124.25,Austronesian,Papunesia,PH,1,No tones
+mro,Moro,11,30.16666667,Kordofanian,Africa,SD,2,Simple tone system
+mrt,Martuthunira,-20.83333333,116.5,Pama-Nyungan,Australia,AU,1,No tones
+mss,Miwok (Southern Sierra),37.5,-120,Penutian,North America,US,1,No tones
+mtp,Mixe (Totontepec),17.25,-96,Mixe-Zoque,North America,MX,1,No tones
+mui,Muinane,-1,-72.5,Huitotoan,South America,CO,2,Simple tone system
+mum,Mumuye,9,11.66666667,Niger-Congo,Africa,NG,3,Complex tone system
+mun,Mundari,23,84.66666667,Austro-Asiatic,Eurasia,IN,1,No tones
+mxc,Mixtec (Chalcatongo),17.05,-97.58333333,Oto-Manguean,North America,MX,3,Complex tone system
+mxm,Mixtec (Molinos),17,-97.58333333,Oto-Manguean,North America,MX,3,Complex tone system
+mya,Ma'ya,-1.25,130.9166667,Austronesian,Papunesia,ID,3,Complex tone system
+myi,Mangarrayi,-14.66666667,133.5,Mangarrayi-Maran,Australia,AU,1,No tones
+mzc,Mazatec (Chiquihuitlán),17.75,-96.91666667,Oto-Manguean,North America,MX,3,Complex tone system
+nai,Nanai,49.5,137,Altaic,Eurasia,RU,1,No tones
+nan,Nandi,0.25,35,Eastern Sudanic,Africa,KE,2,Simple tone system
+nap,Neo-Aramaic (Persian Azerbaijan),38,47,Afro-Asiatic,Eurasia,IR IL,1,No tones
+nar,Nara (in Ethiopia),15.08333333,37.58333333,Eastern Sudanic,Africa,ER,2,Simple tone system
+nav,Navajo,36.16666667,-108,Na-Dene,North America,US,2,Simple tone system
+nax,Naxi,27.5,100,Sino-Tibetan,Eurasia,CN,3,Complex tone system
+ndt,Ndut,14.91666667,-16.91666667,Niger-Congo,Africa,SN,3,Complex tone system
+ndy,Ndyuka,4.5,-54.5,other,South America,GF SR,2,Simple tone system
+nen,Nenets,69,72,Uralic,Eurasia,RU,1,No tones
+nep,Nepali,28,85,Indo-European,Eurasia,NP,1,No tones
+new,Newari (Kathmandu),27.66666667,85.5,Sino-Tibetan,Eurasia,NP,1,No tones
+nez,Nez Perce,46,-116,Penutian,North America,US,1,No tones
+nga,Nganasan,71,93,Uralic,Eurasia,RU,1,No tones
+ngi,Ngiyambaa,-31.75,145.5,Pama-Nyungan,Australia,AU,1,No tones
+ngz,Ngizim,12.08333333,10.91666667,Afro-Asiatic,Africa,NG,2,Simple tone system
+nhn,Nahuatl (North Puebla),20,-98.25,Uto-Aztecan,North America,MX,1,No tones
+nht,Nahuatl (Tetelcingo),19.66666667,-99,Uto-Aztecan,North America,MX,1,No tones
+nis,Nyishi,27.5,93.5,Sino-Tibetan,Eurasia,IN,2,Simple tone system
+niv,Nivkh,53.33333333,142,Nivkh,Eurasia,RU,2,Simple tone system
+nko,Nkore-Kiga,-0.916666667,29.83333333,Niger-Congo,Africa,UG,2,Simple tone system
+nkt,Nyah Kur (Tha Pong),15.66666667,101.6666667,Austro-Asiatic,Eurasia,TH,2,Simple tone system
+nmb,Nambikuára (Southern),-14,-59.5,Nambikuaran,South America,BR,3,Complex tone system
+nnc,Nancowry,8.05,93.5,Austro-Asiatic,Eurasia,IN,1,No tones
+nob,Nobiin,21,31,Eastern Sudanic,Africa,EG SD,2,Simple tone system
+non,Noni,6.416666667,10.58333333,Niger-Congo,Africa,CM,3,Complex tone system
+nor,Norwegian,61,8,Indo-European,Eurasia,NO,2,Simple tone system
+nti,Ngiti,1.333333333,30.25,Central Sudanic,Africa,CD,3,Complex tone system
+nug,Nunggubuyu,-13.75,135.6666667,Gunwinyguan,Australia,AU,1,No tones
+nun,Nung (in Vietnam),21.91666667,106.4166667,Tai-Kadai,Eurasia,VN,3,Complex tone system
+nuu,Nuuchahnulth,49.66666667,-126.6666667,Wakashan,North America,CA,1,No tones
+nyg,Nyangi,3.416666667,33.58333333,Eastern Sudanic,Africa,UG,2,Simple tone system
+nyi,Nyimang,12.16666667,29.33333333,Eastern Sudanic,Africa,SD,3,Complex tone system
+oca,Ocaina,-2.75,-71.75,Huitotoan,South America,PE,2,Simple tone system
+ogb,Ogbia,4.666666667,6.25,Niger-Congo,Africa,NG,2,Simple tone system
+oji,Ojibwa (Eastern),46,-80,Algic,North America,CA,1,No tones
+ond,Oneida,43,-75.66666667,Iroquoian,North America,US,2,Simple tone system
+ood,O'odham,32,-112,Uto-Aztecan,North America,MX US,1,No tones
+orh,Oromo (Harar),9,42,Afro-Asiatic,Africa,ET,3,Complex tone system
+orm,Ormuri,32.5,69.75,Indo-European,Eurasia,PK,1,No tones
+otm,Otomí (Mezquital),20.16666667,-99.16666667,Oto-Manguean,North America,MX,2,Simple tone system
+pac,Pacoh,16.41666667,107.0833333,Austro-Asiatic,Eurasia,VN,1,No tones
+pae,Páez,2.666666667,-76,Páezan,South America,CO,1,No tones
+pai,Paiwan,22.5,120.8333333,Austronesian,Papunesia,TW,1,No tones
+pau,Paumarí,-6,-64,Arauan,South America,BR,1,No tones
+paw,Pawaian,-7,145.0833333,Teberan-Pawaian,Papunesia,PG,2,Simple tone system
+pec,Pech,15,-85.5,Chibchan,North America,HN,2,Simple tone system
+phl,Phlong,15,99,Sino-Tibetan,Eurasia,TH,3,Complex tone system
+pit,Pitjantjatjara,-26,130,Pama-Nyungan,Australia,AU,1,No tones
+pms,Paamese,-16.5,168.25,Austronesian,Papunesia,VU,1,No tones
+pnr,Panare,6.5,-66,Cariban,South America,VR,1,No tones
+poa,Po-Ai,-20.66666667,164.8333333,Austronesian,Papunesia,NC,3,Complex tone system
+poh,Pohnpeian,6.883333333,158.25,Austronesian,Papunesia,FM,1,No tones
+pol,Polish,52,20,Indo-European,Eurasia,PL,1,No tones
+prh,Pirahã,-7,-62,Mura,South America,BR,2,Simple tone system
+prs,Persian,32,54,Indo-European,Eurasia,IR,1,No tones
+psh,Pashto,33,67,Indo-European,Eurasia,AF PK,1,No tones
+psm,Passamaquoddy-Maliseet,45,-67,Algic,North America,US CA,2,Simple tone system
+puk,Parauk,23.25,99.5,Austro-Asiatic,Eurasia,MM CN,1,No tones
+pur,Purépecha,19.5,-101.6666667,Tarascan,North America,MX,1,No tones
+qaw,Qawasqar,-49,-75,Alacalufan,South America,CL,1,No tones
+qco,Quechua (Cochabamba),-17.5,-66,Quechuan,South America,BO,1,No tones
+qui,Quileute,47.91666667,-124.25,Chimakuan,North America,US,2,Simple tone system
+ram,Rama,11.75,-83.75,Chibchan,North America,NI,1,No tones
+rap,Rapanui,-27.11666667,-109.3666667,Austronesian,Papunesia,CL,1,No tones
+res,Resígaro,-2.416666667,-71.5,Arawakan,South America,PE CO,2,Simple tone system
+rom,Romanian,46,25,Indo-European,Eurasia,RO,1,No tones
+ror,Roro,-8.75,146.5833333,Austronesian,Papunesia,PG,1,No tones
+rsc,Romansch (Scharans),46.75,9.5,Indo-European,Eurasia,CH,1,No tones
+rtk,Rotokas,-6,155.1666667,West Bougainville,Papunesia,PG,1,No tones
+ruk,Rukai (Tanan),22.83333333,120.8333333,Austronesian,Papunesia,TW,1,No tones
+rus,Russian,56,38,Indo-European,Eurasia,RU,1,No tones
+rut,Rutul,41.5,47.41666667,Nakh-Daghestanian,Eurasia,RU AZ,2,Simple tone system
+san,Sango,5,18,Niger-Congo,Africa,CF,2,Simple tone system
+sba,Sáliba (in Colombia),6,-70,Sáliban,South America,VR CO,1,No tones
+scs,Saami (Central-South),64.66666667,16.75,Uralic,Eurasia,SE,1,No tones
+sdh,Sindhi,26,69,Indo-European,Eurasia,PK IN,1,No tones
+sdw,Sandawe,-5,35,Sandawe,Africa,TZ,2,Simple tone system
+sed,Sedang,14.83333333,108,Austro-Asiatic,Eurasia,VN,1,No tones
+sel,Selknam,-53,-70,Chon,South America,AR,1,No tones
+sha,Shan,22,98,Tai-Kadai,Eurasia,MM,3,Complex tone system
+shi,Shiriana,3.5,-62.83333333,Yanomam,South America,VR BR,1,No tones
+shk,Shipibo-Konibo,-7.5,-75,Panoan,South America,PE,1,No tones
+shs,Shasta,41.83333333,-122.6666667,Hokan,North America,US,2,Simple tone system
+shu,Shuswap,52,-120,Salishan,North America,CA,1,No tones
+sla,Slave,67,-125,Na-Dene,North America,CA,2,Simple tone system
+sml,Semelai,3,103,Austro-Asiatic,Eurasia,MY,1,No tones
+snc,Seneca,42.5,-77.5,Iroquoian,North America,US,1,No tones
+snd,Senadi,9.5,-6.25,Niger-Congo,Africa,CI,3,Complex tone system
+snh,Sinhala,7,80.5,Indo-European,Eurasia,LK,1,No tones
+snm,Sanuma,4.5,-64.66666667,Yanomam,South America,BR VR,1,No tones
+som,Somali,3,45,Afro-Asiatic,Africa,SO,2,Simple tone system
+soq,Soqotri,12.5,54,Afro-Asiatic,Africa,YE,1,No tones
+sor,Sora,20,84.33333333,Austro-Asiatic,Eurasia,IN,1,No tones
+spa,Spanish,40,-4,Indo-European,Eurasia,ES,1,No tones
+squ,Squamish,49.66666667,-123.1666667,Salishan,North America,CA,1,No tones
+sre,Sre,11.5,108,Austro-Asiatic,Eurasia,VN,2,Simple tone system
+srn,Sirionó,-15.58333333,-64,Tupian,South America,BO,1,No tones
+sue,Suena,-7.75,147.55,Trans-New Guinea,Papunesia,PG,2,Simple tone system
+sui,Sui,26,107.5,Tai-Kadai,Eurasia,CN,3,Complex tone system
+sup,Supyire,11.5,-5.583333333,Niger-Congo,Africa,ML,3,Complex tone system
+svs,Savosavo,-9.133333333,159.8,Solomons East Papuan,Papunesia,SB,1,No tones
+swa,Swahili,-6.5,39,Niger-Congo,Africa,TZ,1,No tones
+tab,Taba,0,127.5,Austronesian,Papunesia,ID,1,No tones
+tac,Tacana,-13.5,-68,Tacanan,South America,BO,1,No tones
+tag,Tagalog,15,121,Austronesian,Papunesia,PH,1,No tones
+tam,Tamang (Eastern),27.5,85.66666667,Sino-Tibetan,Eurasia,NP,2,Simple tone system
+tas,Tashlhiyt,31,-5,Afro-Asiatic,Africa,MA,1,No tones
+teh,Tehuelche,-48,-68,Chon,South America,AR,1,No tones
+tel,Telugu,16,79,Dravidian,Eurasia,IN,1,No tones
+ter,Tera,11,11.83333333,Afro-Asiatic,Africa,NG,3,Complex tone system
+tgk,Tigak,-2.716666667,150.8,Austronesian,Papunesia,PG,1,No tones
+tgr,Tigré,16.5,38.5,Afro-Asiatic,Africa,ER,1,No tones
+tha,Thai,16,101,Tai-Kadai,Eurasia,TH,3,Complex tone system
+tib,Tibetan (Standard Spoken),30,91,Sino-Tibetan,Eurasia,CN,2,Simple tone system
+tic,Ticuna,-4,-70.5,Ticuna,South America,BR PE,3,Complex tone system
+tiw,Tiwi,-11.5,131,Tiwian,Australia,AU,1,No tones
+tks,Teke (Southern),-2.333333333,14.5,Niger-Congo,Africa,CG,2,Simple tone system
+tli,Tlingit,59,-135,Na-Dene,North America,US,2,Simple tone system
+tlp,Tlapanec,17.08333333,-99,Oto-Manguean,North America,MX,3,Complex tone system
+tma,Tama,14.5,22,Eastern Sudanic,Africa,SD TD,3,Complex tone system
+tmn,Temein,11.91666667,29.41666667,Eastern Sudanic,Africa,SD,2,Simple tone system
+tmp,Tampulma,10.41666667,-0.583333333,Niger-Congo,Africa,GH,2,Simple tone system
+tne,Temne,8.666666667,-13.08333333,Niger-Congo,Africa,SL,2,Simple tone system
+toa,Toaripi,-8.333333333,146.25,Eleman,Papunesia,PG,1,No tones
+tok,Tarok,9,10.08333333,Niger-Congo,Africa,NG,3,Complex tone system
+tol,Tol,14.66666667,-87,Tol,North America,HN,1,No tones
+ton,Tonkawa,30.25,-96.75,Tonkawa,North America,US,1,No tones
+tpa,Totonac (Papantla),20.33333333,-97.33333333,Totonacan,North America,MX,1,No tones
+tru,Trumai,-11.91666667,-53.58333333,Trumai,South America,BR,1,No tones
+try,Tiruray,6.75,124.1666667,Austronesian,Papunesia,PH,1,No tones
+tsg,Tausug,6,121,Austronesian,Papunesia,PH MY ID,1,No tones
+tsi,Tsimshian (Coast),52.5,-129,Penutian,North America,US CA,1,No tones
+tso,Tsou,23.5,120.75,Austronesian,Papunesia,TW,1,No tones
+ttn,Tetun,-9,126,Austronesian,Papunesia,TL,1,No tones
+ttu,Tsova-Tush,42.5,45.5,Nakh-Daghestanian,Eurasia,GE,1,No tones
+tug,Tuareg (Ahaggar),23,6,Afro-Asiatic,Africa,LY DZ NE,1,No tones
+tuk,Tukang Besi,-5.5,123.5,Austronesian,Papunesia,ID,1,No tones
+tul,Tulu,12.75,75.33333333,Dravidian,Eurasia,IN,1,No tones
+tur,Turkish,39,35,Altaic,Eurasia,TR,1,No tones
+tuv,Tuvan,52,95,Altaic,Eurasia,MN RU,1,No tones
+twn,Tiwa (Northern),36.5,-105.5,Kiowa-Tanoan,North America,US,2,Simple tone system
+tza,Tzeltal (Aguacatenango),16.41666667,-92.5,Mayan,North America,MX,1,No tones
+umb,UMbundu,-12.5,15,Niger-Congo,Africa,AO,2,Simple tone system
+una,Una,-4.666666667,140,Trans-New Guinea,Papunesia,ID,2,Simple tone system
+ung,Ungarinjin,-16.33333333,126,Worrorran,Australia,AU,1,No tones
+urk,Urubú-Kaapor,-2.333333333,-46.5,Tupian,South America,BR,1,No tones
+usa,Usan,-4.833333333,145.1666667,Trans-New Guinea,Papunesia,PG,1,No tones
+uzn,Uzbek (Northern),40.66666667,66.5,Altaic,Eurasia,UZ,1,No tones
+vie,Vietnamese,10.5,106.5,Austro-Asiatic,Eurasia,VN,3,Complex tone system
+wah,Wahgi,-5.833333333,144.7166667,Trans-New Guinea,Papunesia,PG,2,Simple tone system
+wam,Wambaya,-18.66666667,135.75,Mirndi,Australia,AU,1,No tones
+wao,Waorani,-1,-76.5,Waorani,South America,EC,1,No tones
+wap,Wappo,38.5,-122.5,Wappo-Yukian,North America,US,1,No tones
+war,Wari',-11.33333333,-65,Chapacura-Wanham,South America,BR,1,No tones
+wch,Wichí,-22.5,-62.58333333,Matacoan,South America,AR BO,1,No tones
+wdo,Western Desert (Ooldea),-30.5,132,Pama-Nyungan,,AU,1,No tones
+wic,Wichita,33.33333333,-97.33333333,Caddoan,North America,US,1,No tones
+win,Wintu,41,-122.5,Penutian,North America,US,1,No tones
+wiy,Wiyot,40.83333333,-124.1666667,Algic,North America,US,1,No tones
+wlf,Wolof,15.25,-16,Niger-Congo,Africa,SN GM,1,No tones
+wma,West Makian,0.5,127.5833333,West Papuan,Papunesia,ID,1,No tones
+wmu,Wik Munkan,-13.91666667,141.75,Pama-Nyungan,Australia,AU,1,No tones
+wnt,Wantoat,-6.166666667,146.5,Trans-New Guinea,Papunesia,PG,1,No tones
+woi,Woisika,-8.25,124.8333333,Timor-Alor-Pantar,Papunesia,ID,1,No tones
+wps,Wapishana,2.666666667,-60,Arawakan,South America,BR GY,1,No tones
+wra,Warao,9.333333333,-61.66666667,Warao,South America,VR,1,No tones
+wrd,Wardaman,-15.5,131,Yangmanic,Australia,AU,1,No tones
+wry,Waray (in Australia),-13.16666667,131.25,Gunwinyguan,Australia,AU,1,No tones
+wuc,Wu,31.66666667,119.9166667,Sino-Tibetan,Eurasia,CN,3,Complex tone system
+xia,Xiamen,24.5,118.1666667,Sino-Tibetan,Eurasia,CN,3,Complex tone system
+xoo,!Xóõ,-24,21.5,Tu,Africa,BW,3,Complex tone system
+yag,Yagua,-3.5,-72,Peba-Yaguan,South America,PE,2,Simple tone system
+yan,Yana,40.5,-122,Hokan,North America,US,1,No tones
+yap,Yapese,9.583333333,138.1666667,Austronesian,Papunesia,FM,1,No tones
+yaq,Yaqui,27.5,-110.25,Uto-Aztecan,North America,MX,2,Simple tone system
+yar,Yareba,-9.5,148.5,Yareban,Papunesia,PG,1,No tones
+yaw,Yawa,-1.75,136.25,Yawa,Papunesia,ID,1,No tones
+yay,Yay,22.41666667,104.75,Tai-Kadai,Eurasia,VN,3,Complex tone system
+ycn,Yucuna,-0.75,-71,Arawakan,South America,CO,1,No tones
+yct,Yucatec,20,-89,Mayan,North America,MX,2,Simple tone system
+yel,Yelî Dnye,-11.36666667,154.1666667,Yele,Papunesia,PG,1,No tones
+yes,Yessan-Mayo,-4.166666667,142.5833333,Sepik,Papunesia,PG,1,No tones
+yey,Yeyi,-20,23.5,Niger-Congo,Africa,BW NA,2,Simple tone system
+ygr,Yagaria,-6.333333333,145.4166667,Trans-New Guinea,Papunesia,PG,2,Simple tone system
+yid,Yidiny,-17,145.75,Pama-Nyungan,Australia,AU,1,No tones
+yim,Yimas,-4.666666667,143.55,Lower Sepik-Ramu,Papunesia,PG,1,No tones
+yko,Yukaghir (Kolyma),65.75,150.8333333,Yukaghir,Eurasia,RU,1,No tones
+ykt,Yakut,62,130,Altaic,Eurasia,RU,1,No tones
+yny,Yanyuwa,-16.41666667,137.1666667,Pama-Nyungan,Australia,AU,1,No tones
+yor,Yoruba,8,4.333333333,Niger-Congo,Africa,NG BJ,3,Complex tone system
+ytu,Yukaghir (Tundra),69,155,Yukaghir,Eurasia,RU,1,No tones
+yuc,Yuchi,35.75,-86.75,Yuchi,North America,US,1,No tones
+yul,Yulu,8.5,25.25,Central Sudanic,Africa,SS,3,Complex tone system
+yur,Yurok,41.33333333,-124,Algic,North America,US,1,No tones
+yus,Yupik (Siberian),65,-173,Eskimo-Aleut,Eurasia,RU,1,No tones
+zan,Zande,4,26,Niger-Congo,Africa,SS CD CF,2,Simple tone system
+zqc,Zoque (Copainalá),17,-93.25,Mixe-Zoque,North America,MX,1,No tones
+zul,Zulu,-30,30,Niger-Congo,Africa,ZA,2,Simple tone system
+zun,Zuni,35.08333333,-108.8333333,Zuni,North America,US,1,No tones
