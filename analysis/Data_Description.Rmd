@@ -79,11 +79,11 @@ https://royalsocietypublishing.org/doi/suppl/10.1098/rsos.181274
 
 
 #### Distribution of Languages by Speaker Population
-There are `r dim[by_language]` languages in our dataset, however, the number of humans that speak and understand these languages are widely different. In this figure, we see the distribution of languages by number of speakers as a histogram. The number of speakers are plotted on the x-axis, and number of languages within the bin-range on the y-axis. The top facet shows a linear scale, where we can see that a very large number of languages have very few speakers. The bottom facet plots the same data with a log10 scale, which is a better model for  
+There are `r dim[by_language]` languages in our dataset, however, the number of humans that speak and understand these languages are widely different. In this figure, we see the distribution of languages by number of speakers as a histogram. The number of speakers are plotted on the x-axis, and number of languages within the bin-range on the y-axis. The top facet shows a linear scale, where we can see that a very large number of languages have very few speakers. The bottom facet plots the same data with a log10 scale, which is a better model for the speaker data. 
 ```{r speakers distribution}
 
-options(scipen=10000)
-speakers <- by_language %>% select(wals_code, ISO639.3, name, population) #get speaker data
+options(scipen=10000) # print nums on scales not scientific notation
+speakers <- by_language %>% select(wals_code, ISO639.3, name, population, L2prop) #get speaker data
 
 plin <-  ggplot(data = speakers, aes(x=population)) +
   geom_histogram(alpha=0.5, bins=30)+
@@ -100,8 +100,43 @@ plog <- ggplot(data = speakers, aes(x=population)) +
 
 grid.arrange(plin, plog, bottom ="Distribution of Languages by Speaker Population")
 
+remove(plin,plog)
+```
+
+
+```{r speakers distribution}
+
+options(scipen=10000)
+
+speakers <- by_language %>% select(wals_code, ISO639.3, name, population, L2prop) %>% 
+arrange (-population) %>% mutate(
+  second = population * L2prop,
+  first = population - second
+) %>% slice(1:25) 
+
+
+
+plin <-  ggplot(data = speakers, aes(x=name, y=population)) +
+  geom_bar(stat="identity")+
+  labs(title="Number of Speakers for Top 20 Languages",
+       x = "Language", y="Number of Speakers") +
+  theme_minimal()+ theme(axis.text.x = element_text(angle = 45))
+
+plin
+# 
+# plog <- ggplot(data = speakers, aes(x=population)) +
+#   geom_histogram(alpha=0.5, bins=30)+
+#   labs(title="Distribution of Languages (log10 scale)", 
+#        x = "Speaker Population", y="Number of Languages") +
+#   scale_x_log10()+
+#   theme_minimal()
+# 
+# grid.arrange(plin, plog, bottom ="Distribution of Languages by Speaker Population")
+
 
 ```
+```
+
 
 ### TODO: Language | Elevation (Ebru)
 
