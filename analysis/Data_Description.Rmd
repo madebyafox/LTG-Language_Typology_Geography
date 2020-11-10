@@ -5,6 +5,7 @@ date: "11/7/2020"
 output: 
   html_document:
     toc: true
+    toc_float: true
     toc_depth: 3
     code_folding: "hide"
 ---
@@ -24,16 +25,13 @@ load(file="../clean-data/by_language.RData")
 
 # PART 1 | Describing Language Data
 
+### TODO Language | Glottalized Consonants (Maho)
 
-## Language | Consonant-Vowel Ratio (Maho)
-
-
+### Language | Consonant-Vowel Ratio (Maho)
 
 
 **TODO: Explanation of what CV ratio is and why it's important**
-
 Here is a visualization of languages with extreme high and low Consonant - Vowel ratios. 
-
 
 ```{r, results="hide"}
 
@@ -68,7 +66,25 @@ worldmap.combined.cvratio = ggplot(world, aes(x=long, y=lat, group=group))+
 worldmap.combined.cvratio 
 ```
 
+
+
+### TODO: Language | Tone (Ebru)
+
+### TODO: Language | Speakers by Language (Amy)
+
+### TODO: Language | Elevation (Ebru)
+
+### TODO: Language | Language Types (Cat)
+
+
+
 # PART 2 | Describing Country Data
+
+### TODO: Countries | GDP 
+### TODO Countries | Linguistic Diversity 
 
 
 # PART 3 | Describing Environmental Data
+
+### TODO : temperature
+### TODO : humidity
