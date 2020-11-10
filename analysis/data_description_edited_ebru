@@ -107,7 +107,21 @@ worldmap.combined.tones = ggplot(world, aes(x=long, y=lat, group=group))+
 #display the map
 worldmap.combined.tones 
 ```
-
+```{r}
+#display the map
+worldmap.combined.tones 
+table(by_language$continent)
+by_language %>% 
+  ggplot(aes(x=tones, fill=continent))+
+  scale_fill_brewer(palette = "Spectral")+
+  geom_bar(width=0.5)+
+  theme_minimal()+
+  labs(title="Distribution of tone systems across continents",
+       x="",
+       y="Number of languages",
+       fill="Continents")+
+  scale_y_continuous(breaks=seq(0,300,20))
+```
 Of the 526 languages included in WALS dataset of Tone chapter, the distribution of languages with tone systems (or lack thereof) can be seen below:
 
 ```{r}
