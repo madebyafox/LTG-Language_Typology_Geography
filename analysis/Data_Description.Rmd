@@ -72,6 +72,26 @@ worldmap.combined.cvratio
 
 ### TODO: Language | Speakers by Language (Amy)
 
+Data for number of speakers by Lanaguage is remarkably difficult to locate! The primary aggregator source for this type of data is the Ethnologue service (https://www.ethnologue.com/), however, a costly subscription is required. Fortunately, we were able to locate a relevant Linguistics paper that used this dataset, and included their (cleaned) data as supplementary materials. For this, we offer thanks to Alexander Koplenig and The Royal Society Publishing Service. 
+
+https://royalsocietypublishing.org/doi/10.1098/rsos.181274#d3e487				
+https://royalsocietypublishing.org/doi/suppl/10.1098/rsos.181274
+
+
+
+```{r speakers distribution}
+
+speakers <- by_language %>% select(wals_code, ISO639.3, name, population) #get speaker data
+
+ggplot(data = speakers, aes(x=population)) +
+  geom_histogram()+
+  labs(title="Distribution of Language by Number of Speakers", 
+       x = "Speaker Population", y="Number of Languages")
+  theme_minimal()
+
+
+```
+
 ### TODO: Language | Elevation (Ebru)
 
 ### TODO: Language | Language Types (Cat)
