@@ -78,16 +78,27 @@ https://royalsocietypublishing.org/doi/10.1098/rsos.181274#d3e487
 https://royalsocietypublishing.org/doi/suppl/10.1098/rsos.181274
 
 
-
+#### Distribution of Languages by Speaker Population
+There are `r dim[by_language]` languages in our dataset, however, the number of humans that speak and understand these languages are widely different. In this figure, we see the distribution of languages by number of speakers as a histogram. The number of speakers are plotted on the x-axis, and number of languages within the bin-range on the y-axis. The top facet shows a linear scale, where we can see that a very large number of languages have very few speakers. The bottom facet plots the same data with a log10 scale, which is a better model for  
 ```{r speakers distribution}
 
+options(scipen=10000)
 speakers <- by_language %>% select(wals_code, ISO639.3, name, population) #get speaker data
 
-ggplot(data = speakers, aes(x=population)) +
-  geom_histogram()+
-  labs(title="Distribution of Language by Number of Speakers", 
-       x = "Speaker Population", y="Number of Languages")
+plin <-  ggplot(data = speakers, aes(x=population)) +
+  geom_histogram(alpha=0.5, bins=30)+
+  labs(title="Distribution of Languages (linear scale)", 
+       x = "Speaker Population", y="Number of Languages") +
   theme_minimal()
+
+plog <- ggplot(data = speakers, aes(x=population)) +
+  geom_histogram(alpha=0.5, bins=30)+
+  labs(title="Distribution of Languages (log10 scale)", 
+       x = "Speaker Population", y="Number of Languages") +
+  scale_x_log10()+
+  theme_minimal()
+
+grid.arrange(plin, plog, bottom ="Distribution of Languages by Speaker Population")
 
 
 ```
