@@ -159,7 +159,6 @@ worldmap.combined.tones = ggplot(world, aes(x=long, y=lat, group=group))+
 ```
 
 
-
 ```{r}
 #display the map
 worldmap.combined.tones 
@@ -178,6 +177,19 @@ across.continents.tone
 ```
 
 Of the 526 languages included in WALS dataset of Tone chapter, the distribution of languages with tone systems (or lack thereof) can be seen below:
+
+### Autotyp Database
+
+```{r}
+str(by_language) #AUTOTYP gives us continent and area information 
+
+ggplot(by_country_language, aes(x = country_name, y = lang.count, color = continent)) +
+  geom_jitter(alpha = 0.5) +
+  labs(title="Number of Languages Spoken by Country", 
+       x = "Country", y="Number of Languages Spoken") +
+  theme_bw()
+```
+
 
 ### TODO: Language | Speakers by Language (Amy)
 
@@ -253,6 +265,43 @@ glimpse(by_language)
 
 ### TODO: Language | Language Types (Cat)
 
+```{r}
+#str(by_language)
+
+language_families <- by_language %>%
+  group_by(family) %>%
+  summarise(n = n())
+
+ggplot(language_families, aes(x = family, y = n)) +
+  geom_point(stat = "identity") +
+  labs(x = "Language Family", y="Number of Languages") +
+  theme_bw()
+```
+
+```{r}
+by_continent <- by_language %>%
+  group_by(continent, family) %>%
+  summarise(n = n())
+
+
+ggplot(by_continent, aes(x = continent, y = n, fill = continent)) +
+  scale_fill_brewer(palette = "Spectral") +
+  geom_bar(position="stack", stat="identity")+
+  labs(title=" ",
+        x="Continent",
+        y="Number of languages",
+        fill="Language Families") +
+   theme(axis.text.x = element_text(size=6, angle = 45),
+         legend.position = "none")
+```
+
+# PART 2 | Describing Country Data
+
+### TODO: Countries | GDP 
+
+
+### TODO Countries | Linguistic Diversity (Amy and Cat)
+
 In our analysis, we want to see if languages in places with more linguistic diversity are more likely to have tone, ejectives, or high consonant-vowel ratios.
 
 ```{r}
@@ -266,11 +315,15 @@ ggplot(by_country_language, aes(x = country_name, y = lang.count, color = contin
 
 ```
 
-# PART 2 | Describing Country Data
 
-### TODO: Countries | GDP 
-### TODO Countries | Linguistic Diversity 
+```{r}
+ by_country_language <- by_country_language %>%
+  mutate(diversity_score = established.langs/total.speakers) #this shows the number of local languages divided by the number of people = "language diversity score"
 
+ggplot(by_country_language, aes(x = country_name, y = diversity_score, color = continent)) +
+  geom_jitter(alpha = 0.5) +
+  
+```
 
 # PART 3 | Describing Environmental Data
 
