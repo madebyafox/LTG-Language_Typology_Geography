@@ -329,7 +329,7 @@ The GDP data came from National Accounts (https://unstats.un.org/unsd/snaama/Dow
 
 * `$CountryID`: three-digit alphabetical codes assigned by the International Organization for Standardization (ISO). Full list of country codes: https://www.iso.org/obp/ui/#search.
 * `$Country`: Country name.
-* `$2017`: GDP in the year 2017 (the most recent year this database provided data for) by country in USD.
+* `$2018`: GDP in the year 2017 (the most recent year this database provided data for) by country in USD.
 
 *In cleaning this data, we filter any missing or duplicate values of the primary key (CountryID). Each row in the dataset represents a country.*
 
@@ -350,6 +350,15 @@ df_gdp <- df_gdp %>% distinct(Country, .keep_all = TRUE)
 
 #SAVE cleaned data
 save(df_gdp, file = "../clean-data/countries_gdp.RData")
+
+#how to get to continent?  
+gdp.plot<- df_gdp %>% 
+  ggplot(aes(x=Country, fill=Country, color=Country, y='2018'))+
+  geom_jitter(width=0.25, size = 0.75, alpha=0.7)+
+  theme_minimal()+
+  theme(legend.position = 'none')
+print(gdp.plot)
+
 ```
 
 
@@ -401,9 +410,9 @@ Temperature : http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP-NCAR/.CDAS-1/.M
 
 #Retrieved from NOAA NCEP
 
-```{r}
-hum <- read_csv("humidity.csv")
-temp <- read_csv("temperature.csv")
+```{r} 
+#hum <- read_csv("humidity.csv")
+#temp <- read_csv("temperature.csv")
 
 ## Each observation is the mean a month of observations 
 #  conducted since Jan 1949 ~ Oct 2020
@@ -725,19 +734,7 @@ Our final language-oriented dataframe includes the following data:
 
 
 ## COUNTRY DATA
-### TODO | Countries GDP + Linguistic Diversity
-
-Here, I added a column to connect the ISO alpha 2 country codes with the written-out country names.
-```{r}
-glimpse(by_language)
-glimpse(by_country)
-country_code_iso <- read_csv("C:/Users/cathe/Downloads/country_code_iso.csv")
-by_language <- by_language %>%
-  separate(countrycodes, c("primary_country", "secondary_country"), "\\s")
-
-country_language <- merge(by_language, country_code_iso, by.x = "primary_country", by.y = "Code", all = FALSE)
-```
-
+### Countries GDP + Linguistic Diversity
 
 First we'll combine data about GDP and linguistic diversity by country. 
 **TODO** manually reconcile full-join mimatches 
@@ -761,22 +758,8 @@ remove(temp1)
 save(by_country, file = "../clean-data/by_country.RData")
 ```
 
-Here I will merge the GDP data with the new intermediary data frame `country_language`.
-
-**It seems we lost 20 or so rows in the transition somehow - due to spelling differences?**
-
-```{r}
-str(country_language)
-str(by_country)
-
-by_country_language <- merge(country_language, by_country, by.x = "Name", by.y = "Country")
-
-colnames(by_country_language) <- c("country_name", "country_code", "wals_code", "X1", "iso_lang_code", "language_name", "genus", "subfamily", "family", "lsbranch", "ssbranch", "sbranch", "mbranch", "stock", "elev_ft", "elev_m", "latitude", "longitude", "secondary_country", "area", "macroarea", "continent", "glot_features", "cv_ratio", "tones", "rangesize", "population", "vehicularity", "L2prop", "H", "H_unigram", "lang.count", "lang.percent", "established.langs", "immigrant.langs", "total.speakers", "mean.speakers", "median.speakers", "diversity.index", "div.coverage", "GDP")
-
-#write.csv(by_country_language, "by_country_language.csv")
-save(by_country_language, file = "../clean-data/by_country_language.RData")
-```
 
 ## ENVIRONMENTAL DATA
 ### TODO : temperature
 ### TODO : humidity
+
