@@ -404,22 +404,23 @@ save(df_diversity, file = "../clean-data/countries_diversity.RData")
 
 **TODO: edit text and description here**
 
+#Retrieved from NOAA NCEP
+
 More information: 
 Humidity : http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP-NCAR/.CDAS-1/.MONTHLY/.Diagnostic/.above_ground/.qa/index.html#info
 Temperature : http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP-NCAR/.CDAS-1/.MONTHLY/.Diagnostic/.above_ground/.temp/
 
-#Retrieved from NOAA NCEP
+```{r}
+hum <- read_csv("humidity.csv")
+temp <- read_csv("temperature.csv")
 
-```{r} 
-#hum <- read_csv("humidity.csv")
-#temp <- read_csv("temperature.csv")
 
 ## Each observation is the mean a month of observations 
 #  conducted since Jan 1949 ~ Oct 2020
 #  Columns for both datasets are bins of Longitude, (degree_east) periodic (0) to
 #  (1.875W) by 1.875 N = 192pts
 #  Rows are (degree_north), ordered latitudes as follows:
-  # [ (88.54196N) (86.65315N) (84.75323N) (82.85076N) (80.94736N) (79.04349N) 
+# [ (88.54196N) (86.65315N) (84.75323N) (82.85076N) (80.94736N) (79.04349N) 
 ###(77.13936N) (75.23506N) (73.33066N) (71.42619N) (69.52167N) (67.6171N) (65.71251N)
 ###(63.8079N) (61.90326N) (59.99861N) (58.09395N) (56.18928N) (54.28461N) (52.37991N)
 ###(50.47522N) (48.57052N) (46.66582N) (44.76111N) (42.8564N) (40.95169N) (39.04697N) 
@@ -437,13 +438,13 @@ Temperature : http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP-NCAR/.CDAS-1/.M
 
 
 ## Tidy Rows having Dates in them: 
-library(dplyr)
 
 clean.hum <- hum %>% filter(hum$`1.87500` != 1.87500)
 clean.temp <- temp %>% filter(temp$`1.87500` != 1.87500)
 
+## making the date columns to add
 date_of_observation <- data.frame("month" = rep(1:12, times=72), "year" = rep(1949:2020, each=12))
-## making the date columns
+
 new.date.of.obs <- date_of_observation %>%  slice(rep(1:n(), each=94))
 date.of.obs <- new.date.of.obs %>% filter(month != 11 | year != 2020) %>% filter(month != 12 | year != 2020)
 
@@ -456,14 +457,6 @@ dated.temp <- cbind(date.of.obs, clean.temp)
 fullyears.hum <- dated.hum %>% filter(dated.hum$year != 2020)
 fullyears.temp <- dated.temp %>% filter(dated.temp$year != 2020)
 
-
-
-# Outstanding cleaning: dated.hum and dated.temp currently have latitudes
-# in their rows, which we want to incorporate into their respective
-# columns of longitudes, in order to create coordinates.
-# In doing so we also want to create a wide format for time rather than the
-# long format we have for now...
-
 test.hum <- dated.hum %>% 
 pivot_longer('0.000000E+00':'358.125',
                names_to = 'Longitude',
@@ -475,17 +468,20 @@ hum.long <- fullyears.hum %>%
                names_to = 'Longitude',
                values_to = 'humidity')
 
+# Renaming superfluous Jan 1949 COlumn into meaningful name
 hum.long <- hum.long %>% rename(Latitude = `Jan 1949`)
 
-
+##Turning fullyears.hum/temp into long form
 temp.long <- fullyears.temp %>% 
   pivot_longer('0.000000E+00':'358.125',
                 names_to = 'Longitude',
                 values_to = 'temperature')
 
+# Renaming superfluous Jan 1949 COlumn into meaningful name
 temp.long <- temp.long %>% rename(Latitude = `Jan 1949`)
 
 
+#Averaging observations so that we only have one observation per coordinate
 test.hum.long <- hum.long %>% 
   group_by(Latitude, Longitude) %>% 
   summarise(mean_hum = mean(humidity))
@@ -497,30 +493,7 @@ test.temp.long <- temp.long %>%
 hum.avg.long <- test.hum.long 
 temp.avg.long <- test.temp.long
 
-
-test.hum.temp.avg <- merge(hum.avg.long, temp.avg.long, by.x=c("Latitude", "Longitude"))
-
-hum.temp.avg <- test.hum.temp.avg
-
-write.csv(dated.hum, 'dated_hum.csv')
-write.csv(dated.temp, 'dated_temp.csv')
-
-write.csv(fullyears.hum, 'fullyears_hum.csv')
-write.csv(fullyears.temp, 'fullyears_temp.csv')
-
-write.csv(hum.long, 'hum_long.csv')
-write.csv(temp.long, 'temp_long.csv')
-
-
-write.csv(hum.avg.long, 'humidity_final.csv')
-write.csv(temp.avg.long, 'temperature_final.csv')
-
-##Final merged:
-
-write.csv(hum.temp.avg, 'Hum_temp_merged-avg.csv')
 ```
-
-
 # PART 2 | Combining Dataframes
 
 ## LANGUAGE DATA
@@ -760,6 +733,22 @@ save(by_country, file = "../clean-data/by_country.RData")
 
 
 ## ENVIRONMENTAL DATA
-### TODO : temperature
-### TODO : humidity
 
+```{r}
+# Merging temperature and humidity obervations into one dataframe
+test.hum.temp.avg <- merge(hum.avg.long, temp.avg.long, by.x=c("Latitude", "Longitude"))
+
+hum.temp.avg <- test.hum.temp.avg
+
+
+#Converting Longitude values into (-180 to 180) format from the Prime meridian format
+hum.temp <- Hum_temp_merged_avg %>% mutate(longitude = ifelse(Longitude > 180, (-180) + (Longitude - 180), Longitude))
+
+
+##Final merged:
+write.csv(hum.temp.avg, 'Hum_temp_merged-avg.csv')
+
+# Real Final merged and standardized longitudes
+write.csv(hum.temp, 'hum_temp.csv')
+
+```
