@@ -427,5 +427,75 @@ world.map.elevation = ggplot(world, aes(x=long, y=lat, group=group))+
 
 world.map.elevation
 ```
-### TODO : temperature
-### TODO : humidity
+### Temperature
+
+```{r}
+library(ggmap)
+library(ggplot2)
+library(viridis)
+glimpse(by_language)
+
+world = map_data("world")
+world.map.temperature = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = hum.temp,
+             aes(x=longitude,
+                 y = Latitude,
+                 color = mean_temp,
+                 fill = mean_temp),
+                 # color = hum.temp$mean_temp,
+                 # fill = hum.temp$mean_temp,
+                 inherit.aes = FALSE,
+                size = 4,
+             alpha = 0.5)+
+  scale_color_viridis()+
+  scale_fill_viridis()+
+  # scale_colour_brewer(palette = "rainbow")+
+  # scale_fill_gradient(name = "mean_temp",
+  #                     low = "#FFFFFF",
+  #                     high = "#012345")+
+  geom_point(data = by_language,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             alpha = 1,
+             size = 1)+
+  labs(title = "World Temperature Map")
+world.map.temperature
+```
+
+### Humidity
+
+```{r}
+world = map_data("world")
+world.map.humidity = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = hum.temp,
+             aes(x=longitude,
+                 y = Latitude,
+                 color = mean_hum,
+                 fill = mean_hum),
+                 # color = hum.temp$mean_temp,
+                 # fill = hum.temp$mean_temp,
+                 inherit.aes = FALSE,
+                size = 4,
+             alpha = 0.5)+
+  scale_color_viridis()+
+  scale_fill_viridis()+
+  # scale_colour_brewer(palette = "rainbow")+
+  # scale_fill_gradient(name = "mean_temp",
+  #                     low = "#FFFFFF",
+  #                     high = "#012345")+
+  geom_point(data = by_language,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             alpha = 1,
+             size = 1)+
+  labs(title = "World Humidity Map")
+world.map.humidity
+```
