@@ -329,7 +329,7 @@ The GDP data came from National Accounts (https://unstats.un.org/unsd/snaama/Dow
 
 * `$CountryID`: three-digit alphabetical codes assigned by the International Organization for Standardization (ISO). Full list of country codes: https://www.iso.org/obp/ui/#search.
 * `$Country`: Country name.
-* `$2018`: GDP in the year 2017 (the most recent year this database provided data for) by country in USD.
+* `$2018`: GDP in the year 2018 (the most recent year this database provided data for) by country in USD.
 
 *In cleaning this data, we filter any missing or duplicate values of the primary key (CountryID). Each row in the dataset represents a country.*
 
@@ -351,7 +351,7 @@ df_gdp <- df_gdp %>% distinct(Country, .keep_all = TRUE)
 #SAVE cleaned data
 save(df_gdp, file = "../clean-data/countries_gdp.RData")
 
-#how to get to continent?  
+#For GDP data, it makes more sense to visualize in a map after combining it with the longitude and latitude data. But here's a graph with only country name and GDP in 2018. 
 gdp.plot<- df_gdp %>% 
   ggplot(aes(x=Country, fill=Country, color=Country, y='2018'))+
   geom_jitter(width=0.25, size = 0.75, alpha=0.7)+
