@@ -195,9 +195,9 @@ worldmap.combined.cvratio.all
 ```
 
 
-### TODO: Language | Tone (Ebru)
-
 **Tone** is used to describe the use of pitch patterns to differentiate lexical or grammatical meaning. All verbal languages use pitch to express emotional information, emphasis or contrast, which is called **intonation**, but not all languages use tones to distinguish words or grammatical forms. World languages can be divided into three as to tonal system they have. The first distinction is between languages with and without tones. Languages with tones can also be categorized into two as languages with simple tone system (i.e., languages with a clear word-level pitch phenomena, but with limited function) and with complex tone system (i.e., languages with complex set of contrasts). Right below is a world map visualizing the tonal system distribution of world languages.
+
+Everett et al. (2014) explored the relationship between climate and tonal languages. The major claim is that languages with complex tonality have generally not developed in very cold climates since desiccated air makes tonal systems harder to produce.
 
 ```{r data load , echo=FALSE}
 glimpse(by_language)
@@ -234,10 +234,12 @@ worldmap.combined.tones = ggplot(world, aes(x=long, y=lat, group=group))+
 
 ```
 
+Of the 526 languages included in WALS dataset of Tone chapter, the distribution of languages with tone systems across (sub)continents can be seen below:
 
 ```{r}
 #display the map
 worldmap.combined.tones 
+
 table(by_language$continent)
 across.continents.tone <- by_language %>% 
   ggplot(aes(x=tones, fill=continent))+
@@ -251,8 +253,6 @@ across.continents.tone <- by_language %>%
   scale_y_continuous(breaks=seq(0,300,20))
 across.continents.tone
 ```
-
-Of the 526 languages included in WALS dataset of Tone chapter, the distribution of languages with tone systems (or lack thereof) can be seen below:
 
 ### Autotyp Database
 
@@ -335,10 +335,6 @@ plin
 glimpse(by_language)
 ```
 
-
-
-### TODO: Language | Elevation (Ebru)
-
 ### TODO: Language | Language Types (Cat)
 
 ```{r}
@@ -402,6 +398,34 @@ ggplot(by_country_language, aes(x = country_name, y = diversity_score, color = c
 ```
 
 # PART 3 | Describing Environmental Data
+###  Elevation (Ebru)
 
+Among many other studies revealing the correlation between language features and geographical features, Everett (2013) present evidence for direct effect of elevation on glottalized sounds: ejectives.Languages with ejective consonants were found closer to regions with high elevation due to possible decrease in air pressure which, in turn, reduces the physiological effort required to articulate ejective sounds.   
+
+In Everett's (2013) study, high elevation zones are defined as regions greater than 1500 m in altitude or within 200 km of such a region. We will also follow high elevation definition of the previous study. 
+
+The six major inhabitable areas of high elevation are shown below: (1) North American cordillera (2) Andes (3) Southern African plateau (4) East African rift (5) Caucasus and Javakheti plateau (6) Tibetan plateau and adjacent regions.
+
+```{r}
+glimpse(by_language)
+
+high.elevation = by_language %>% filter(elev_m >  1500)
+
+world = map_data("world")
+world.map.elevation = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = high.elevation,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             alpha = 0.75,
+             size = 3)+
+  labs(title = "World Elevation Map")
+ 
+
+world.map.elevation
+```
 ### TODO : temperature
 ### TODO : humidity
