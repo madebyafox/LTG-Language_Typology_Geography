@@ -1,0 +1,38 @@
+---
+title: "Complete Merge"
+author: "Language Typology Group"
+date: "11/15/2020"
+output: html_document
+---
+
+##Move
+Here, I added a column to connect the ISO alpha 2 country codes with the written-out country names.
+```{r}
+glimpse(by_language)
+glimpse(by_country)
+#country_code_iso <- read_csv("C:/Users/cathe/Downloads/country_code_iso.csv")
+by_language <- by_language %>%
+  separate(countrycodes, c("primary_country", "secondary_country"), "\\s")
+
+country_language <- merge(by_language, country_code_iso, by.x = "primary_country", by.y = "Code", all = FALSE)
+```
+
+Here I will merge the GDP data with the new intermediary data frame `country_language`.
+
+**It seems we lost 20 or so rows in the transition somehow - due to spelling differences?**
+
+Manually add ISOcodes because of country name spelling differences
+
+```{r}
+str(country_language)
+str(by_country)  #add 2-letter country code (ISO) "NEW_ISO"
+
+unique(country_language$Name)
+unique(by_country$Country)
+
+by_country_language <- merge(country_language, by_country, by.x = "primary_country", by.y = "NEW_ISO")
+
+colnames(by_country_language) <- c("country_name", "country_code", "wals_code", "X1", "iso_lang_code", "language_name", "genus", "subfamily", "family", "lsbranch", "ssbranch", "sbranch", "mbranch", "stock", "elev_ft", "elev_m", "latitude", "longitude", "secondary_country", "area", "macroarea", "continent", "glot_features", "cv_ratio", "tones", "rangesize", "population", "vehicularity", "L2prop", "H", "H_unigram", "lang.count", "lang.percent", "established.langs", "immigrant.langs", "total.speakers", "mean.speakers", "median.speakers", "diversity.index", "div.coverage", "GDP")
+
+#write.csv(by_country_language, "by_country_language.csv")
+save(by_country_language, file = "../clean-data/by_country_language.RData")
