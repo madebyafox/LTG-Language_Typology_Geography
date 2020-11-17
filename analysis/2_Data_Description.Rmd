@@ -205,13 +205,14 @@ worldmap.combined.cvratio.all = ggplot(world, aes(x=long, y=lat, group=group))+
 worldmap.combined.cvratio.all
 ```
 
+### Language | Tone
 
 **Tone** is used to describe the use of pitch patterns to differentiate lexical or grammatical meaning. All verbal languages use pitch to express emotional information, emphasis or contrast, which is called **intonation**, but not all languages use tones to distinguish words or grammatical forms. World languages can be divided into three as to tonal system they have. The first distinction is between languages with and without tones. Languages with tones can also be categorized into two as languages with simple tone system (i.e., languages with a clear word-level pitch phenomena, but with limited function) and with complex tone system (i.e., languages with complex set of contrasts). Right below is a world map visualizing the tonal system distribution of world languages.
 
 Everett et al. (2014) explored the relationship between climate and tonal languages. The major claim is that languages with complex tonality have generally not developed in very cold climates since desiccated air makes tonal systems harder to produce.
 
 ```{r, echo=FALSE}
-suppressMessages(glimpse(by_language))
+# suppressMessages(glimpse(by_language))
 
 no.tones = by_language %>% filter(tones == '1 - No tones')
 simple.tones = by_language %>% filter(tones == '2 - Simple tone system')
@@ -265,12 +266,12 @@ across.continents.tone <- by_language %>%
 across.continents.tone
 ```
 
-### Autotyp Database
+### Language | Location
 
 The AUTOTYP database contains much of the same information as the WALS datasets, but it additionally has continent and region information. The following plot shows the linguistic diversity information plotted by country and color coded by continent. 
 
-```{r}
-suppressMessages(str(by_language)) #AUTOTYP gives us continent and area information
+```{r warning=FALSE}
+# suppressMessages(str(by_language)) #AUTOTYP gives us continent and area information
 
 autotyp_plot <- by_language %>%
   group_by(continent) %>%
@@ -283,7 +284,7 @@ ggplot(autotyp_plot, aes(x = continent, y = n, fill = continent)) +
   theme(axis.text.x=element_text(angle = 45, size = 8,hjust = 1), legend.position = "none")
 ```
 
-### Language | Speakers by Language (Amy)
+### Language | Speaker Population
 
 Data for number of speakers by Language is remarkably difficult to locate! The primary aggregator source for this type of data is the Ethnologue service (https://www.ethnologue.com/), however, a costly subscription is required. Fortunately, we were able to locate a relevant Linguistics paper that used this dataset, and included their (cleaned) data as supplementary materials. For this, we offer thanks to Alexander Koplenig and The Royal Society Publishing Service. 
 
@@ -339,25 +340,29 @@ plin
 
 ```
 
-### Language | Language Types (Cat)
+### Language | Language Types 
 
-We can see the number of languages in the different language families.
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 #str(by_language)
 
-language_families <- by_language %>%
-  group_by(family) %>%
-  summarise(n = n())
+#TODO: Replace with more appropriate plot -- perhaps heirarchical tree
+#We can see the number of languages in the different language families.
 
-ggplot(language_families, aes(x = family, y = n)) +
-  geom_point(stat = "identity") +
-  labs(title = "Number of Languages by Language Family", x = "Language Family", y="Number of Languages") +
-  theme_bw() +
-  theme(axis.text.x = element_blank())
+
+# language_families <- by_language %>%
+#   group_by(family) %>%
+#   summarise(n = n())
+# 
+# ggplot(language_families, aes(y = family, x = n)) +
+#   geom_point(stat = "identity") +
+#   labs(title = "Number of Languages by Language Family", y = "Language Family", n="Number of Languages") +
+#   theme_bw() +
+#   theme(axis.text.x = element_blank())
 ```
 
-```{r}
+With language type data, we are also able to see that some continents have many more languages than others. 
+```{r warning=FALSE, message=FALSE}
 by_continent <- by_language %>%
   group_by(continent, family) %>%
   summarise(n = n())
@@ -376,7 +381,7 @@ ggplot(by_continent, aes(x = continent, y = n, fill = continent)) +
 
 # PART 2 | Describing Country Data
 
-### Countries | GDP (Yuxin)
+### Countries | GDP 
 
 For GDP data, it makes more sense to visualize in a map after combining it with the longitude and latitude data. But here's a graph with only country name and GDP in 2018.
 
@@ -385,17 +390,17 @@ gdp.plot <- by_country %>%
   ggplot(aes(x=Country, y=2018))+
   geom_jitter(width=0.25, size = 1.5, alpha=0.7)+
     labs(title = "GDP per capita by Country", x = "Country", y="GDP per capita (2018)") +
-  theme_minimal()+
-  theme(legend.position = 'none', axis.text.x = element_blank())
+  theme_minimal()
+  # theme(legend.position = 'none', axis.text.x = element_blank())
 print(gdp.plot)
 ```
 
-### Countries | Linguistic Diversity (Amy and Cat)
+### Countries | Linguistic Diversity 
 
 In our analysis, we want to see if languages in places with more linguistic diversity are more likely to have tone, ejectives, or high consonant-vowel ratios.
 
-```{r}
-str(by_country)
+```{r, warning = FALSE, message=FALSE}
+# str(by_country)
 
 ggplot(by_country, aes(x = Country, y = established.langs)) +
   geom_jitter(alpha = 0.5) +
@@ -407,7 +412,8 @@ ggplot(by_country, aes(x = Country, y = established.langs)) +
 ```
 
 # PART 3 | Describing Environmental Data
-###  Elevation (Ebru)
+
+###  Elevation 
 
 Among many other studies revealing the correlation between language features and geographical features, Everett (2013) present evidence for direct effect of elevation on glottalized sounds: ejectives.Languages with ejective consonants were found closer to regions with high elevation due to possible decrease in air pressure which, in turn, reduces the physiological effort required to articulate ejective sounds.   
 
@@ -416,7 +422,7 @@ In Everett's (2013) study, high elevation zones are defined as regions greater t
 The six major inhabitable areas of high elevation are shown below: (1) North American cordillera (2) Andes (3) Southern African plateau (4) East African rift (5) Caucasus and Javakheti plateau (6) Tibetan plateau and adjacent regions.
 
 ```{r}
-glimpse(by_language)
+# glimpse(by_language)
 
 high.elevation = by_language %>% filter(elev_m >  1500)
 
@@ -436,10 +442,11 @@ world.map.elevation = ggplot(world, aes(x=long, y=lat, group=group))+
 
 world.map.elevation
 ```
+
 ### Temperature
 
 ```{r}
-glimpse(by_language)
+# glimpse(by_language)
 
 world = map_data("world")
 
