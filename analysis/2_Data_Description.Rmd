@@ -119,7 +119,7 @@ Here is a visualization of languages with extreme high and low Consonant - Vowel
 
 cvratio.low = by_language %>% filter(cv_ratio == '1 - Low')
 cvratio.high = by_language %>% filter(cv_ratio == '5 - High')
-glimpse(by_language)
+suppressMessages(glimpse(by_language))
 #generate the map
 
 world = map_data("world")
@@ -208,7 +208,7 @@ worldmap.combined.cvratio.all
 Everett et al. (2014) explored the relationship between climate and tonal languages. The major claim is that languages with complex tonality have generally not developed in very cold climates since desiccated air makes tonal systems harder to produce.
 
 ```{r, echo=FALSE}
-glimpse(by_language)
+suppressMessages(glimpse(by_language))
 
 no.tones = by_language %>% filter(tones == '1 - No tones')
 simple.tones = by_language %>% filter(tones == '2 - Simple tone system')
@@ -267,15 +267,15 @@ across.continents.tone
 The AUTOTYP database contains much of the same information as the WALS datasets, but it additionally has continent and region information. The following plot shows the linguistic diversity information plotted by country and color coded by continent. 
 
 ```{r}
-str(by_country_language) #AUTOTYP gives us continent and area information
+suppressMessages(str(by_language)) #AUTOTYP gives us continent and area information
 
-autotyp_plot <- by_country_language %>%
+autotyp_plot <- by_language %>%
   group_by(continent) %>%
-  summarise(mean.div = mean(established.langs))
+  summarise(n = n())
 
-ggplot(autotyp_plot, aes(x = continent, y = mean.div, fill = continent)) +
+ggplot(autotyp_plot, aes(x = continent, y = n, fill = continent)) +
   geom_bar(stat = "identity") +
-  labs(x = "Continent", y="Mean Number of Languages Spoken per Country", color = "Continent") +
+  labs(x = "Continent", y="Number of Languages per Continent", color = "Continent") +
   theme_bw() +
   theme(axis.text.x=element_text(angle = 45, size = 8,hjust = 1), legend.position = "none")
 ```
@@ -339,6 +339,8 @@ plin
 
 ### Language | Language Types (Cat)
 
+We can see the number of languages in the different language families.
+
 ```{r}
 #str(by_language)
 
@@ -349,7 +351,8 @@ language_families <- by_language %>%
 ggplot(language_families, aes(x = family, y = n)) +
   geom_point(stat = "identity") +
   labs(x = "Language Family", y="Number of Languages") +
-  theme_bw()
+  theme_bw() +
+  theme(axis.text.x = element_blank())
 ```
 
 ```{r}
@@ -365,7 +368,7 @@ ggplot(by_continent, aes(x = continent, y = n, fill = continent)) +
         x="Continent",
         y="Number of languages",
         fill="Language Families") +
-   theme(axis.text.x = element_text(size=6, angle = 45),
+   theme(axis.text.x = element_text(size=8, angle = 45, hjust = 1),
          legend.position = "none")
 ```
 
@@ -376,10 +379,8 @@ ggplot(by_continent, aes(x = continent, y = n, fill = continent)) +
 For GDP data, it makes more sense to visualize in a map after combining it with the longitude and latitude data. But here's a graph with only country name and GDP in 2018.
 
 ```{r}
-#str(by_country_language)
-
-gdp.plot<- by_country_language %>% 
-  ggplot(aes(x=country_name, y=GDP))+
+gdp.plot <- by_country %>% 
+  ggplot(aes(x=Country, y=2018))+
   geom_jitter(width=0.25, size = 1.5, alpha=0.7)+
     labs(x = "Country", y="GDP per capita (2018)") +
   theme_minimal()+
@@ -392,29 +393,15 @@ print(gdp.plot)
 In our analysis, we want to see if languages in places with more linguistic diversity are more likely to have tone, ejectives, or high consonant-vowel ratios.
 
 ```{r}
-str(by_country_language)
+str(by_country)
 
-ggplot(by_country_language, aes(x = country_name, y = lang.count, color = continent)) +
+ggplot(by_country, aes(x = Country, y = established.langs)) +
   geom_jitter(alpha = 0.5) +
   labs(title="Number of Languages Spoken by Country", 
        x = "Country", y="Number of Languages Spoken", color = "Continent") +
   theme_bw() +
   theme(axis.text.x=element_blank())
 
-```
-
-
-```{r}
- by_country_language <- by_country_language %>%
-  mutate(diversity_score = established.langs/total.speakers) #this shows the number of local languages divided by the number of people = "language diversity score"
-
-ggplot(by_country_language, aes(x = country_name, y = diversity_score, color = continent)) +
-  geom_point(alpha = 0.5) +
-  labs(title="Number of Languages Spoken by Country", 
-       x = "Country", y="Number of Languages Spoken by Population", color = "Continent") +
-  theme_bw() +
-  theme(axis.text.x=element_blank())
-  
 ```
 
 # PART 3 | Describing Environmental Data
@@ -488,8 +475,8 @@ world.map.temperature = ggplot(world, aes(x=long, y=lat, group=group))+
   geom_path()+
   scale_y_continuous(breaks=(-2:2) * 30)+
   scale_x_continuous(breaks=(-4:4) * 45)+
-  geom_point(data = hum.temp,
-             aes(x=longitude,
+  geom_point(data = df_geolocation,
+             aes(x=Longitude.180,
                  y = Latitude,
                  color = mean_temp,
                  fill = mean_temp),
@@ -511,8 +498,6 @@ world.map.temperature = ggplot(world, aes(x=long, y=lat, group=group))+
              alpha = 1,
              size = 1)+
   labs(title = "World Temperature Map")
-
-
 
 world.map.temperature
 ```
