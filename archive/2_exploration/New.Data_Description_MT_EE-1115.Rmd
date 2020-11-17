@@ -1,0 +1,525 @@
+---
+title: "Language Typology & Geography | Data Description"
+author: "Language Typology Project Group"
+date: "11/7/2020"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_folding: "hide"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#load libraries
+install.packages("map")
+library(tidyverse)
+library(maps)
+```
+
+```{r data load , echo=FALSE}
+#import cleaned dataframe
+load(file="../clean-data/by_language.RData")
+```
+
+# PART 1 | Describing Language Data
+
+### Language | Glottalized Consonants
+
+The relationship between glottalized consonants, including ejectives, and the elevation of where a language is spoken was explored in Everett (2013). The author hypothesized that ejective phonemes are more likely to occur in areas of high elevation; producing ejective sounds is characterized by the compression of air, and the associated decrease in ambient air pressure reduces the physiological effort for the production. Everett's analysis revealed a the direct influence of a geographic factor (elevation) on the basic inventories of glottalized consonants.
+
+The following code draws a world map using `geom_path`. The first map below visualizes where languages without any glottalized consonants are located.
+
+```{r}
+world = map_data("world")
+no.ejectives = by_language %>% filter(glot_features == '1 - No glottalized consonants')
+worldmap.with.no.glottalized.c = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = no.ejectives,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'blue',
+             size = 0.9)+
+  theme_bw()+
+  labs(title = "Map of Languages with No Glottalized Consonants")
+```
+
+```{r}
+#display the map
+worldmap.with.no.glottalized.c
+```
+
+Next, Here is a map that illustrates the locations of the languages with glottalized consonants.
+
+```{r}
+ejectives = by_language %>% filter(!(glot_features == '1 - No glottalized consonants'))
+
+worldmap.with.glottalized.c = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = ejectives,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             size = 0.9)+
+  theme_bw()+
+  labs(title = "Map of Languages with Glottalized Consonants")
+```
+
+```{r}
+#display the map
+worldmap.with.glottalized.c
+```
+
+And here is the above two plots combined.
+
+```{r}
+worldmap.combined.ejectives = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = no.ejectives,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'blue',
+             alpha = 0.8,
+             size = 0.75)+
+  geom_point(data = ejectives,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             alpha = 0.8,
+             size = 0.75)+
+  theme_bw()+
+  labs(title = "Map of Languages with & without Glottalized Consonants combined")
+```
+
+```{r}
+#display the map
+worldmap.combined.ejectives 
+```
+
+### Language | Consonant-Vowel Ratio
+
+The consonant-vowel (CV) ratio informs us of the number of consonants a language has in relation to the number of vowels. If a language has a small number of consonants, their CV ratio is low; if a language has a large number of consonants, their CV ratio is high. CV ratio of a language has been attributed to environmental factors. Sundarrajan et al. (2017) argue that the dryness between vocal folds from the ambient climate leads to the perceived phonatory effort on the part of the speaker in vowel productions. Everett (2017) examined whether a language spoken in an environment with high humidity has a lower CV ratio than the one spoken in a dry environment, and revealed a significant correlation between CV ratio and humidity.    
+
+Here is a visualization of languages with extreme high and low Consonant - Vowel ratios. 
+
+```{r, results="hide"}
+
+cvratio.low = by_language %>% filter(cv_ratio == '1 - Low')
+cvratio.high = by_language %>% filter(cv_ratio == '5 - High')
+glimpse(by_language)
+#generate the map
+
+world = map_data("world")
+worldmap.combined.cvratio = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = cvratio.low,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'blue',
+             alpha = 0.8,
+             size = 0.9)+
+  geom_point(data = cvratio.high,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             alpha = 0.8,
+             size = 0.9)+
+  labs(title = "Map of Language with High(red) and Low(blue) Consonant-Value Ratios")+
+  theme_bw()
+```
+
+```{r}
+#display the map
+worldmap.combined.cvratio 
+```
+```{r, results="hide"}
+
+cvratio.low = by_language %>% filter(cv_ratio == '1 - Low')
+cvratio.mod.low = by_language %>% filter(cv_ratio == '2 - Moderately low')
+cvratio.ave = by_language %>% filter(cv_ratio == '3 - Average')
+cvratio.mod.high = by_language %>% filter(cv_ratio == '4 - Moderately high')
+cvratio.high = by_language %>% filter(cv_ratio == '5 - High')
+
+table(by_language$cv_ratio)
+#generate the map
+
+world = map_data("world")
+worldmap.combined.cvratio.all = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = cvratio.low,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'blue',
+             alpha = 0.5,
+             size = 1.2)+
+  geom_point(data = cvratio.mod.low,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             alpha = 0.5,
+             size = 1.2)+
+  geom_point(data = cvratio.ave,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'purple',
+             alpha = 0.5,
+             size = 1.2)+
+  geom_point(data = cvratio.mod.high,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'dark green',
+             alpha = 0.5,
+             size = 1.2)+
+  geom_point(data = cvratio.high,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'orange',
+             alpha = 0.5,
+             size = 1.2)+
+  labs(title = "Map of Language with Consonant-Vowel Ratio", subtitle="Low (Blue), Moderately Low (Red), Average (Purple), Moderately High (Green), High (Orange)")+
+  theme_bw()
+
+worldmap.combined.cvratio.all
+```
+
+
+**Tone** is used to describe the use of pitch patterns to differentiate lexical or grammatical meaning. All verbal languages use pitch to express emotional information, emphasis or contrast, which is called **intonation**, but not all languages use tones to distinguish words or grammatical forms. World languages can be divided into three as to tonal system they have. The first distinction is between languages with and without tones. Languages with tones can also be categorized into two as languages with simple tone system (i.e., languages with a clear word-level pitch phenomena, but with limited function) and with complex tone system (i.e., languages with complex set of contrasts). Right below is a world map visualizing the tonal system distribution of world languages.
+
+Everett et al. (2014) explored the relationship between climate and tonal languages. The major claim is that languages with complex tonality have generally not developed in very cold climates since desiccated air makes tonal systems harder to produce.
+
+```{r data load , echo=FALSE}
+glimpse(by_language)
+
+no.tones = by_language %>% filter(tones == '1 - No tones')
+simple.tones = by_language %>% filter(tones == '2 - Simple tone system')
+complex.tones = by_language %>% filter(tones == '3 - Complex tone system')
+colors <- c("no.tones" = "green", "simple.tones" = "red", "complex.tones" = "blue")
+world = map_data("world")
+worldmap.combined.tones = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = no.tones,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'green',
+             alpha = 0.75,
+             size = 1)+
+  geom_point(data = simple.tones,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             alpha = 0.75,
+             size = 1)+
+  geom_point(data = complex.tones,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'blue',
+             alpha = 0.75,
+             size = 1)+
+  labs(title = "Map of Language with Tone Systems:", subtitle="No tones (Green), Simple tone system (Red), Complex tone system (Blue)")+
+  scale_color_manual(values=colors)
+
+```
+
+Of the 526 languages included in WALS dataset of Tone chapter, the distribution of languages with tone systems across (sub)continents can be seen below:
+
+```{r}
+#display the map
+worldmap.combined.tones 
+
+table(by_language$continent)
+across.continents.tone <- by_language %>% 
+  ggplot(aes(x=tones, fill=continent))+
+  scale_fill_brewer(palette = "Spectral")+
+  geom_bar(width=0.5)+
+  theme_minimal()+
+  labs(title="Distribution of tone systems across continents",
+       x="",
+       y="Number of languages",
+       fill="Continents")+
+  scale_y_continuous(breaks=seq(0,300,20))
+across.continents.tone
+```
+
+### Autotyp Database
+
+The AUTOTYP database contains much of the same information as the WALS datasets, but it additionally has continent and region information. The following plot shows the linguistic diversity information plotted by country and color coded by continent. 
+
+```{r}
+str(by_country_language) #AUTOTYP gives us continent and area information 
+
+autotyp_plot <- by_country_language %>%
+  group_by(continent) %>%
+  summarise(mean.div = mean(established.langs))
+
+ggplot(autotyp_plot, aes(x = continent, y = mean.div, fill = continent)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Continent", y="Mean Number of Languages Spoken per Country", color = "Continent") +
+  theme_bw() +
+  theme(axis.text.x=element_text(angle = 45, size = 8,hjust = 1), legend.position = "none")
+```
+
+
+### Language | Speakers by Language (Amy)
+
+Data for number of speakers by Lanaguage is remarkably difficult to locate! The primary aggregator source for this type of data is the Ethnologue service (https://www.ethnologue.com/), however, a costly subscription is required. Fortunately, we were able to locate a relevant Linguistics paper that used this dataset, and included their (cleaned) data as supplementary materials. For this, we offer thanks to Alexander Koplenig and The Royal Society Publishing Service. 
+
+https://royalsocietypublishing.org/doi/10.1098/rsos.181274#d3e487				
+https://royalsocietypublishing.org/doi/suppl/10.1098/rsos.181274
+
+
+#### Distribution of Languages by Speaker Population
+There are `r dim[by_language]` languages in our dataset, however, the number of humans that speak and understand these languages are widely different. In this figure, we see the distribution of languages by number of speakers as a histogram. The number of speakers are plotted on the x-axis, and number of languages within the bin-range on the y-axis. The top facet shows a linear scale, where we can see that a very large number of languages have very few speakers. The bottom facet plots the same data with a log10 scale, which is a better model for the speaker data. 
+```{r speakers distribution}
+
+options(scipen=10000) # print nums on scales not scientific notation
+speakers <- by_language %>% select(wals_code, ISO639.3, name, population, L2prop) #get speaker data
+
+plin <-  ggplot(data = speakers, aes(x=population)) +
+  geom_histogram(alpha=0.5, bins=30)+
+  labs(title="Distribution of Languages (linear scale)", 
+       x = "Speaker Population", y="Number of Languages") +
+  theme_minimal()
+plin
+
+
+plog <- ggplot(data = speakers, aes(x=population)) +
+  geom_histogram(alpha=0.5, bins=30)+
+  labs(title="Distribution of Languages (log10 scale)", 
+       x = "Speaker Population", y="Number of Languages") +
+  scale_x_log10()+
+  theme_minimal()
+
+grid.arrange(plin, plog, bottom ="Distribution of Languages by Speaker Population")
+
+remove(plin,plog)
+```
+
+
+```{r speakers distribution}
+
+options(scipen=10000)
+
+speakers <- by_language %>% select(wals_code, ISO639.3, name, population, L2prop) %>% 
+arrange (-population) %>% mutate(
+  second = population * L2prop,
+  first = population - second
+) %>% slice(1:25) 
+
+
+
+plin <-  ggplot(data = speakers, aes(x=name, y=population)) +
+  geom_bar(stat="identity")+
+  labs(title="Number of Speakers for Top 20 Languages",
+       x = "Language", y="Number of Speakers") +
+  theme_minimal()+ theme(axis.text.x = element_text(angle = 45))
+
+plin
+# 
+# plog <- ggplot(data = speakers, aes(x=population)) +
+#   geom_histogram(alpha=0.5, bins=30)+
+#   labs(title="Distribution of Languages (log10 scale)", 
+#        x = "Speaker Population", y="Number of Languages") +
+#   scale_x_log10()+
+#   theme_minimal()
+# 
+# grid.arrange(plin, plog, bottom ="Distribution of Languages by Speaker Population")
+
+glimpse(by_language)
+```
+
+### Language | Language Types (Cat)
+
+```{r}
+#str(by_language)
+
+language_families <- by_language %>%
+  group_by(family) %>%
+  summarise(n = n())
+
+ggplot(language_families, aes(x = family, y = n)) +
+  geom_point(stat = "identity") +
+  labs(x = "Language Family", y="Number of Languages") +
+  theme_bw()
+```
+
+```{r}
+by_continent <- by_language %>%
+  group_by(continent, family) %>%
+  summarise(n = n())
+
+
+ggplot(by_continent, aes(x = continent, y = n, fill = continent)) +
+  scale_fill_brewer(palette = "Spectral") +
+  geom_bar(position="stack", stat="identity")+
+  labs(title=" ",
+        x="Continent",
+        y="Number of languages",
+        fill="Language Families") +
+   theme(axis.text.x = element_text(size=6, angle = 45),
+         legend.position = "none")
+```
+
+# PART 2 | Describing Country Data
+
+### Countries | GDP (Yuxin)
+
+For GDP data, it makes more sense to visualize in a map after combining it with the longitude and latitude data. But here's a graph with only country name and GDP in 2018.
+
+```{r}
+#str(by_country_language)
+
+gdp.plot<- by_country_language %>% 
+  ggplot(aes(x=country_name, y=GDP))+
+  geom_jitter(width=0.25, size = 1.5, alpha=0.7)+
+    labs(x = "Country", y="GDP per capita (2018)") +
+  theme_minimal()+
+  theme(legend.position = 'none', axis.text.x = element_blank())
+print(gdp.plot)
+```
+
+### Countries | Linguistic Diversity (Amy and Cat)
+
+In our analysis, we want to see if languages in places with more linguistic diversity are more likely to have tone, ejectives, or high consonant-vowel ratios.
+
+```{r}
+str(by_country_language)
+
+ggplot(by_country_language, aes(x = country_name, y = lang.count, color = continent)) +
+  geom_jitter(alpha = 0.5) +
+  labs(title="Number of Languages Spoken by Country", 
+       x = "Country", y="Number of Languages Spoken", color = "Continent") +
+  theme_bw() +
+  theme(axis.text.x=element_blank())
+
+```
+
+
+```{r}
+ by_country_language <- by_country_language %>%
+  mutate(diversity_score = established.langs/total.speakers) #this shows the number of local languages divided by the number of people = "language diversity score"
+
+ggplot(by_country_language, aes(x = country_name, y = diversity_score, color = continent)) +
+  geom_point(alpha = 0.5) +
+  labs(title="Number of Languages Spoken by Country", 
+       x = "Country", y="Number of Languages Spoken by Population", color = "Continent") +
+  theme_bw() +
+  theme(axis.text.x=element_blank())
+  
+```
+
+# PART 3 | Describing Environmental Data
+###  Elevation (Ebru)
+
+Among many other studies revealing the correlation between language features and geographical features, Everett (2013) present evidence for direct effect of elevation on glottalized sounds: ejectives.Languages with ejective consonants were found closer to regions with high elevation due to possible decrease in air pressure which, in turn, reduces the physiological effort required to articulate ejective sounds.   
+
+In Everett's (2013) study, high elevation zones are defined as regions greater than 1500 m in altitude or within 200 km of such a region. We will also follow high elevation definition of the previous study. 
+
+The six major inhabitable areas of high elevation are shown below: (1) North American cordillera (2) Andes (3) Southern African plateau (4) East African rift (5) Caucasus and Javakheti plateau (6) Tibetan plateau and adjacent regions.
+
+```{r}
+glimpse(by_language)
+
+high.elevation = by_language %>% filter(elev_m >  1500)
+
+world = map_data("world")
+world.map.elevation = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = high.elevation,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             alpha = 0.75,
+             size = 3)+
+  labs(title = "World Elevation Map")
+ 
+
+world.map.elevation
+```
+### Temperature
+
+```{r}
+library(ggmap)
+library(ggplot2)
+library(viridis)
+glimpse(by_language)
+
+world = map_data("world")
+world.map.temperature = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = hum.temp,
+             aes(x=longitude,
+                 y = Latitude,
+                 color = mean_temp,
+                 fill = mean_temp),
+                 # color = hum.temp$mean_temp,
+                 # fill = hum.temp$mean_temp,
+                 inherit.aes = FALSE,
+                size = 4,
+             alpha = 0.5)+
+  scale_color_viridis()+
+  scale_fill_viridis()+
+  # scale_colour_brewer(palette = "rainbow")+
+  # scale_fill_gradient(name = "mean_temp",
+  #                     low = "#FFFFFF",
+  #                     high = "#012345")+
+  geom_point(data = by_language,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             alpha = 1,
+             size = 1)+
+  labs(title = "World Temperature Map")
+world.map.temperature
+```
+
+### Humidity
+
+```{r}
+world = map_data("world")
+world.map.humidity = ggplot(world, aes(x=long, y=lat, group=group))+
+  geom_path()+
+  scale_y_continuous(breaks=(-2:2) * 30)+
+  scale_x_continuous(breaks=(-4:4) * 45)+
+  geom_point(data = hum.temp,
+             aes(x=longitude,
+                 y = Latitude,
+                 color = mean_hum,
+                 fill = mean_hum),
+                 # color = hum.temp$mean_temp,
+                 # fill = hum.temp$mean_temp,
+                 inherit.aes = FALSE,
+                size = 4,
+             alpha = 0.5)+
+  scale_color_viridis()+
+  scale_fill_viridis()+
+  # scale_colour_brewer(palette = "rainbow")+
+  # scale_fill_gradient(name = "mean_temp",
+  #                     low = "#FFFFFF",
+  #                     high = "#012345")+
+  geom_point(data = by_language,
+             aes(x=longitude, y=latitude),
+             inherit.aes = FALSE,
+             color = 'red',
+             alpha = 1,
+             size = 1)+
+  labs(title = "World Humidity Map")
+world.map.humidity
+```
