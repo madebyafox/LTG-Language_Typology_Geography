@@ -37,6 +37,10 @@ vignettes/*.pdf
 
 # MISC
 .DS_Store
+.html
 
 # PYTHON
 /.ipynb_checkpoints/
+
+# ignores
+/ignore/
