@@ -256,14 +256,20 @@ across.continents.tone
 
 ### Autotyp Database
 
-```{r}
-str(by_language) #AUTOTYP gives us continent and area information 
+The AUTOTYP database contains much of the same information as the WALS datasets, but it additionally has continent and region information. The following plot shows the linguistic diversity information plotted by country and color coded by continent. 
 
-ggplot(by_country_language, aes(x = country_name, y = lang.count, color = continent)) +
-  geom_jitter(alpha = 0.5) +
-  labs(title="Number of Languages Spoken by Country", 
-       x = "Country", y="Number of Languages Spoken") +
-  theme_bw()
+```{r}
+str(by_country_language) #AUTOTYP gives us continent and area information 
+
+autotyp_plot <- by_country_language %>%
+  group_by(continent) %>%
+  summarise(mean.div = mean(established.langs))
+
+ggplot(autotyp_plot, aes(x = continent, y = mean.div, fill = continent)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Continent", y="Mean Number of Languages Spoken per Country", color = "Continent") +
+  theme_bw() +
+  theme(axis.text.x=element_text(angle = 45, size = 8,hjust = 1), legend.position = "none")
 ```
 
 
@@ -372,7 +378,7 @@ ggplot(by_continent, aes(x = continent, y = n, fill = continent)) +
 ### TODO: Countries | GDP 
 
 
-### TODO Countries | Linguistic Diversity (Amy and Cat)
+### Countries | Linguistic Diversity (Amy and Cat)
 
 In our analysis, we want to see if languages in places with more linguistic diversity are more likely to have tone, ejectives, or high consonant-vowel ratios.
 
@@ -382,8 +388,9 @@ str(by_country_language)
 ggplot(by_country_language, aes(x = country_name, y = lang.count, color = continent)) +
   geom_jitter(alpha = 0.5) +
   labs(title="Number of Languages Spoken by Country", 
-       x = "Country", y="Number of Languages Spoken") +
-  theme_bw()
+       x = "Country", y="Number of Languages Spoken", color = "Continent") +
+  theme_bw() +
+  theme(axis.text.x=element_blank())
 
 ```
 
@@ -393,7 +400,11 @@ ggplot(by_country_language, aes(x = country_name, y = lang.count, color = contin
   mutate(diversity_score = established.langs/total.speakers) #this shows the number of local languages divided by the number of people = "language diversity score"
 
 ggplot(by_country_language, aes(x = country_name, y = diversity_score, color = continent)) +
-  geom_jitter(alpha = 0.5) +
+  geom_point(alpha = 0.5) +
+  labs(title="Number of Languages Spoken by Country", 
+       x = "Country", y="Number of Languages Spoken by Population", color = "Continent") +
+  theme_bw() +
+  theme(axis.text.x=element_blank())
   
 ```
 
