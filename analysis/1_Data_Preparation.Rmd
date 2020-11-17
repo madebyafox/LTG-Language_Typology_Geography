@@ -768,8 +768,7 @@ Fortunately our cleaning efforts produced two dataframes organized identically, 
 
 ```{r combine temp humidity}
 df_environment <- merge(df_hum.long, df_temp.long, by.x=c("Latitude", "Longitude"))
-
+by_geolocation <- df_environment
 ##Save merged long df
-save(df_environment, file = "../clean-data/by_geolocation.RData")
+save(by_geolocation, file = "../clean-data/by_geolocation.RData")
 ```
-
