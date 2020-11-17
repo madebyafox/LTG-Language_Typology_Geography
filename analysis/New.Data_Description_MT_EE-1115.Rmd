@@ -273,7 +273,7 @@ ggplot(autotyp_plot, aes(x = continent, y = mean.div, fill = continent)) +
 ```
 
 
-### TODO: Language | Speakers by Language (Amy)
+### Language | Speakers by Language (Amy)
 
 Data for number of speakers by Lanaguage is remarkably difficult to locate! The primary aggregator source for this type of data is the Ethnologue service (https://www.ethnologue.com/), however, a costly subscription is required. Fortunately, we were able to locate a relevant Linguistics paper that used this dataset, and included their (cleaned) data as supplementary materials. For this, we offer thanks to Alexander Koplenig and The Royal Society Publishing Service. 
 
@@ -341,7 +341,7 @@ plin
 glimpse(by_language)
 ```
 
-### TODO: Language | Language Types (Cat)
+### Language | Language Types (Cat)
 
 ```{r}
 #str(by_language)
@@ -375,8 +375,21 @@ ggplot(by_continent, aes(x = continent, y = n, fill = continent)) +
 
 # PART 2 | Describing Country Data
 
-### TODO: Countries | GDP 
+### Countries | GDP (Yuxin)
 
+For GDP data, it makes more sense to visualize in a map after combining it with the longitude and latitude data. But here's a graph with only country name and GDP in 2018.
+
+```{r}
+#str(by_country_language)
+
+gdp.plot<- by_country_language %>% 
+  ggplot(aes(x=country_name, y=GDP))+
+  geom_jitter(width=0.25, size = 1.5, alpha=0.7)+
+    labs(x = "Country", y="GDP per capita (2018)") +
+  theme_minimal()+
+  theme(legend.position = 'none', axis.text.x = element_blank())
+print(gdp.plot)
+```
 
 ### Countries | Linguistic Diversity (Amy and Cat)
 

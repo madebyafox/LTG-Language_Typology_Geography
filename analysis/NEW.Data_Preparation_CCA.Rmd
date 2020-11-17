@@ -351,14 +351,6 @@ df_gdp <- df_gdp %>% distinct(Country, .keep_all = TRUE)
 #SAVE cleaned data
 save(df_gdp, file = "../clean-data/countries_gdp.RData")
 
-#For GDP data, it makes more sense to visualize in a map after combining it with the longitude and latitude data. But here's a graph with only country name and GDP in 2018. 
-gdp.plot<- df_gdp %>% 
-  ggplot(aes(x=Country, fill=Country, color=Country, y='2018'))+
-  geom_jitter(width=0.25, size = 0.75, alpha=0.7)+
-  theme_minimal()+
-  theme(legend.position = 'none')
-print(gdp.plot)
-
 ```
 
 
@@ -396,49 +388,33 @@ save(df_diversity, file = "../clean-data/countries_diversity.RData")
 ```
 
 
-
-
-
 ## ENVIRONMENTAL DATA
 ### Temperature and Humidity
 
-**TODO: edit text and description here**
+Temperature and Humidity data were retrieved from NOAA NCEP, as per Everett et al. 2015.
 
-# Retrieved from NOAA NCEP
 
-More information: 
+Links to More information: 
 Humidity : http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP-NCAR/.CDAS-1/.MONTHLY/.Diagnostic/.above_ground/.qa/index.html#info
 Temperature : http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP-NCAR/.CDAS-1/.MONTHLY/.Diagnostic/.above_ground/.temp/
 
-```{r}
-hum <- read_csv("humidity.csv")
+This pair of data sets contains measurements from above ground of temperature and humidity. Humidity is measured in specific humidity, a relative scale of humidity (unitless), while temperature is measured in Kelvin. The datasets represent measurements carried out from Jan 1949 to Oct 2020, carried out on a monthly basis.
+
+* `$Latitude`: Latitude in degrees from -88 (S) to 88 (N)
+* `$Longitude`: Longitude in degrees from prime meridian to 360 degrees
+* `$mean_hum`: mean humidity
+* `$mean_temp`: mean temperature
+* `$longitude`: Longitude in degrees from -180 (W) to 180 (E)
+
+```{r} 
+hum <- read_csv("humidity.csv") #the raw files are too big to be stored in GitHub
 temp <- read_csv("temperature.csv")
+```
 
+The Longitude in this pair is represented in increments of 1.875 from the Prime Meridian (0) towards (360), without reaching 360. The Latitude in this pair is represented as ordered latitudes from North to South where South is represented numerically as negative.
 
-## Each observation is the mean a month of observations 
-#  conducted since Jan 1949 ~ Oct 2020
-#  Columns for both datasets are bins of Longitude, (degree_east) periodic (0) to
-#  (1.875W) by 1.875 N = 192pts
-#  Rows are (degree_north), ordered latitudes as follows:
-# [ (88.54196N) (86.65315N) (84.75323N) (82.85076N) (80.94736N) (79.04349N) 
-###(77.13936N) (75.23506N) (73.33066N) (71.42619N) (69.52167N) (67.6171N) (65.71251N)
-###(63.8079N) (61.90326N) (59.99861N) (58.09395N) (56.18928N) (54.28461N) (52.37991N)
-###(50.47522N) (48.57052N) (46.66582N) (44.76111N) (42.8564N) (40.95169N) (39.04697N) 
-###(37.14225N) (35.23753N) (33.33281N) (31.42808N) (29.52336N) (27.61863N) (25.7139N) 
-###(23.80917N) (21.90444N) (19.99971N) (18.09498N) (16.19024N) (14.28551N) (12.38078N)
-###(10.47604N) (8.571308N) (6.666573N) (4.761838N) (2.857103N) (0.9523677N) (0.9523677S)
-###(2.857103S) (4.761838S) (6.666573S) (8.571308S) (10.47604S) (12.38078S) (14.28551S) 
-###(16.19024S) (18.09498S) (19.99971S) (21.90444S) (23.80917S) (25.7139S) (27.61863S) 
-###(29.52336S) (31.42808S) (33.33281S) (35.23753S) (37.14225S) (39.04697S) (40.95169S) 
-###(42.8564S) (44.76111S) (46.66582S) (48.57052S) (50.47522S) (52.37991S) (54.28461S) 
-###(56.18928S) (58.09395S) (59.99861S) (61.90326S) (63.8079S) (65.71251S) (67.6171S) 
-###(69.52167S) (71.42619S) (73.33066S) (75.23506S) (77.13936S) (79.04349S) (80.94736S) 
-### (82.85076S) (84.75323S) (86.65315S) (88.54196S)]
-## Where S is negative.
-
-
+```{r}
 ## Tidy Rows having Dates in them: 
-
 clean.hum <- hum %>% filter(hum$`1.87500` != 1.87500)
 clean.temp <- temp %>% filter(temp$`1.87500` != 1.87500)
 
@@ -456,6 +432,9 @@ dated.temp <- cbind(date.of.obs, clean.temp)
 ## (the dataset only contains points until october)
 fullyears.hum <- dated.hum %>% filter(dated.hum$year != 2020)
 fullyears.temp <- dated.temp %>% filter(dated.temp$year != 2020)
+
+
+
 
 test.hum <- dated.hum %>% 
 pivot_longer('0.000000E+00':'358.125',
@@ -493,7 +472,20 @@ test.temp.long <- temp.long %>%
 hum.avg.long <- test.hum.long 
 temp.avg.long <- test.temp.long
 
+# Merging temperature and humidity obervations into one dataframe
+test.hum.temp.avg <- merge(hum.avg.long, temp.avg.long, by.x=c("Latitude", "Longitude"))
+
+hum.temp.avg <- test.hum.temp.avg
+
+
+#Converting Longitude values into (-180 to 180) format from the Prime meridian format
+hum.temp <- Hum_temp_merged_avg %>% mutate(longitude = ifelse(Longitude > 180, (-180) + (Longitude - 180), Longitude))
+
+
+# SAVE Final merged and standardized longitudes
+write.csv(hum.temp, 'hum_temp.csv')
 ```
+
 # PART 2 | Combining Dataframes
 
 ## LANGUAGE DATA
@@ -710,6 +702,7 @@ Our final language-oriented dataframe includes the following data:
 ### Countries GDP + Linguistic Diversity
 
 First we'll combine data about GDP and linguistic diversity by country. 
+
 **TODO** manually reconcile full-join mimatches 
 
 ```{r merge countries }
