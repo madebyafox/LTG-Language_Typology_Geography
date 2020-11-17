@@ -270,7 +270,7 @@ across.continents.tone
 
 The AUTOTYP database contains much of the same information as the WALS datasets, but it additionally has continent and region information. The following plot shows the linguistic diversity information plotted by country and color coded by continent. 
 
-```{r warning=FALSE}
+```{r warning=FALSE, message=FALSE}
 # suppressMessages(str(by_language)) #AUTOTYP gives us continent and area information
 
 autotyp_plot <- by_language %>%
@@ -386,13 +386,35 @@ ggplot(by_continent, aes(x = continent, y = n, fill = continent)) +
 For GDP data, it makes more sense to visualize in a map after combining it with the longitude and latitude data. But here's a graph with only country name and GDP in 2018.
 
 ```{r}
-gdp.plot <- by_country %>% 
-  ggplot(aes(x=Country, y=2018))+
-  geom_jitter(width=0.25, size = 1.5, alpha=0.7)+
-    labs(title = "GDP per capita by Country", x = "Country", y="GDP per capita (2018)") +
+# gdp.plot <- by_country %>% 
+#   ggplot(aes(x=Country, y=2018))+
+#   geom_jitter(width=0.25, size = 1.5, alpha=0.7)+
+#     labs(title = "GDP per capita by Country", x = "Country", y="GDP per capita (2018)") +
+#   theme_minimal()
+#   # theme(legend.position = 'none', axis.text.x = element_blank())
+# print(gdp.plot)
+
+#AMY 
+
+gdp_low <- by_country %>% select(Country, `2018`) %>% arrange (`2018`)%>%slice(1:25)
+gdp_high <- by_country %>% select(Country, `2018`) %>% arrange (-`2018`)%>%slice(1:25)
+
+gdp.low <- gdp_low %>%
+  ggplot(aes(y=reorder(Country, `2018`), x=`2018`))+
+  geom_point(width=0.25, size = 1.5, alpha=0.7)+
+    labs(title = "GDP per capita (Lowest)", x="GDP per capita (USD, 2018)", y="") +
   theme_minimal()
-  # theme(legend.position = 'none', axis.text.x = element_blank())
-print(gdp.plot)
+  
+gdp.high <- gdp_high %>%
+  ggplot(aes(y=reorder(Country, `2018`), x=`2018`))+
+  geom_point(width=0.25, size = 1.5, alpha=0.7)+
+  scale_x_continuous(limits = c(0, 200000))+
+  labs(title = "GDP per capita (Highest)", x="GDP per capita (USD, 2018)",y="") +
+  theme_minimal()
+
+grid.arrange(gdp.low, gdp.high, bottom ="GDP (in USD) of top 25 Poorest and Richest Countries in 2018")
+
+
 ```
 
 ### Countries | Linguistic Diversity 
@@ -402,13 +424,32 @@ In our analysis, we want to see if languages in places with more linguistic dive
 ```{r, warning = FALSE, message=FALSE}
 # str(by_country)
 
-ggplot(by_country, aes(x = Country, y = established.langs)) +
-  geom_jitter(alpha = 0.5) +
-  labs(title="Number of Languages Spoken by Country", 
-       x = "Country", y="Number of Languages Spoken", color = "Continent") +
-  theme_bw() +
-  theme(axis.text.x=element_blank())
+# ggplot(by_country, aes(x = Country, y = established.langs)) +
+#   geom_jitter(alpha = 0.5) +
+#   labs(title="Number of Languages Spoken by Country", 
+#        x = "Country", y="Number of Languages Spoken", color = "Continent") +
+#   theme_bw() +
+#   theme(axis.text.x=element_blank())
 
+
+#AMY 
+
+ld_low <- by_country %>% select(Country, established.langs) %>% arrange (established.langs)%>%slice(1:25)
+ld_high <- by_country %>% select(Country, established.langs) %>% arrange (-established.langs)%>%slice(1:25)
+
+ld.low <- ld_low %>%
+  ggplot(aes(y=reorder(Country, established.langs), x=established.langs))+
+  geom_point(alpha = 0.5) +
+    labs(title = "Fewest Languages Spoken", x="Number of Languages Spoken", y="") +
+  theme_minimal()
+  
+ld.high <- ld_high %>%
+  ggplot(aes(y=reorder(Country, established.langs), x=established.langs))+
+   geom_point(alpha = 0.5) +
+  labs(title = "Most Languages Spoken", x="Number of Languages Spoken",y="") +
+  theme_minimal()
+
+grid.arrange(ld.low, ld.high, bottom ="Number of Languages Spoken by Country (top/bottom 25)")
 ```
 
 # PART 3 | Describing Environmental Data
