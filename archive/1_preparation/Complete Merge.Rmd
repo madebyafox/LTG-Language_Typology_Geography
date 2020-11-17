@@ -11,7 +11,6 @@ Here, I added a column to connect the ISO alpha 2 country codes with the written
 glimpse(by_language)
 glimpse(by_country)
 #country_code_iso <- read_csv("C:/Users/cathe/Downloads/country_code_iso.csv")
-suppressMessages(country_code_iso <- read_csv("../raw-data/country_code_iso.csv"))
 by_language <- by_language %>%
   separate(countrycodes, c("primary_country", "secondary_country"), "\\s")
 
@@ -37,4 +36,3 @@ colnames(by_country_language) <- c("country_name", "country_code", "wals_code", 
 
 #write.csv(by_country_language, "by_country_language.csv")
 save(by_country_language, file = "../clean-data/by_country_language.RData")
-```
