@@ -404,7 +404,7 @@ save(df_diversity, file = "../clean-data/countries_diversity.RData")
 
 **TODO: edit text and description here**
 
-#Retrieved from NOAA NCEP
+# Retrieved from NOAA NCEP
 
 More information: 
 Humidity : http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP-NCAR/.CDAS-1/.MONTHLY/.Diagnostic/.above_ground/.qa/index.html#info
