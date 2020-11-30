@@ -29,7 +29,7 @@ To successfully run this file, be sure to:
 2. Set your working directory to the top level directory of the repository (in RStudio)
 `setwd("~/[location on your machine]/LTG-Language_Typology_Geography")`
 
-Here we import data from 12 sources, and combine them to yield three data sets: One oriented around languages, one around environmental conditions at geographic, locations, and one oriented around economic factors of countries. 
+Here we import data from 12 sources, and combine them to yield three data sets: One oriented around languages, one around environmental conditions at geographic locations, and one oriented around economic factors of countries. 
 
 ## LANGUAGE DATA
 ### Language | Glottalized Consonants (WALS)
@@ -371,7 +371,7 @@ This dataframe comes from Ethnologue (http://www.ethnologue.com/sites/default/fi
 
 *In cleaning this data, we filter any missing or duplicate values of the primary key (Country). Each row in the dataset represents a country.*
 
-```{r clean diversity}
+```{r clean diversity, warning=FALSE}
 suppressMessages(df_diversity <- read_csv("../raw-data/lingdiversity.csv"))
 
 #TIDY Tibble
@@ -412,7 +412,7 @@ This pair of data sets contains measurements from above ground of temperature an
 The Longitude in this pair is represented in increments of 1.875 from the Prime Meridian (0) towards (360), without reaching 360. The Latitude in this pair is represented as ordered latitudes from North to South where South is represented numerically as negative.
 
 
-```{r environmental load} 
+```{r environmental load, warning=FALSE} 
 
 #load data
 #NOTE: CSV files were too large, so raw data is imported from .RData files constructed from original csv
@@ -467,29 +467,20 @@ df_temperature <- df_temperature %>% filter(df_temperature$year != 2020)
 # In doing so we also want to create a wide format for time rather than the
 # long format we have for now...
 
-# test.hum <- dated.hum %>% 
-# pivot_longer('0.000000E+00':'358.125',
-#                names_to = 'Longitude',
-#                values_to = 'temperature')
-
 ##Create long form data frames  for humidity
 df_hum.long <- df_humidity %>% 
   pivot_longer('0.000000E+00':'358.125',
                names_to = 'Longitude',
-               values_to = 'humidity')
-
-df_hum.long <- df_hum.long %>% rename(Latitude = `Jan 1949`)
-
-# test <-df_hum.long %>% mutate(longitude = ifelse( (Longitude > 180) , (-180) + (Longitude - 180), Longitude)) 
+               values_to = 'humidity') %>%
+  rename(Latitude = `Jan 1949`)
 
 
 ##Create long form data frames  for temperature
 df_temp.long <- df_temperature %>% 
   pivot_longer('0.000000E+00':'358.125',
                 names_to = 'Longitude',
-                values_to = 'temperature')
-
-df_temp.long <- df_temp.long %>% rename(Latitude = `Jan 1949`)
+                values_to = 'temperature')%>% 
+  rename(Latitude = `Jan 1949`)
 
 
 ##Average long dfs by coordinates
@@ -505,13 +496,24 @@ df_temp.long <- df_temp.long %>%
             mean_min_temp = mean(min(temperature)),
             mean_max_temp = mean(max(temperature)))
 
+## convert long and lat to numeric
+df_hum.long <- df_hum.long %>% mutate(
+  Latitude = as.numeric(Latitude),
+  Longitude = as.numeric(Longitude),
+)
 
+## convert long and lat to numeric
+df_temp.long <- df_temp.long %>% mutate(
+  Latitude = as.numeric(Latitude),
+  Longitude = as.numeric(Longitude),
+)
 
+#Convert Longitude values into (-180 to 180) format from the Prime meridian format
+df_hum.long <- df_hum.long %>% mutate(longitude = ifelse( (Longitude > 180) , (-180) + (Longitude - 180), Longitude)) 
+df_hum.long <- df_hum.long %>% rename(Longitude.360 = Longitude, Longitude.180 = longitude)
 
-#TODO :: Converting Longitude values into (-180 to 180) format from the Prime meridian format
-#df_hum.long <- df_hum.long %>% mutate(longitude = ifelse( (Longitude > 180) , (-180) + (Longitude - 180), Longitude)) #<-- ERROR
-#df_temp.long <- df_temp.long %>% mutate(longitude = ifelse( (Longitude > 180) , (-180) + (Longitude - 180), Longitude)) #<-- ERROR
-
+df_temp.long <- df_temp.long %>% mutate(longitude = ifelse( (Longitude > 180) , (-180) + (Longitude - 180), Longitude)) 
+df_temp.long <- df_temp.long %>% rename(Longitude.360 = Longitude, Longitude.180 = longitude)
 
 #Save individual long dfs 
 save(df_hum.long, file = "../clean-data/geo_humidity_long.RData")
@@ -733,14 +735,14 @@ Our final language-oriented dataframe includes the following data:
 
 
 ## COUNTRY DATA
-### TODO | Countries GDP + Linguistic Diversity
+### Countries GDP + Linguistic Diversity
 
 
 First we'll combine data about GDP and linguistic diversity by country. 
-**TODO** manually reconcile full-join mimatches 
+
 
 ```{r merge countries }
-
+#TODO AMY TAKE ANOTHER LOOK might need to manually reconcile full-join mimatches 
 #SELECT needed cols from gdp #220 countries
 temp1 <- df_gdp %>% select(
   Country, `2018`
@@ -767,8 +769,37 @@ save(by_country, file = "../clean-data/by_country.RData")
 Fortunately our cleaning efforts produced two dataframes organized identically, so we can join them with a simple cbind. 
 
 ```{r combine temp humidity}
-df_environment <- merge(df_hum.long, df_temp.long, by.x=c("Latitude", "Longitude"))
-by_geolocation <- df_environment
+by_geolocation <- merge(df_hum.long, df_temp.long %>% select(-Longitude.180), by.x=c("Latitude", "Longitude.360"),by.y=c("Latitude", "Longitude.360"))
+
 ##Save merged long df
 save(by_geolocation, file = "../clean-data/by_geolocation.RData")
 ```
+
+
+## COMPLETE MERGE
+
+Last but not least, we need to merge the language and country data together. 
+
+First we add a column to connect the ISO alpha 2 country codes with the written-out country names.
+```{r, warning=FALSE }
+
+#import df with mapping from country name to 2 digit country code
+suppressMessages(df_country_code <- read_csv("../raw-data/country_code_iso.csv"))
+df_country_code <- df_country_code %>% rename(country_name = Name)
+
+#update by_language to separate list of country codes
+by_language <- by_language %>%
+  separate(countrycodes, c("primary_country", "secondary_country"), "\\s")
+
+#add country_code to languages file, adding country name to by_language
+country_language <- merge(by_language, df_country_code, by.x = "primary_country", by.y = "Code", all = FALSE)
+```
+
+Now we will combine the new intermediary data frame `country_language` with the by_country df that contains the rest of the country-level data, resulting in a master df we call `by_country_language`.  
+```{r}
+by_country_language <- merge(country_language, by_country, by.x=c("country_name"), by.y=c("Country"))
+```
+
+The _very_ last outstanding task for file merging is to merge the combined country + language file with the geocoded environmental data file. BUT we don't want to do that until after we've first explored and visualized the data.  Time to move on to file 2_Data_Description.Rmd! 
+
+
