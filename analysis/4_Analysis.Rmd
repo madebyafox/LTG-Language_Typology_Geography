@@ -66,11 +66,12 @@ final.data <- final.data %>%
 ```{r}
 final.data$tone_num <- final.data$tones
 
-final.data$tone_num  <- ifelse(final.data$tone_num  == '1 - No tones', 1,
+final.data$tone_num <- ifelse(final.data$tone_num  == '1 - No tones', 1,
                               ifelse(final.data$tone_num  == '2 - Moderately low', 2,
                                  ifelse(final.data$tone_num  == '3 - Average', 3,
                                                           1)))
-
+final.data <- final.data %>%
+  mutate(tone_num = as.numeric(tone_num))
 
 ```
 
@@ -83,7 +84,7 @@ Some factors, which might help explain this apparent correlation between climate
 
 ### Ejectives
 
-There is a marginal effect of GDP on whether or not a language 
+There is a marginal effect of GDP on whether or not a language has ejectives. 
 
 ```{r}
 ejectives.GDP <- lm(data = final.data, glot_features_new ~ `2018`)
@@ -101,7 +102,111 @@ summary(cv.GDP)
 
 ### Tone
 
+There is no significant correlation between GDP and tone. 
+
 ```{r}
+tone.GDP <- lm(data = final.data, tone_num ~ `2018`)
+summary(tone.GDP)
+
+```
+
+## Next look at linguistic diversity
+
+We're testing whether languages spoken in countries with high linguistic diversity are more likely to have these features. 
+
+```{r}
+#create a new diversity score 
+
+final.data <- final.data %>%
+  mutate(diversity.new = established.langs/total.speakers)
+
+```
+
+### Ejectives
+
+There is a significant correlation between high linguistic diversity and having ejectives.
+
+```{r}
+ejectives.diversity <- lm(data = final.data, glot_features_new ~ diversity.new)
+summary(ejectives.diversity)
+```
+### CV Ratio
+
+There is a significant correlation between high CV ratio and high linguistic diversity. 
+
+```{r}
+cv.diversity <- lm(data = final.data, cv_ratio_num ~ diversity.new)
+summary(cv.diversity)
+```
+
+### Tone
+
+There is no significant correlation between linguistic diversity and tone. 
+
+```{r}
+tone.diversity <- lm(data = final.data, tone_num ~ diversity.new)
+summary(tone.diversity)
+
+```
+
+# Next check for correlation between environmental features and GDP/linguistic diversity
+
+## GDP
+
+### Altitude and GDP
+
+There is a correlation between altitude and GDP
+
+```{r}
+elev.GDP <- lm(data = final.data, mean_hum ~ `2018`)
+summary(elev.GDP)
+```
+
+### Latitude and GDP
+
+There is a significant correlation between distance from the equator (absolute value of Latitude) and GDP.
+
+```{r}
+final.data$latitude_abs <- final.data$Latitude
+
+final.data <- final.data %>%
+  mutate(latitude_abs = abs(latitude_abs))
 
 
+latitude.GDP <- lm(data = final.data, latitude_abs ~ `2018`)
+summary(latitude.GDP)
+```
+
+### Humidity and GDP
+
+There is a significant correlation between humidity and GDP. 
+
+```{r}
+hum.GDP <- lm(data = final.data, mean_hum ~ `2018`)
+summary(hum.GDP)
+```
+
+## Linguistic Diversity
+
+There is a significant correlation between linguistic diversity and each altitude, elevation, and humidity. 
+
+
+### Altitude
+
+```{r}
+elev.diversity <- lm(data = final.data, mean_hum ~ diversity.new)
+summary(elev.diversity)
+```
+
+### Latitude 
+
+```{r}
+latitude.diversity <- lm(data = final.data, latitude_abs ~ diversity.new)
+summary(latitude.diversity)
+```
+
+### Humidity
+```{r}
+hum.diversity <- lm(data = final.data, mean_hum ~ diversity.new)
+summary(hum.diversity)
 ```
