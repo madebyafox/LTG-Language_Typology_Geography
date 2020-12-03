@@ -12,4 +12,39 @@ library(tidyverse)
 
 ```
 
-# 
+# Replicating Everett's findings
+
+# Replicate 
+
+```{r}
+final.data$glot_features_new = final.data$glot_features
+
+final.data$glot_features_new <- ifelse(final.data$glot_features_new == '2 - Ejectives only', 1,
+                         ifelse(final.data$glot_features_new == '1 - No glottalized consonants', 0,
+                                0))
+
+ejectives.elevation <- lm(data = final.data, glot_features_new ~ elev_m)
+summary(ejectives.elevation)
+anova(ejectives.elevation)
+```
+```{r}
+final.data$elev_binary <- final.data$elev_m
+
+final.data$elev_binary<- ifelse(final.data$elev_binary >= 1500, 'high',
+                         ifelse(final.data$elev_binary < 1500, 'low',
+                                'low'))
+
+final.data <- final.data %>%
+  mutate(elev_binary = as.character(elev_binary))
+
+ejectives.elevation2 <- lm(data = final.data, glot_features_new ~ elev_binary)
+summary(ejectives.elevation2)
+```
+
+
+# Finding alternative correlations
+
+Some factors, which might help explain this apparent correlation between climate and language structure are: a) community size, b) GDP, and c) linguistic diversity of a country or region.
+
+```{r}
+```

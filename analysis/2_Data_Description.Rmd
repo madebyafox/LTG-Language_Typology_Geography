@@ -561,4 +561,6 @@ by_geolocation <- by_geolocation %>%
 final.data <- merge(by_country_language, by_geolocation, by.x = c("latitude.round", "longitude.round"), by.y = c("Latitude.round", "Longitude.180.round"), all = FALSE)
 
 final.data <- final.data[!duplicated(final.data$name),]
+
+save(final.data, file = "../clean-data/final_data.RData")
 ```
