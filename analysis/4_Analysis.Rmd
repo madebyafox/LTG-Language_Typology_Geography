@@ -9,6 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
+load("~/GitHub/LTG-Language_Typology_Geography/clean-data/final_data.RData")
 
 ```
 
