@@ -14,7 +14,7 @@ library(tidyverse)
 
 # Replicating Everett's findings
 
-# Replicate 
+## Replicate Ejective-Elevation Correlation
 
 ```{r}
 final.data$glot_features_new = final.data$glot_features
@@ -27,6 +27,8 @@ ejectives.elevation <- lm(data = final.data, glot_features_new ~ elev_m)
 summary(ejectives.elevation)
 anova(ejectives.elevation)
 ```
+
+
 ```{r}
 final.data$elev_binary <- final.data$elev_m
 
@@ -40,11 +42,37 @@ final.data <- final.data %>%
 ejectives.elevation2 <- lm(data = final.data, glot_features_new ~ elev_binary)
 summary(ejectives.elevation2)
 ```
+## Replicate C-V Ratio-Latitude Correlation
 
+```{r}
+
+```
+
+## Replicate Tone-Humidity Correlation
+
+```{r}
+
+```
 
 # Finding alternative correlations
 
 Some factors, which might help explain this apparent correlation between climate and language structure are: a) community size, b) GDP, and c) linguistic diversity of a country or region.
 
+
+## First look to see whether GDP predicts features
+
+### Ejectives
+
+There is a marginal effect of GDP on whether or not a language 
+
 ```{r}
+ejectives.GDP <- lm(data = final.data, glot_features_new ~ `2018`)
+summary(ejectives.GDP)
+```
+
+### CV Ratio
+
+
+```{r}
+
 ```
