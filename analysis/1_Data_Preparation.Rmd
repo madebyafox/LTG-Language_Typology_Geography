@@ -798,6 +798,8 @@ country_language <- merge(by_language, df_country_code, by.x = "primary_country"
 Now we will combine the new intermediary data frame `country_language` with the by_country df that contains the rest of the country-level data, resulting in a master df we call `by_country_language`.  
 ```{r}
 by_country_language <- merge(country_language, by_country, by.x=c("country_name"), by.y=c("Country"))
+
+save(by_country_language, file = "../clean-data/by_country_language.RData")
 ```
 
 The _very_ last outstanding task for file merging is to merge the combined country + language file with the geocoded environmental data file. BUT we don't want to do that until after we've first explored and visualized the data.  Time to move on to file 2_Data_Description.Rmd! 
