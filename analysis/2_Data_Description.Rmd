@@ -29,6 +29,7 @@ library(viridis)
 load(file="../clean-data/by_language.RData")
 load(file="../clean-data/by_country.RData")
 load(file="../clean-data/by_geolocation.RData")
+load(file="../clean-data/by_country_language.RData")
 ```
 
 # PART 1 | Describing Language Data
@@ -547,7 +548,9 @@ world.map.humidity = ggplot(world, aes(x=long, y=lat, group=group))+
 world.map.humidity
 ```
 
-## Final Merge of Environmental Data
+# PART 4 | Merge  Environmental Data
+
+Finally, we prepare a master dataframe that includes language, country, and environmental data. 
 
 ```{r}
 by_country_language <- by_country_language %>%
