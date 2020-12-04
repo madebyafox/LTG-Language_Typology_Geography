@@ -15,7 +15,11 @@ load("~/GitHub/LTG-Language_Typology_Geography/clean-data/final_data.RData")
 
 # Replicating Everett's findings
 
+First we will attempt to replicate the findings and claims from Caleb Everett's papers (CITE).
+
 ## Replicate Ejective-Elevation Correlation
+
+Everett (2013) claims that ejective phonemes are more likely to occur in areas of high elevation (over 1500m). In our model, which looks only at whether elevation (in meters) correlates with having ejectives or not, we found that there was an extremely small but significant effect ($\beta$ < 0.001, p < 0.001).
 
 ```{r}
 final.data$glot_features_new = final.data$glot_features
@@ -28,7 +32,13 @@ ejectives.elevation <- lm(data = final.data, glot_features_new ~ elev_m)
 summary(ejectives.elevation)
 anova(ejectives.elevation)
 ```
+If we include another predictor, such as language family (`stock`), the effect disappears (SumSq = 0.044, p = 0.177).
 
+```{r}
+ejectives.elevation.mult <- lm(data = final.data, glot_features_new ~ stock + elev_m)
+anova(ejectives.elevation.mult)
+```
+If we recode elevation into binary categories `low` and `high`, where high corresponds to any elevation at or above 1500m, there is a larger effect when you don't include language family ($\beta$ = -0.182, p < 0.001) and also when language family is included (SumSq = 0.126, p = 0.022).
 
 ```{r}
 final.data$elev_binary <- final.data$elev_m
@@ -42,8 +52,15 @@ final.data <- final.data %>%
 
 ejectives.elevation2 <- lm(data = final.data, glot_features_new ~ elev_binary)
 summary(ejectives.elevation2)
+
+ejectives.elevation3 <- lm(data = final.data, glot_features_new ~ stock +elev_binary)
+anova(ejectives.elevation3)
 ```
 ## Replicate C-V Ratio-Latitude Correlation
+
+Everett (2017) makes the connection between Consonant-Vowel Ratio and humidity. (CITE PAPER) connects high C-V ratio and distance from equator. 
+
+There is a correlation between distance from the equator (absolute value of latitude) and a high CV ratio ($\beta$ = 0.018, p < 0.001). However, when you include language family into the model, the effect is no longer significant (SumSq = 0.04, p = 0.812).
 
 ```{r}
 final.data$cv_ratio_num <- final.data$cv_ratio 
@@ -58,11 +75,21 @@ final.data$cv_ratio_num <- ifelse(final.data$cv_ratio_num == '1 - Low', 1,
 final.data <- final.data %>%
   mutate(cv_ratio_num = as.numeric(cv_ratio_num))
 
+final.data$latitude_abs <- final.data$Latitude
 
+final.data <- final.data %>%
+  mutate(latitude_abs = abs(latitude_abs))
 
+CV.latitude <- lm(data = final.data, cv_ratio_num ~ latitude_abs)
+summary(CV.latitude)
+
+CV.latitude.fam <- lm(data = final.data, cv_ratio_num ~ stock + latitude_abs)
+anova(CV.latitude.fam)
 ```
 
 ## Replicate Tone-Humidity Correlation
+
+Everett et al. (2016) claim there is a correlation between low humdity and not having tone, which leads to the implication that tonal languages are more likely to occur in high humidity regions. However, we did not find any correlation between tone and humidity ($\beta$ < 0.001, p = 0.715). There was still not an effect when language family was also included in the model (SumSq < 0.001, p = 0.898).
 
 ```{r}
 final.data$tone_num <- final.data$tones
@@ -74,12 +101,176 @@ final.data$tone_num <- ifelse(final.data$tone_num  == '1 - No tones', 1,
 final.data <- final.data %>%
   mutate(tone_num = as.numeric(tone_num))
 
+tone.humidity <- lm(data = final.data, tone_num ~ mean_hum)
+summary(tone.humidity)
+
+tone.humidity2 <- lm(data = final.data, tone_num ~ stock + mean_hum)
+anova(tone.humidity2)
+```
+When the tone variable was recoded as a binary factor (whether the langauge had any tone system or not), there is still no effect of humidity on tone ($\beta$< 0.001, p = 0.715).
+
+```{r}
+#tones/no tones
+final.data$tone_bin <- final.data$tone_num
+
+final.data$tone_bin <- ifelse(final.data$tone_bin  == 1, 0,
+                              ifelse(final.data$tone_bin == 2, 1,
+                                 ifelse(final.data$tone_bin == 3, 1,
+                                                          0)))
+
+final.data$tone_bin <- as.numeric(final.data$tone_bin)
+
+
+tone.humidity2 <- lm(data = final.data, tone_bin ~ mean_hum)
+summary(tone.humidity2)
+```
+# Try the other combinations of environmental factors and linguistic features
+
+Next, we will look to see if there are any effects of the other environmental factors on the different language features. 
+
+## Ejectives 
+
+### Humidity
+
+There is a reasonably strong correlation between ejectives and humidity ($\beta$ = 0.004, p < 0.001), which has a larger effect size than the correlation between ejectives and altitude.
+
+```{r}
+ejectives.humdity <- lm(data = final.data, glot_features_new ~ mean_hum)
+summary(ejectives.humdity)
+```
+
+### Latidude
+
+There is also an effect of latitude, which again is larger than the effect of altitude ($\beta$ = 0.004, p < 0.001). 
+
+```{r}
+ejectives.latitude <- lm(data = final.data, glot_features_new ~ latitude_abs)
+summary(ejectives.latitude)
+```
+
+## C-V Ratio
+
+## Humidity
+
+There is also an effect of humidity on CV ratio ($\beta$ = -82.04, p  < 0.001). It also accounts for more of the variance (R^2^ = 0.141) than the model with latitude (R^2^ = 0.07).
+
+```{r}
+cv.humdity <- lm(data = final.data, cv_ratio_num ~ mean_hum)
+summary(cv.humdity)
+```
+
+## Altitude
+
+There did seem to be an effect of altitude on CV ratio, but the effect is very small ($\beta$ < 0.001 , p < 0.001).
+
+```{r}
+cv.elev <- lm(data = final.data, cv_ratio_num ~ elev_m)
+summary(cv.elev)
+```
+
+## Tone
+
+Finally, there is no effect of altitude ($\beta$ < 0.001, p = 0.982) nor of latitude ($\beta$ < 0.001, p = 0.457) on tone. 
+
+## Altitude
+
+```{r}
+tone.elev <- lm(data = final.data, tone_bin ~ elev_m)
+summary(tone.elev)
+```
+
+## Latitude
+
+```{r}
+tone.lat <- lm(data = final.data, tone_bin ~ latitude_abs)
+summary(tone.lat)
 ```
 
 # Finding alternative correlations
 
-Some factors, which might help explain this apparent correlation between climate and language structure are: a) community size, b) GDP, and c) linguistic diversity of a country or region.
+Some factors, which might help explain this apparent correlation between climate and language structure are: a) community size, b) GDP, and c) linguistic diversity of a country or region. We will focus on linguistic diversity.
 
+
+## Linguistic diversity
+
+We're testing whether languages spoken in countries with high linguistic diversity are more likely to have these features. 
+
+```{r}
+#create a new diversity score 
+
+final.data <- final.data %>%
+  mutate(diversity.new = established.langs/total.speakers)
+```
+
+### Ejectives
+
+There is a significant correlation between high linguistic diversity and having ejectives.
+
+```{r}
+ejectives.diversity <- lm(data = final.data, glot_features_new ~ diversity.new)
+summary(ejectives.diversity)
+```
+### CV Ratio
+
+There is a significant correlation between high CV ratio and high linguistic diversity, although the effect size is extremely small ($\beta$ < 0.001, p < 0.001). If we include language family into the model, there is still no effect (SumSq = 0.03, p < 0.833).
+
+```{r}
+cv.diversity <- lm(data = final.data, cv_ratio_num ~ diversity.new)
+summary(cv.diversity)
+
+cv.diversity2 <- lm(data = final.data, cv_ratio_num ~ stock + diversity.new)
+anova(cv.diversity2)
+```
+
+### Tone
+
+There is no significant correlation between linguistic diversity and tone ($\beta$ < 0.001, p = 0.731). 
+
+```{r}
+tone.diversity <- lm(data = final.data, tone_num ~ diversity.new)
+summary(tone.diversity)
+
+```
+
+# Multiple Regression
+
+## GDP + linguistic diversity
+
+First, it is worth noting that there is a correlation between linguistic diversity and GDP in 2018 (t(353) = -2.959, p = 0.003).
+
+In a model which predicts ejectives from linguistic diversity, there is a marginally significant and very small effect of linguistic diversity ($\beta$ < 0.001, p = 0.084) but not of GDP ($\beta$ < 0.001, p = 0.148). 
+
+```{r}
+
+cor.test(final.data$`2018`, final.data$diversity.new)
+
+
+ejectives.diversity.GDP <- lm(data = final.data, glot_features_new ~ diversity.new + `2018`)
+summary(ejectives.diversity.GDP)
+```
+
+##Model Comparison
+
+1) feature ~ environmental + GDP/diversity // compare without environmental 
+
+2) feature ~ GDP/diversity // feature ~ environmental --> compare R2 etc
+
+If we want to compare 
+
+### Ejectives 
+
+```{r}
+ejectives.all <- lm(data = final.data, glot_features_new ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new)
+anova(ejectives.all)
+
+ejectives.reduced <- lm(data = final.data, glot_features_new ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new)
+anova(ejectives.all, reduced)
+```
+
+
+
+
+# Do not include
 
 ## First look to see whether GDP predicts features
 
@@ -111,46 +302,6 @@ summary(tone.GDP)
 
 ```
 
-## Next look at linguistic diversity
-
-We're testing whether languages spoken in countries with high linguistic diversity are more likely to have these features. 
-
-```{r}
-#create a new diversity score 
-
-final.data <- final.data %>%
-  mutate(diversity.new = established.langs/total.speakers)
-
-```
-
-### Ejectives
-
-There is a significant correlation between high linguistic diversity and having ejectives.
-
-```{r}
-ejectives.diversity <- lm(data = final.data, glot_features_new ~ diversity.new)
-summary(ejectives.diversity)
-```
-### CV Ratio
-
-There is a significant correlation between high CV ratio and high linguistic diversity. 
-
-```{r}
-cv.diversity <- lm(data = final.data, cv_ratio_num ~ diversity.new)
-summary(cv.diversity)
-```
-
-### Tone
-
-There is no significant correlation between linguistic diversity and tone. 
-
-```{r}
-tone.diversity <- lm(data = final.data, tone_num ~ diversity.new)
-summary(tone.diversity)
-
-```
-
-# Next check for correlation between environmental features and GDP/linguistic diversity
 
 ## GDP
 
@@ -168,12 +319,6 @@ summary(elev.GDP)
 There is a significant correlation between distance from the equator (absolute value of Latitude) and GDP.
 
 ```{r}
-final.data$latitude_abs <- final.data$Latitude
-
-final.data <- final.data %>%
-  mutate(latitude_abs = abs(latitude_abs))
-
-
 latitude.GDP <- lm(data = final.data, latitude_abs ~ `2018`)
 summary(latitude.GDP)
 ```
@@ -187,6 +332,9 @@ hum.GDP <- lm(data = final.data, mean_hum ~ `2018`)
 summary(hum.GDP)
 ```
 
+# Next check for correlation between environmental features and linguistic diversity
+
+
 ## Linguistic Diversity
 
 There is a significant correlation between linguistic diversity and each altitude, elevation, and humidity. 
@@ -195,7 +343,7 @@ There is a significant correlation between linguistic diversity and each altitud
 ### Altitude
 
 ```{r}
-elev.diversity <- lm(data = final.data, mean_hum ~ diversity.new)
+elev.diversity <- lm(data = final.data, elev_m ~ diversity.new)
 summary(elev.diversity)
 ```
 

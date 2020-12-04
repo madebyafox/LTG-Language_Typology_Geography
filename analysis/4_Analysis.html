@@ -420,8 +420,10 @@ summary {
 
 <div id="replicating-everetts-findings" class="section level1">
 <h1>Replicating Everett’s findings</h1>
+<p>First we will attempt to replicate the findings and claims from Caleb Everett’s papers (CITE).</p>
 <div id="replicate-ejective-elevation-correlation" class="section level2">
 <h2>Replicate Ejective-Elevation Correlation</h2>
+<p>Everett (2013) claims that ejective phonemes are more likely to occur in areas of high elevation (over 1500m). In our model, which looks only at whether elevation (in meters) correlates with having ejectives or not, we found that there was an extremely small but significant effect (<span class="math inline">\(\beta\)</span> &lt; 0.001, p &lt; 0.001).</p>
 <pre class="r"><code>final.data$glot_features_new = final.data$glot_features
 
 final.data$glot_features_new &lt;- ifelse(final.data$glot_features_new == &#39;2 - Ejectives only&#39;, 1,
@@ -457,6 +459,19 @@ summary(ejectives.elevation)</code></pre>
 ## Residuals 372 31.5874 0.08491                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>If we include another predictor, such as language family (<code>stock</code>), the effect disappears (SumSq = 0.044, p = 0.177).</p>
+<pre class="r"><code>ejectives.elevation.mult &lt;- lm(data = final.data, glot_features_new ~ stock + elev_m)
+anova(ejectives.elevation.mult)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: glot_features_new
+##            Df  Sum Sq  Mean Sq F value Pr(&gt;F)    
+## stock     162 28.2651 0.174476  7.2834 &lt;2e-16 ***
+## elev_m      1  0.0439 0.043878  1.8317 0.1774    
+## Residuals 210  5.0306 0.023955                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>If we recode elevation into binary categories <code>low</code> and <code>high</code>, where high corresponds to any elevation at or above 1500m, there is a larger effect when you don’t include language family (<span class="math inline">\(\beta\)</span> = -0.182, p &lt; 0.001) and also when language family is included (SumSq = 0.126, p = 0.022).</p>
 <pre class="r"><code>final.data$elev_binary &lt;- final.data$elev_m
 
 final.data$elev_binary&lt;- ifelse(final.data$elev_binary &gt;= 1500, &#39;high&#39;,
@@ -486,9 +501,22 @@ summary(ejectives.elevation2)</code></pre>
 ## Residual standard error: 0.2923 on 372 degrees of freedom
 ## Multiple R-squared:  0.04684,    Adjusted R-squared:  0.04427 
 ## F-statistic: 18.28 on 1 and 372 DF,  p-value: 2.427e-05</code></pre>
+<pre class="r"><code>ejectives.elevation3 &lt;- lm(data = final.data, glot_features_new ~ stock +elev_binary)
+anova(ejectives.elevation3)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: glot_features_new
+##              Df  Sum Sq  Mean Sq F value  Pr(&gt;F)    
+## stock       162 28.2651 0.174476  7.4047 &lt; 2e-16 ***
+## elev_binary   1  0.1263 0.126288  5.3596 0.02157 *  
+## Residuals   210  4.9482 0.023563                    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
 <div id="replicate-c-v-ratio-latitude-correlation" class="section level2">
 <h2>Replicate C-V Ratio-Latitude Correlation</h2>
+<p>Everett (2017) makes the connection between Consonant-Vowel Ratio and humidity. (CITE PAPER) connects high C-V ratio and distance from equator.</p>
+<p>There is a correlation between distance from the equator (absolute value of latitude) and a high CV ratio (<span class="math inline">\(\beta\)</span> = 0.018, p &lt; 0.001). However, when you include language family into the model, the effect is no longer significant (SumSq = 0.04, p = 0.812).</p>
 <pre class="r"><code>final.data$cv_ratio_num &lt;- final.data$cv_ratio 
 
 final.data$cv_ratio_num &lt;- ifelse(final.data$cv_ratio_num == &#39;1 - Low&#39;, 1,
@@ -499,10 +527,48 @@ final.data$cv_ratio_num &lt;- ifelse(final.data$cv_ratio_num == &#39;1 - Low&#39
                                                           1)))))
 
 final.data &lt;- final.data %&gt;%
-  mutate(cv_ratio_num = as.numeric(cv_ratio_num))</code></pre>
+  mutate(cv_ratio_num = as.numeric(cv_ratio_num))
+
+final.data$latitude_abs &lt;- final.data$Latitude
+
+final.data &lt;- final.data %&gt;%
+  mutate(latitude_abs = abs(latitude_abs))
+
+CV.latitude &lt;- lm(data = final.data, cv_ratio_num ~ latitude_abs)
+summary(CV.latitude)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = cv_ratio_num ~ latitude_abs, data = final.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.61809 -0.79017  0.07028  0.78633  2.31122 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  2.637156   0.091325   28.88  &lt; 2e-16 ***
+## latitude_abs 0.018070   0.003442    5.25 2.56e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.095 on 372 degrees of freedom
+## Multiple R-squared:  0.06898,    Adjusted R-squared:  0.06648 
+## F-statistic: 27.56 on 1 and 372 DF,  p-value: 2.564e-07</code></pre>
+<pre class="r"><code>CV.latitude.fam &lt;- lm(data = final.data, cv_ratio_num ~ stock + latitude_abs)
+anova(CV.latitude.fam)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: cv_ratio_num
+##               Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## stock        162 324.48 2.00296  2.7240 6.018e-12 ***
+## latitude_abs   1   0.04 0.04153  0.0565    0.8124    
+## Residuals    210 154.41 0.73529                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
 <div id="replicate-tone-humidity-correlation" class="section level2">
 <h2>Replicate Tone-Humidity Correlation</h2>
+<p>Everett et al. (2016) claim there is a correlation between low humdity and not having tone, which leads to the implication that tonal languages are more likely to occur in high humidity regions. However, we did not find any correlation between tone and humidity (<span class="math inline">\(\beta\)</span> &lt; 0.001, p = 0.715). There was still not an effect when language family was also included in the model (SumSq &lt; 0.001, p = 0.898).</p>
 <pre class="r"><code>final.data$tone_num &lt;- final.data$tones
 
 final.data$tone_num &lt;- ifelse(final.data$tone_num  == &#39;1 - No tones&#39;, 1,
@@ -510,92 +576,228 @@ final.data$tone_num &lt;- ifelse(final.data$tone_num  == &#39;1 - No tones&#39;,
                                  ifelse(final.data$tone_num  == &#39;3 - Average&#39;, 3,
                                                           1)))
 final.data &lt;- final.data %&gt;%
-  mutate(tone_num = as.numeric(tone_num))</code></pre>
+  mutate(tone_num = as.numeric(tone_num))
+
+tone.humidity &lt;- lm(data = final.data, tone_num ~ mean_hum)
+summary(tone.humidity)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = tone_num ~ mean_hum, data = final.data)
+## 
+## Residuals:
+##        Min         1Q     Median         3Q        Max 
+## -1.327e-13  2.290e-16  3.840e-16  4.870e-16  5.260e-16 
+## 
+## Coefficients:
+##               Estimate Std. Error   t value Pr(&gt;|t|)    
+## (Intercept)  1.000e+00  9.521e-16  1.05e+15   &lt;2e-16 ***
+## mean_hum    -2.520e-14  6.885e-14 -3.66e-01    0.715    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6.891e-15 on 372 degrees of freedom
+## Multiple R-squared:  0.5003, Adjusted R-squared:  0.4989 
+## F-statistic: 372.4 on 1 and 372 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>tone.humidity2 &lt;- lm(data = final.data, tone_num ~ stock + mean_hum)
+anova(tone.humidity2)</code></pre>
+<pre><code>## Warning in anova.lm(tone.humidity2): ANOVA F-tests on an essentially perfect fit
+## are unreliable</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: tone_num
+##            Df     Sum Sq    Mean Sq F value Pr(&gt;F)
+## stock     162 3.4967e-27 2.1585e-29  0.3198 1.0000
+## mean_hum    1 1.1000e-30 1.1070e-30  0.0164 0.8982
+## Residuals 210 1.4175e-26 6.7501e-29</code></pre>
+<p>When the tone variable was recoded as a binary factor (whether the langauge had any tone system or not), there is still no effect of humidity on tone (<span class="math inline">\(\beta\)</span>&lt; 0.001, p = 0.715).</p>
+<pre class="r"><code>#tones/no tones
+final.data$tone_bin &lt;- final.data$tone_num
+
+final.data$tone_bin &lt;- ifelse(final.data$tone_bin  == 1, 0,
+                              ifelse(final.data$tone_bin == 2, 1,
+                                 ifelse(final.data$tone_bin == 3, 1,
+                                                          0)))
+
+final.data$tone_bin &lt;- as.numeric(final.data$tone_bin)
+
+
+tone.humidity2 &lt;- lm(data = final.data, tone_bin ~ mean_hum)
+summary(tone.humidity2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = tone_bin ~ mean_hum, data = final.data)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##      0      0      0      0      0 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)        0          0      NA       NA
+## mean_hum           0          0      NA       NA
+## 
+## Residual standard error: 0 on 372 degrees of freedom
+## Multiple R-squared:    NaN,  Adjusted R-squared:    NaN 
+## F-statistic:   NaN on 1 and 372 DF,  p-value: NA</code></pre>
+</div>
+</div>
+<div id="try-the-other-combinations-of-environmental-factors-and-linguistic-features" class="section level1">
+<h1>Try the other combinations of environmental factors and linguistic features</h1>
+<p>Next, we will look to see if there are any effects of the other environmental factors on the different language features.</p>
+<div id="ejectives" class="section level2">
+<h2>Ejectives</h2>
+<div id="humidity" class="section level3">
+<h3>Humidity</h3>
+<p>There is a reasonably strong correlation between ejectives and humidity (<span class="math inline">\(\beta\)</span> = 0.004, p &lt; 0.001), which has a larger effect size than the correlation between ejectives and altitude.</p>
+<pre class="r"><code>ejectives.humdity &lt;- lm(data = final.data, glot_features_new ~ mean_hum)
+summary(ejectives.humdity)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = glot_features_new ~ mean_hum, data = final.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.25535 -0.14580 -0.06292 -0.01850  0.98198 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   0.2800     0.0401   6.982 1.34e-11 ***
+## mean_hum    -14.1212     2.9000  -4.869 1.66e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.2903 on 372 degrees of freedom
+## Multiple R-squared:  0.05992,    Adjusted R-squared:  0.05739 
+## F-statistic: 23.71 on 1 and 372 DF,  p-value: 1.659e-06</code></pre>
+</div>
+<div id="latidude" class="section level3">
+<h3>Latidude</h3>
+<p>There is also an effect of latitude, which again is larger than the effect of altitude (<span class="math inline">\(\beta\)</span> = 0.004, p &lt; 0.001).</p>
+<pre class="r"><code>ejectives.latitude &lt;- lm(data = final.data, glot_features_new ~ latitude_abs)
+summary(ejectives.latitude)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = glot_features_new ~ latitude_abs, data = final.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.31748 -0.11137 -0.06381 -0.03210  0.97583 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.0122811  0.0243067   0.505    0.614    
+## latitude_abs 0.0041619  0.0009161   4.543  7.5e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.2914 on 372 degrees of freedom
+## Multiple R-squared:  0.05257,    Adjusted R-squared:  0.05002 
+## F-statistic: 20.64 on 1 and 372 DF,  p-value: 7.504e-06</code></pre>
+</div>
+</div>
+<div id="c-v-ratio" class="section level2">
+<h2>C-V Ratio</h2>
+</div>
+<div id="humidity-1" class="section level2">
+<h2>Humidity</h2>
+<p>There is also an effect of humidity on CV ratio (<span class="math inline">\(\beta\)</span> = -82.04, p &lt; 0.001). It also accounts for more of the variance (R<sup>2</sup> = 0.141) than the model with latitude (R<sup>2</sup> = 0.07).</p>
+<pre class="r"><code>cv.humdity &lt;- lm(data = final.data, cv_ratio_num ~ mean_hum)
+summary(cv.humdity)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = cv_ratio_num ~ mean_hum, data = final.data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.5178 -0.6457  0.1715  0.5129  2.4671 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   4.0654     0.1453  27.977   &lt;2e-16 ***
+## mean_hum    -82.0395    10.5082  -7.807    6e-14 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.052 on 372 degrees of freedom
+## Multiple R-squared:  0.1408, Adjusted R-squared:  0.1385 
+## F-statistic: 60.95 on 1 and 372 DF,  p-value: 6.004e-14</code></pre>
+</div>
+<div id="altitude" class="section level2">
+<h2>Altitude</h2>
+<p>There did seem to be an effect of altitude on CV ratio, but the effect is very small (<span class="math inline">\(\beta\)</span> &lt; 0.001 , p &lt; 0.001).</p>
+<pre class="r"><code>cv.elev &lt;- lm(data = final.data, cv_ratio_num ~ elev_m)
+summary(cv.elev)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = cv_ratio_num ~ elev_m, data = final.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.65293 -0.87877  0.05147  0.91219  2.14814 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 2.852e+00  7.484e-02  38.103  &lt; 2e-16 ***
+## elev_m      2.335e-04  6.862e-05   3.403 0.000738 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.117 on 372 degrees of freedom
+## Multiple R-squared:  0.03019,    Adjusted R-squared:  0.02759 
+## F-statistic: 11.58 on 1 and 372 DF,  p-value: 0.0007384</code></pre>
+</div>
+<div id="tone" class="section level2">
+<h2>Tone</h2>
+<p>Finally, there is no effect of altitude (<span class="math inline">\(\beta\)</span> &lt; 0.001, p = 0.982) nor of latitude (<span class="math inline">\(\beta\)</span> &lt; 0.001, p = 0.457) on tone.</p>
+</div>
+<div id="altitude-1" class="section level2">
+<h2>Altitude</h2>
+<pre class="r"><code>tone.elev &lt;- lm(data = final.data, tone_bin ~ elev_m)
+summary(tone.elev)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = tone_bin ~ elev_m, data = final.data)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##      0      0      0      0      0 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)        0          0      NA       NA
+## elev_m             0          0      NA       NA
+## 
+## Residual standard error: 0 on 372 degrees of freedom
+## Multiple R-squared:    NaN,  Adjusted R-squared:    NaN 
+## F-statistic:   NaN on 1 and 372 DF,  p-value: NA</code></pre>
+</div>
+<div id="latitude" class="section level2">
+<h2>Latitude</h2>
+<pre class="r"><code>tone.lat &lt;- lm(data = final.data, tone_bin ~ latitude_abs)
+summary(tone.lat)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = tone_bin ~ latitude_abs, data = final.data)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##      0      0      0      0      0 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)         0          0      NA       NA
+## latitude_abs        0          0      NA       NA
+## 
+## Residual standard error: 0 on 372 degrees of freedom
+## Multiple R-squared:    NaN,  Adjusted R-squared:    NaN 
+## F-statistic:   NaN on 1 and 372 DF,  p-value: NA</code></pre>
 </div>
 </div>
 <div id="finding-alternative-correlations" class="section level1">
 <h1>Finding alternative correlations</h1>
 <p>Some factors, which might help explain this apparent correlation between climate and language structure are: a) community size, b) GDP, and c) linguistic diversity of a country or region.</p>
-<div id="first-look-to-see-whether-gdp-predicts-features" class="section level2">
-<h2>First look to see whether GDP predicts features</h2>
-<div id="ejectives" class="section level3">
-<h3>Ejectives</h3>
-<p>There is a marginal effect of GDP on whether or not a language has ejectives.</p>
-<pre class="r"><code>ejectives.GDP &lt;- lm(data = final.data, glot_features_new ~ `2018`)
-summary(ejectives.GDP)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = glot_features_new ~ `2018`, data = final.data)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.17288 -0.08977 -0.08063 -0.07789  0.92322 
-## 
-## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 7.588e-02  1.936e-02   3.919 0.000107 ***
-## `2018`      1.221e-06  7.042e-07   1.735 0.083689 .  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.2939 on 353 degrees of freedom
-##   (19 observations deleted due to missingness)
-## Multiple R-squared:  0.008451,   Adjusted R-squared:  0.005642 
-## F-statistic: 3.009 on 1 and 353 DF,  p-value: 0.08369</code></pre>
-</div>
-<div id="cv-ratio" class="section level3">
-<h3>CV Ratio</h3>
-<p>There is a significant correlation between CV-ratio and GDP.</p>
-<pre class="r"><code>cv.GDP &lt;- lm(data = final.data, cv_ratio_num ~ `2018`)
-summary(cv.GDP)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = cv_ratio_num ~ `2018`, data = final.data)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -2.5369 -0.8409  0.1076  0.5150  2.1685 
-## 
-## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 2.816e+00  7.323e-02   38.46  &lt; 2e-16 ***
-## `2018`      1.145e-05  2.663e-06    4.30 2.21e-05 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 1.112 on 353 degrees of freedom
-##   (19 observations deleted due to missingness)
-## Multiple R-squared:  0.04977,    Adjusted R-squared:  0.04708 
-## F-statistic: 18.49 on 1 and 353 DF,  p-value: 2.213e-05</code></pre>
-</div>
-<div id="tone" class="section level3">
-<h3>Tone</h3>
-<p>There is no significant correlation between GDP and tone.</p>
-<pre class="r"><code>tone.GDP &lt;- lm(data = final.data, tone_num ~ `2018`)
-summary(tone.GDP)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = tone_num ~ `2018`, data = final.data)
-## 
-## Residuals:
-##        Min         1Q     Median         3Q        Max 
-## -3.754e-14  1.140e-16  1.210e-16  1.290e-16  1.320e-16 
-## 
-## Coefficients:
-##              Estimate Std. Error   t value Pr(&gt;|t|)    
-## (Intercept) 1.000e+00  1.318e-16 7.586e+15   &lt;2e-16 ***
-## `2018`      1.593e-21  4.795e-21 3.320e-01     0.74    
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 2.001e-15 on 353 degrees of freedom
-##   (19 observations deleted due to missingness)
-## Multiple R-squared:  0.4997, Adjusted R-squared:  0.4983 
-## F-statistic: 352.6 on 1 and 353 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div>
-<div id="next-look-at-linguistic-diversity" class="section level2">
-<h2>Next look at linguistic diversity</h2>
+<div id="linguistic-diversity" class="section level2">
+<h2>Linguistic diversity</h2>
 <p>We’re testing whether languages spoken in countries with high linguistic diversity are more likely to have these features.</p>
 <pre class="r"><code>#create a new diversity score 
 
@@ -625,7 +827,7 @@ summary(ejectives.diversity)</code></pre>
 ## Multiple R-squared:  0.01164,    Adjusted R-squared:  0.008984 
 ## F-statistic: 4.382 on 1 and 372 DF,  p-value: 0.03701</code></pre>
 </div>
-<div id="cv-ratio-1" class="section level3">
+<div id="cv-ratio" class="section level3">
 <h3>CV Ratio</h3>
 <p>There is a significant correlation between high CV ratio and high linguistic diversity.</p>
 <pre class="r"><code>cv.diversity &lt;- lm(data = final.data, cv_ratio_num ~ diversity.new)
@@ -675,8 +877,195 @@ summary(tone.diversity)</code></pre>
 </div>
 </div>
 </div>
-<div id="next-check-for-correlation-between-environmental-features-and-gdplinguistic-diversity" class="section level1">
-<h1>Next check for correlation between environmental features and GDP/linguistic diversity</h1>
+<div id="multiple-regression" class="section level1">
+<h1>Multiple Regression</h1>
+<div id="gdp-linguistic-diversity" class="section level2">
+<h2>GDP + linguistic diversity</h2>
+<pre class="r"><code>ejectives.diversity.GDP &lt;- lm(data = final.data, glot_features_new ~ diversity.new + `2018`)
+summary(ejectives.diversity.GDP)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = glot_features_new ~ diversity.new + `2018`, data = final.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.17005 -0.09841 -0.09089 -0.08760  0.91108 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    8.868e-02  2.067e-02   4.290 2.31e-05 ***
+## diversity.new -3.857e+02  2.225e+02  -1.733   0.0839 .  
+## `2018`         1.030e-06  7.108e-07   1.449   0.1483    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.293 on 352 degrees of freedom
+##   (19 observations deleted due to missingness)
+## Multiple R-squared:  0.01684,    Adjusted R-squared:  0.01126 
+## F-statistic: 3.015 on 2 and 352 DF,  p-value: 0.0503</code></pre>
+<p>##Model Comparison</p>
+<ol style="list-style-type: decimal">
+<li><p>feature ~ environmental + GDP/diversity // compare without environmental</p></li>
+<li><p>feature ~ GDP/diversity // feature ~ environmental –&gt; compare R2 etc</p></li>
+</ol>
+</div>
+</div>
+<div id="next-check-for-correlation-between-environmental-features-and-linguistic-diversity" class="section level1">
+<h1>Next check for correlation between environmental features and linguistic diversity</h1>
+<div id="linguistic-diversity-1" class="section level2">
+<h2>Linguistic Diversity</h2>
+<p>There is a significant correlation between linguistic diversity and each altitude, elevation, and humidity.</p>
+<div id="altitude-2" class="section level3">
+<h3>Altitude</h3>
+<pre class="r"><code>elev.diversity &lt;- lm(data = final.data, elev_m ~ diversity.new)
+summary(elev.diversity)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = elev_m ~ diversity.new, data = final.data)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -723.6 -556.7 -306.4  254.1 5233.6 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    7.228e+02  4.617e+01  15.656   &lt;2e-16 ***
+## diversity.new -1.183e+06  6.221e+05  -1.901   0.0581 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 840.3 on 372 degrees of freedom
+## Multiple R-squared:  0.009622,   Adjusted R-squared:  0.006959 
+## F-statistic: 3.614 on 1 and 372 DF,  p-value: 0.05807</code></pre>
+</div>
+<div id="latitude-1" class="section level3">
+<h3>Latitude</h3>
+<pre class="r"><code>latitude.diversity &lt;- lm(data = final.data, latitude_abs ~ diversity.new)
+summary(latitude.diversity)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = latitude_abs ~ diversity.new, data = final.data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -20.962 -12.884  -3.756  11.020  51.406 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    2.196e+01  8.891e-01  24.703  &lt; 2e-16 ***
+## diversity.new -4.553e+04  1.198e+04  -3.801 0.000168 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 16.18 on 372 degrees of freedom
+## Multiple R-squared:  0.03738,    Adjusted R-squared:  0.03479 
+## F-statistic: 14.45 on 1 and 372 DF,  p-value: 0.0001685</code></pre>
+</div>
+<div id="humidity-2" class="section level3">
+<h3>Humidity</h3>
+<pre class="r"><code>hum.diversity &lt;- lm(data = final.data, mean_hum ~ diversity.new)
+summary(hum.diversity)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mean_hum ~ diversity.new, data = final.data)
+## 
+## Residuals:
+##        Min         1Q     Median         3Q        Max 
+## -0.0104581 -0.0045760  0.0007587  0.0037200  0.0071030 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   1.218e-02  2.677e-04  45.509  &lt; 2e-16 ***
+## diversity.new 2.551e+01  3.607e+00   7.072 7.63e-12 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.004872 on 372 degrees of freedom
+## Multiple R-squared:  0.1185, Adjusted R-squared:  0.1161 
+## F-statistic: 50.01 on 1 and 372 DF,  p-value: 7.627e-12</code></pre>
+</div>
+</div>
+</div>
+<div id="do-not-include" class="section level1">
+<h1>Do not include</h1>
+<div id="first-look-to-see-whether-gdp-predicts-features" class="section level2">
+<h2>First look to see whether GDP predicts features</h2>
+<div id="ejectives-2" class="section level3">
+<h3>Ejectives</h3>
+<p>There is a marginal effect of GDP on whether or not a language has ejectives.</p>
+<pre class="r"><code>ejectives.GDP &lt;- lm(data = final.data, glot_features_new ~ `2018`)
+summary(ejectives.GDP)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = glot_features_new ~ `2018`, data = final.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.17288 -0.08977 -0.08063 -0.07789  0.92322 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 7.588e-02  1.936e-02   3.919 0.000107 ***
+## `2018`      1.221e-06  7.042e-07   1.735 0.083689 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.2939 on 353 degrees of freedom
+##   (19 observations deleted due to missingness)
+## Multiple R-squared:  0.008451,   Adjusted R-squared:  0.005642 
+## F-statistic: 3.009 on 1 and 353 DF,  p-value: 0.08369</code></pre>
+</div>
+<div id="cv-ratio-1" class="section level3">
+<h3>CV Ratio</h3>
+<p>There is a significant correlation between CV-ratio and GDP.</p>
+<pre class="r"><code>cv.GDP &lt;- lm(data = final.data, cv_ratio_num ~ `2018`)
+summary(cv.GDP)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = cv_ratio_num ~ `2018`, data = final.data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.5369 -0.8409  0.1076  0.5150  2.1685 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 2.816e+00  7.323e-02   38.46  &lt; 2e-16 ***
+## `2018`      1.145e-05  2.663e-06    4.30 2.21e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.112 on 353 degrees of freedom
+##   (19 observations deleted due to missingness)
+## Multiple R-squared:  0.04977,    Adjusted R-squared:  0.04708 
+## F-statistic: 18.49 on 1 and 353 DF,  p-value: 2.213e-05</code></pre>
+</div>
+<div id="tone-2" class="section level3">
+<h3>Tone</h3>
+<p>There is no significant correlation between GDP and tone.</p>
+<pre class="r"><code>tone.GDP &lt;- lm(data = final.data, tone_num ~ `2018`)
+summary(tone.GDP)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = tone_num ~ `2018`, data = final.data)
+## 
+## Residuals:
+##        Min         1Q     Median         3Q        Max 
+## -3.754e-14  1.140e-16  1.210e-16  1.290e-16  1.320e-16 
+## 
+## Coefficients:
+##              Estimate Std. Error   t value Pr(&gt;|t|)    
+## (Intercept) 1.000e+00  1.318e-16 7.586e+15   &lt;2e-16 ***
+## `2018`      1.593e-21  4.795e-21 3.320e-01     0.74    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.001e-15 on 353 degrees of freedom
+##   (19 observations deleted due to missingness)
+## Multiple R-squared:  0.4997, Adjusted R-squared:  0.4983 
+## F-statistic: 352.6 on 1 and 353 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
 <div id="gdp" class="section level2">
 <h2>GDP</h2>
 <div id="altitude-and-gdp" class="section level3">
@@ -707,13 +1096,7 @@ summary(elev.GDP)</code></pre>
 <div id="latitude-and-gdp" class="section level3">
 <h3>Latitude and GDP</h3>
 <p>There is a significant correlation between distance from the equator (absolute value of Latitude) and GDP.</p>
-<pre class="r"><code>final.data$latitude_abs &lt;- final.data$Latitude
-
-final.data &lt;- final.data %&gt;%
-  mutate(latitude_abs = abs(latitude_abs))
-
-
-latitude.GDP &lt;- lm(data = final.data, latitude_abs ~ `2018`)
+<pre class="r"><code>latitude.GDP &lt;- lm(data = final.data, latitude_abs ~ `2018`)
 summary(latitude.GDP)</code></pre>
 <pre><code>## 
 ## Call:
@@ -759,79 +1142,6 @@ summary(hum.GDP)</code></pre>
 ##   (19 observations deleted due to missingness)
 ## Multiple R-squared:  0.1696, Adjusted R-squared:  0.1672 
 ## F-statistic: 72.08 on 1 and 353 DF,  p-value: 5.809e-16</code></pre>
-</div>
-</div>
-<div id="linguistic-diversity" class="section level2">
-<h2>Linguistic Diversity</h2>
-<p>There is a significant correlation between linguistic diversity and each altitude, elevation, and humidity.</p>
-<div id="altitude" class="section level3">
-<h3>Altitude</h3>
-<pre class="r"><code>elev.diversity &lt;- lm(data = final.data, mean_hum ~ diversity.new)
-summary(elev.diversity)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = mean_hum ~ diversity.new, data = final.data)
-## 
-## Residuals:
-##        Min         1Q     Median         3Q        Max 
-## -0.0104581 -0.0045760  0.0007587  0.0037200  0.0071030 
-## 
-## Coefficients:
-##                Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   1.218e-02  2.677e-04  45.509  &lt; 2e-16 ***
-## diversity.new 2.551e+01  3.607e+00   7.072 7.63e-12 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.004872 on 372 degrees of freedom
-## Multiple R-squared:  0.1185, Adjusted R-squared:  0.1161 
-## F-statistic: 50.01 on 1 and 372 DF,  p-value: 7.627e-12</code></pre>
-</div>
-<div id="latitude" class="section level3">
-<h3>Latitude</h3>
-<pre class="r"><code>latitude.diversity &lt;- lm(data = final.data, latitude_abs ~ diversity.new)
-summary(latitude.diversity)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = latitude_abs ~ diversity.new, data = final.data)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -20.962 -12.884  -3.756  11.020  51.406 
-## 
-## Coefficients:
-##                 Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)    2.196e+01  8.891e-01  24.703  &lt; 2e-16 ***
-## diversity.new -4.553e+04  1.198e+04  -3.801 0.000168 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 16.18 on 372 degrees of freedom
-## Multiple R-squared:  0.03738,    Adjusted R-squared:  0.03479 
-## F-statistic: 14.45 on 1 and 372 DF,  p-value: 0.0001685</code></pre>
-</div>
-<div id="humidity" class="section level3">
-<h3>Humidity</h3>
-<pre class="r"><code>hum.diversity &lt;- lm(data = final.data, mean_hum ~ diversity.new)
-summary(hum.diversity)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = mean_hum ~ diversity.new, data = final.data)
-## 
-## Residuals:
-##        Min         1Q     Median         3Q        Max 
-## -0.0104581 -0.0045760  0.0007587  0.0037200  0.0071030 
-## 
-## Coefficients:
-##                Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   1.218e-02  2.677e-04  45.509  &lt; 2e-16 ***
-## diversity.new 2.551e+01  3.607e+00   7.072 7.63e-12 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.004872 on 372 degrees of freedom
-## Multiple R-squared:  0.1185, Adjusted R-squared:  0.1161 
-## F-statistic: 50.01 on 1 and 372 DF,  p-value: 7.627e-12</code></pre>
 </div>
 </div>
 </div>
