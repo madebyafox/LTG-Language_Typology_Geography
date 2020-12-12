@@ -9,6 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
+library(lme4)
 load("~/GitHub/LTG-Language_Typology_Geography/clean-data/final_data.RData")
 
 ```
@@ -28,7 +29,10 @@ final.data$glot_features_new = final.data$glot_features
 
 final.data$glot_features_new <- ifelse(final.data$glot_features_new == '2 - Ejectives only', 1,
                          ifelse(final.data$glot_features_new == '1 - No glottalized consonants', 0,
-                                0))
+                                ifelse(final.data$glot_features_new == '5 - Ejectives and implosives', 1,
+                                       ifelse(final.data$glot_features_new == '8 - Ejectives, implosives, and glottalized resonants', 1,
+                                              ifelse(final.data$glot_features_new == '6 - Ejectives and glottalized resonants', 1,
+                                0)))))
 
 
 
@@ -57,7 +61,7 @@ If we include another predictor, such as language family (`stock`), the effect d
 ejectives.elevation.mult <- lm(data = final.data, glot_features_new ~ stock + elev_m)
 anova(ejectives.elevation.mult)
 ```
-If we recode elevation into binary categories `low` and `high`, where high corresponds to any elevation at or above 1500m, there is a larger effect when you don't include language family ($\beta$ = -0.182, p < 0.001) and also when language family is included (SumSq = 0.126, p = 0.022).
+If we recode elevation into binary categories `low` and `high`, where high corresponds to any elevation at or above 1500m, there is a larger effect when you don't include language family ($\beta$ = -0.190, p < 0.001) and also when language family is included (SumSq = 0.025, p = 0.4).
 
 ```{r}
 final.data$elev_binary <- final.data$elev_m
@@ -151,7 +155,7 @@ Next, we will look to see if there are any effects of the other environmental fa
 
 ### Humidity
 
-There is a reasonably strong correlation between ejectives and humidity ($\beta$ = 0.004, p < 0.001), which has a larger effect size than the correlation between ejectives and altitude.
+There is a strong correlation between ejectives and humidity ($\beta$ = -20.237, p < 0.001), which has a larger effect size than the correlation between ejectives and altitude.
 
 ```{r}
 ejectives.humdity <- lm(data = final.data, glot_features_new ~ mean_hum)
@@ -160,7 +164,7 @@ summary(ejectives.humdity)
 
 ### Latidude
 
-There is also an effect of latitude, which again is larger than the effect of altitude ($\beta$ = 0.004, p < 0.001). 
+There is also an effect of latitude, which again is larger than the effect of altitude ($\beta$ = 0.006, p < 0.001). 
 
 ```{r}
 ejectives.latitude <- lm(data = final.data, glot_features_new ~ latitude_abs)
@@ -236,7 +240,7 @@ final.data <- final.data %>%
 
 ### Ejectives
 
-There is a significant correlation between high linguistic diversity and having ejectives.
+There is a significant correlation between high linguistic diversity and having ejectives ($\beta$ = -690.252, p = 0.012).
 
 ```{r}
 ejectives.diversity <- lm(data = final.data, glot_features_new ~ diversity.new)
@@ -291,15 +295,47 @@ If we want to compare
 
 ### Ejectives 
 
+In the full model, `mean_hum` (SumSq = 3.430, p \< 0.001) significantly predict having ejectives. In a model comparison, a full model is better than the full model without the elevation (F(1) = 8.543, p = 0.003). 
+
 ```{r}
-ejectives.all <- lm(data = final.data, glot_features_new ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new)
+ejectives.all <- lm(data = final.data, glot_features_new ~ stock + elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new)
 anova(ejectives.all)
 
-ejectives.reduced <- lm(data = final.data, glot_features_new ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new)
-anova(ejectives.all, reduced)
+#model without elevation
+ejectives.reduced <- lm(data = final.data, glot_features_new ~ stock + mean_hum + mean_temp + latitude_abs + diversity.new )
+anova(ejectives.reduced, ejectives.all)
+```
+### Tone
+
+In the full model, only latitude is significant (F(1) = 4.648, p = 0.032), not humidity. In the model comparison, humidity is not significant.
+
+```{r}
+tone.full <- lm(data = final.data, tone_num ~ stock + elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new)
+anova(tone.full)
+
+tone.reduced <- lm(data = final.data, tone_num ~ stock + elev_binary + mean_temp + latitude_abs + diversity.new)
+anova(tone.reduced, tone.full)
+
 ```
 
+### C-V Ratio
 
+In the full model, latitude is a significant factor (F(1) =  6.44, p = 0.012), but in the model comparison, the model is not significant (F(1) = 1.152, p = 0.284). 
+
+```{r}
+cv.full <- lm(data = final.data, cv_ratio_num ~ stock + elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new)
+anova(cv.full)
+
+cv.reduced <- lm(data = final.data, cv_ratio_num ~ stock + elev_binary + mean_hum + mean_temp + diversity.new)
+anova(cv.reduced, cv.full)
+
+```
+
+## Using lme4
+
+### Ejectives
+
+<<<<<<< Updated upstream
 # Next check for correlation between environmental features and linguistic diversity
 
 
@@ -361,7 +397,37 @@ summary(ejectives.communitysize)
 ejectives.communitysize2 <- lm(data = final.data, glot_features_everett ~ total.speakers.log10)
 summary(ejectives.communitysize2)
 ```
+=======
+In an `lmer` model, if we use stock as the random effect, there is still no effect of elevation on ejectives ($\chi$^2^(1) = 1.588, p = 0.208).
+>>>>>>> Stashed changes
 
+```{r}
+ejectives.full.model <- lmer(data = final.data, glot_features_new ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock))
+
+ejectives.reduced.model <- lmer(data = final.data, glot_features_new ~ mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock))
+anova(ejectives.reduced.model, ejectives.full.model)
+```
+### Tone
+
+In a model comparison, humidity does seem to be a significant factor on tone ($\chi$^2^(1) = 2074.8, p \< 0.001).
+
+```{r}
+tone.full.model <- lmer(data = final.data, tone_num ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock))
+
+tone.reduced.model <- lmer(data = final.data, tone_num ~ elev_binary + mean_temp + latitude_abs + diversity.new + (1 | stock))
+anova(tone.reduced.model, tone.full.model)
+```
+
+### CV Ratio
+
+Latitude is not significant ($\chi$^2^(1) = 0.5874, p = 0.443). 
+
+```{r}
+cv.full.model <- lmer(data = final.data, cv_ratio_num ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock))
+
+cv.reduced.model <- lmer(data = final.data, cv_ratio_num ~ elev_binary + mean_hum + mean_temp + diversity.new + (1 | stock))
+anova(cv.reduced.model, cv.full.model)
+```
 
 # Do not include
 
