@@ -387,6 +387,11 @@ summary(tone.communitysize)
 ```{r}
 cv.communitysize <- lm(data = final.data, cv_ratio_num ~ total.speakers.log10)
 summary(cv.communitysize)
+
+#without taking into account language family or diversity
+cv.full.model.less <- lm(data = final.data, cv_ratio_num ~  elev_binary + mean_hum + mean_temp + latitude_abs)
+cv.null.model.less <- lm(data = final.data, cv_ratio_num ~  elev_binary + mean_hum + mean_temp)
+anova(cv.null.model.less, cv.full.model.less)
 ```
 
 ##Ejectives
@@ -427,6 +432,9 @@ cv.full.model <- lmer(data = final.data, cv_ratio_num ~ elev_binary + mean_hum +
 
 cv.reduced.model <- lmer(data = final.data, cv_ratio_num ~ elev_binary + mean_hum + mean_temp + diversity.new + (1 | stock))
 anova(cv.reduced.model, cv.full.model)
+
+
+
 ```
 
 # Do not include
