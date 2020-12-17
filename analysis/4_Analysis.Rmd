@@ -147,6 +147,53 @@ final.data$tone_bin <- as.numeric(final.data$tone_bin)
 tone.humidity2 <- lm(data = final.data, tone_bin ~ mean_hum)
 summary(tone.humidity2)
 ```
+# FINAL MODELS REAL FINAL FOR REAL
+
+### CV Ratio
+
+Latitude is not significant ($\chi$^2^(1) = 0.5874, p = 0.443). 
+
+```{r}
+# cv.lat.model <- lmer(data = final.data, cv_ratio_num ~ latitude_abs + (1 | stock))
+# summary(cv.lat.model)
+
+cv.hum.model <- lm(data = final.data, cv_ratio_num ~ mean_hum + stock)
+anova(cv.hum.model)
+
+cv.hum.model.null <- lm(data = final.data, cv_ratio_num ~ mean_hum)
+anova(cv.hum.model.null)
+```
+
+### Ejectives
+
+I changed this to logistic (glmer).
+
+```{r}
+ejectives.full.model <- glmer(data = final.data, glot_features_new ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock), family = binomial)
+summary(ejectives.full.model)
+
+ejectives.reduced.model <- glmer(data = final.data, glot_features_new ~ mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock), family = binomial)
+anova(ejectives.reduced.model, ejectives.full.model)
+```
+### Tone
+
+In a model comparison, humidity does seem to be a significant factor on tone ($\chi$^2^(1) = 2074.8, p \< 0.001).
+
+I changed this to logistic (glmer).
+
+```{r}
+tone.hum.model <- glmer(data = final.data, tone_bin ~ mean_hum + (1 | stock), family = binomial)
+summary(tone.hum.model)
+
+#tone.full.model <- glmer(data = final.data, tone_bin ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock), family = binomial)
+
+#tone.reduced.model <- glmer(data = final.data, tone_bin ~ elev_binary + mean_temp + latitude_abs + diversity.new + (1 | stock), family = binomial)
+#anova(tone.reduced.model, tone.full.model)
+```
+
+
+# IGNORE BELOW HERE                     
+
 # Try the other combinations of environmental factors and linguistic features
 
 Next, we will look to see if there are any effects of the other environmental factors on the different language features. 
@@ -404,22 +451,31 @@ summary(ejectives.communitysize2)
 ```
 =======
 In an `lmer` model, if we use stock as the random effect, there is still no effect of elevation on ejectives ($\chi$^2^(1) = 1.588, p = 0.208).
->>>>>>> Stashed changes
+
+
+## (G)LMER Models
+
+I changed this to logistic (glmer).
 
 ```{r}
-ejectives.full.model <- lmer(data = final.data, glot_features_new ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock))
+ejectives.full.model <- glmer(data = final.data, glot_features_new ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock), family = binomial)
 
-ejectives.reduced.model <- lmer(data = final.data, glot_features_new ~ mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock))
+ejectives.reduced.model <- glmer(data = final.data, glot_features_new ~ mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock), family = binomial)
 anova(ejectives.reduced.model, ejectives.full.model)
 ```
 ### Tone
 
 In a model comparison, humidity does seem to be a significant factor on tone ($\chi$^2^(1) = 2074.8, p \< 0.001).
 
-```{r}
-tone.full.model <- lmer(data = final.data, tone_num ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock))
+I changed this to logistic (glmer).
 
-tone.reduced.model <- lmer(data = final.data, tone_num ~ elev_binary + mean_temp + latitude_abs + diversity.new + (1 | stock))
+```{r}
+tone.hum.model <- glmer(data = final.data, tone_bin ~ mean_hum + (1 | stock), family = binomial)
+summary(tone.hum.model)
+
+tone.full.model <- glmer(data = final.data, tone_bin ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock), family = binomial)
+
+tone.reduced.model <- glmer(data = final.data, tone_bin ~ elev_binary + mean_temp + latitude_abs + diversity.new + (1 | stock), family = binomial)
 anova(tone.reduced.model, tone.full.model)
 ```
 
@@ -428,6 +484,12 @@ anova(tone.reduced.model, tone.full.model)
 Latitude is not significant ($\chi$^2^(1) = 0.5874, p = 0.443). 
 
 ```{r}
+cv.lat.model <- lmer(data = final.data, cv_ratio_num ~ latitude_abs + (1 | stock))
+summary(cv.lat.model)
+
+cv.hum.model <- lmer(data = final.data, cv_ratio_num ~ mean_hum + (1 | stock))
+summary(cv.hum.model)
+
 cv.full.model <- lmer(data = final.data, cv_ratio_num ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock))
 
 cv.reduced.model <- lmer(data = final.data, cv_ratio_num ~ elev_binary + mean_hum + mean_temp + diversity.new + (1 | stock))
