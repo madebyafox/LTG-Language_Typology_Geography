@@ -560,3 +560,44 @@ There is a significant correlation between humidity and GDP.
 hum.GDP <- lm(data = final.data, mean_hum ~ `2018`)
 summary(hum.GDP)
 ```
+
+
+## Test
+
+```{r}
+# dot plot = each dot = sub-famuiy
+# x = average humidity
+# y = proportion of languages in the subfamily with tone.communitysize
+# color = language family
+
+dot.plot.test <- final.data %>%
+  #remove langs with no mbranch
+  group_by(macroarea, area, family) %>%
+  mutate(tone_bin = as.numeric(tone_bin)) %>%
+  dplyr::summarise(mean_humidity = mean(mean_hum), n = n(), tone_sum = sum(tone_bin)) %>%
+  # dplyr::summarise() %>%
+  # dplyr::summarise() %>%
+  mutate(tone_prop = tone_sum/n) 
+
+                                
+ggplot(dot.plot.test, aes(x = mean_humidity, y = tone_prop, size = n, color = macroarea)) +
+  geom_point() + 
+  theme_bw() +
+  labs(x = "Mean Humidity",
+       y = "Proportion of Languages with tone in Language Family")
+
+#exclude families with only 1 langauge
+dot.plot.test2 <- dot.plot.test %>%
+  filter(n != 1)
+
+ggplot(dot.plot.test2, aes(x = mean_humidity, y = tone_prop, size = n, color = area)) +
+  geom_point()+ 
+  theme_bw() +
+  labs(x = "Mean Humidity",
+       y = "Proportion of Languages with tone in Language Family", 
+       title = "Exclude Language families with only 1 language") +
+  facet_wrap(~area)
+
+
+
+```
