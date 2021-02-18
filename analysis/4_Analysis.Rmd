@@ -458,10 +458,34 @@ In an `lmer` model, if we use stock as the random effect, there is still no effe
 I changed this to logistic (glmer).
 
 ```{r}
-ejectives.full.model <- glmer(data = final.data, glot_features_new ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock), family = binomial)
+final.data <- final.data %>%
+  mutate(macroarea = as_factor(macroarea)) 
 
-ejectives.reduced.model <- glmer(data = final.data, glot_features_new ~ mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock), family = binomial)
-anova(ejectives.reduced.model, ejectives.full.model)
+ejectives.elev.model1 <- glmer(data = final.data, glot_features_new ~ elev_m + (1 | stock) + (1 | macroarea), family = binomial, control=glmerControl(optimizer="bobyqa")) #+ (1 | macroarea)
+
+ejectives.elev.model2 <- glmer(data = final.data, glot_features_new ~ log10(elev_m) + (1 | stock) + (1 | macroarea), family = binomial, control=glmerControl(optimizer="bobyqa"))
+
+ejectives.elev.model3 <- glmer(data = final.data, glot_features_everett ~ elev_m + (1 | stock) + (1 | macroarea), family = binomial, control=glmerControl(optimizer="bobyqa"))
+
+ejectives.elev.model4 <- glmer(data = final.data, glot_features_everett ~ log10(elev_m) + (1 | stock) + (1 | macroarea), family = binomial, control=glmerControl(optimizer="bobyqa"))
+
+ejectives.elev.model5 <- glmer(data = final.data, glot_features_new ~ elev_binary + (1 | stock) + (1 | macroarea), family = binomial, control=glmerControl(optimizer="bobyqa")) #+ (1 | macroarea)
+
+
+ejectives.null.model <- glmer(data = final.data, glot_features_new ~ (1 | stock) + (1 | macroarea), family = binomial, control=glmerControl(optimizer="bobyqa")) #+ (1 | macroarea)
+summary(ejectives.null.model)
+
+anova(ejectives.null.model, ejectives.elev.model1)
+anova(ejectives.null.model, ejectives.elev.model2)
+anova(ejectives.null.model, ejectives.elev.model3)
+anova(ejectives.null.model, ejectives.elev.model4)
+anova(ejectives.null.model, ejectives.elev.model5)
+
+
+# ejectives.full.model <- glmer(data = final.data, glot_features_new ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock), family = binomial)
+# 
+# ejectives.reduced.model <- glmer(data = final.data, glot_features_new ~ mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock), family = binomial)
+# anova(ejectives.reduced.model, ejectives.full.model)
 ```
 ### Tone
 
@@ -470,8 +494,11 @@ In a model comparison, humidity does seem to be a significant factor on tone ($\
 I changed this to logistic (glmer).
 
 ```{r}
-tone.hum.model <- glmer(data = final.data, tone_bin ~ mean_hum + (1 | stock), family = binomial)
+tone.hum.model <- glmer(data = final.data, tone_bin ~ mean_hum + (1 | stock) + (1 | macroarea), family = binomial)
 summary(tone.hum.model)
+
+tone.null.model <- glmer(data = final.data, tone_bin ~ (1 | stock) + (1 | macroarea), family = binomial)
+anova(tone.null.model, tone.hum.model)
 
 tone.full.model <- glmer(data = final.data, tone_bin ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock), family = binomial)
 
@@ -484,11 +511,20 @@ anova(tone.reduced.model, tone.full.model)
 Latitude is not significant ($\chi$^2^(1) = 0.5874, p = 0.443). 
 
 ```{r}
-cv.lat.model <- lmer(data = final.data, cv_ratio_num ~ latitude_abs + (1 | stock))
-summary(cv.lat.model)
-
-cv.hum.model <- lmer(data = final.data, cv_ratio_num ~ mean_hum + (1 | stock))
+cv.hum.model <- lmer(data = final.data, cv_ratio_num ~ mean_hum + (1 | stock) + (1 | macroarea))
 summary(cv.hum.model)
+
+cv.null.model <- lmer(data = final.data, cv_ratio_num ~  (1 | stock) + (1 | macroarea))
+
+anova(cv.null.model, cv.hum.model)
+
+###later
+
+cv.lat.model <- lmer(data = final.data, cv_ratio_num ~ latitude_abs + (1 | stock) + (1 | macroarea))
+summary(cv.lat.model)
+anova(cv.null.model, cv.lat.model)
+
+
 
 cv.full.model <- lmer(data = final.data, cv_ratio_num ~ elev_binary + mean_hum + mean_temp + latitude_abs + diversity.new + (1 | stock))
 
@@ -580,8 +616,9 @@ dot.plot.test <- final.data %>%
   mutate(tone_prop = tone_sum/n) 
 
                                 
-ggplot(dot.plot.test, aes(x = mean_humidity, y = tone_prop, size = n, color = macroarea)) +
+ggplot(dot.plot.test, aes(x = mean_humidity, y = tone_prop, size = n)) +
   geom_point() + 
+  geom_smooth(method = "lm") +
   theme_bw() +
   labs(x = "Mean Humidity",
        y = "Proportion of Languages with tone in Language Family")
@@ -597,7 +634,5 @@ ggplot(dot.plot.test2, aes(x = mean_humidity, y = tone_prop, size = n, color = a
        y = "Proportion of Languages with tone in Language Family", 
        title = "Exclude Language families with only 1 language") +
   facet_wrap(~area)
-
-
 
 ```
